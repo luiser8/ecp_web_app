@@ -84,7 +84,6 @@ export default function Navigator(props) {
                 </ListItemButton>
               </ListItem>
             ))}
-
             <Divider sx={{ mt: 2 }} />
           </Box>
         ))}

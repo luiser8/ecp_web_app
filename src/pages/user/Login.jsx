@@ -16,7 +16,7 @@ import Copyright from '../layouts/Copyright';
 import Theme from '../../themes/theme';
 import { Context } from '../../auth/Context';
 import { loginUser } from '../../services/userService';
-import { CircularProgress } from '@mui/material';
+import BackdropCustom from '../../components/alerts/BackdropCustom';
 
 const Login = () => {
     const { login } = useContext(Context);
@@ -29,7 +29,7 @@ const Login = () => {
     const [loading, setLoading] = useState(false);
 
     const handleLogin = (event) => {
-        event.preventDefault(); setLoading(true);
+        setLoading(true); event.preventDefault();
         (Promise.all([
             loginUser(username, password).then((user) => {
                 if (user !== undefined) {
@@ -48,11 +48,11 @@ const Login = () => {
                 setError(true); 
                 setErrorMsj('Error iniciando sesión.'); 
                 setErrorMsjContent('Pueda que estés colocando algunos datos equivocados. Por favor verifica.');
+                setLoading(false);
             }),
         ]).catch(error => {
             new Error(error);
         }));
-        setLoading(false);
         setError(false); 
         setErrorMsj(''); 
         setErrorMsjContent('');
@@ -136,9 +136,7 @@ const Login = () => {
                             <Copyright sx={{ mt: 5 }} />
                         </Box>
                         {loading ? (
-                            <Box sx={{ display: 'flex', marginTop: '60px' }}>
-                                <CircularProgress />
-                            </Box>
+                            <BackdropCustom open={true} />
                         ) : (<></>)}
                         {error ? (
                         <Stack sx={{ minWidth: '41.5%' }} spacing={2} position="fixed" style={{ flexShrink: 0, top: 'auto', bottom: 0 }}>

@@ -27,7 +27,6 @@ const Layout = () => {
             <CssBaseline />
             {(checkUser().userId) !== null ?
                 <Box sx={{ display: 'flex', minHeight: '100vh' }}>
-
                     <Box
                         component="nav"
                         sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -40,7 +39,6 @@ const Layout = () => {
                                 onClose={handleDrawerToggle}
                             />
                         )}
-
                         <Navigator
                             PaperProps={{ style: { width: drawerWidth } }}
                             sx={{ display: { sm: 'block', xs: 'none' } }}
