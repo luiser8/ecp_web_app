@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { ContextProvider } from './auth/Context';
+import Layout from './pages/layouts/Layout';
 
 function App() {
-
   return (
-    <div className="App"></div>
+    <ContextProvider>
+        <Layout />
+    </ContextProvider>
   );
 }
 
