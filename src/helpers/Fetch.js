@@ -1,12 +1,15 @@
 import PropTypes from 'prop-types';
-import '../utils/Config';
+
+const apiurl = import.meta.env.VITE_API_URL;
+const headers = new Headers({ 'Content-Type': 'application/json'});
+const blobHeader = new Headers({ 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 
 export const get = async (route) => {
-    let url = global.config.url.production ? `${global.config.url.prod}${route}` : `${global.config.url.dev}${route}`;
-    let result = await fetch(`${url}`, {
+    const url = `${apiurl}${route}`;
+    return await fetch(url, {
         method: 'GET',
         mode: 'cors',
-        headers: global.config.headers.production ? global.config.headers.prod : global.config.headers.dev,
+        headers,
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
@@ -17,19 +20,14 @@ export const get = async (route) => {
             });
             return null
         }
-    }).catch(e => console.log(e))
-    if (result == null) {
-        return result;
-    } else {
-        return result
-    }
+    }).catch(e => console.log(e));
 }
 export const post = async (route, data) => {
-    let url = global.config.url.production ? `${global.config.url.prod}${route}` : `${global.config.url.dev}${route}`;
-    let result = await fetch(`${url}`, {
+    const url = `${apiurl}${route}`;
+    return await fetch(url, {
         method: 'POST',
         mode: 'cors',
-        headers: global.config.headers.production ? global.config.headers.prod : global.config.headers.dev,
+        headers,
         body: JSON.stringify(data),
         json: true
     }).then(response => {
@@ -41,19 +39,14 @@ export const post = async (route, data) => {
             });
             return null
         }
-    }).catch(e => console.log(e))
-    if (result == null) {
-        return result;
-    } else {
-        return result
-    }
+    }).catch(e => console.log(e));
 }
 export const put = async (route, data) => {
-    let url = global.config.url.production ? `${global.config.url.prod}${route}` : `${global.config.url.dev}${route}`;
-    let result = await fetch(`${url}`, {
+    const url = `${apiurl}${route}`;
+    return await fetch(url, {
         method: 'PUT',
         mode: 'cors',
-        headers: global.config.headers.production ? global.config.headers.prod : global.config.headers.dev,
+        headers,
         body: JSON.stringify(data),
         json: true
     }).then(response => {
@@ -65,19 +58,14 @@ export const put = async (route, data) => {
             });
             return null
         }
-    }).catch(e => console.log(e))
-    if (result == null) {
-        return result;
-    } else {
-        return result
-    }
+    }).catch(e => console.log(e));
 }
 export const del = async (route) => {
-    let url = global.config.url.production ? `${global.config.url.prod}${route}` : `${global.config.url.dev}${route}`;
-    let result = await fetch(`${url}`, {
+    const url = `${apiurl}${route}`;
+    return await fetch(url, {
         method: 'DELETE',
         mode: 'cors',
-        headers: global.config.headers.production ? global.config.headers.prod : global.config.headers.dev,
+        headers,
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
@@ -88,28 +76,18 @@ export const del = async (route) => {
             });
             return null
         }
-    }).catch(e => console.log(e))
-    if (result == null) {
-        return result;
-    } else {
-        return result
-    }
+    }).catch(e => console.log(e));
 }
 
 export const blob = async (route) => {
-    let url = global.config.url.production ? `${global.config.url.prod}${route}` : `${global.config.url.dev}${route}`;
-    let result = await fetch(`${url}`, {
+    const url = `${apiurl}${route}`;
+    return await fetch(url, {
         method: 'GET',
         mode: 'cors',
-        headers: new Headers({ 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Authorization': 'Basic ' + btoa('P$m:Bn@')}),
+        headers: blobHeader,
     }).then(response => {
         return response;
-    }).catch(e => console.log(e))
-    if (result == null) {
-        return result;
-    } else {
-        return result
-    }
+    }).catch(e => console.log(e));
 }
 
 get.propTypes = {

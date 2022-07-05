@@ -1,8 +1,8 @@
-module.exports = global.config = {
+export default config = {
     url: {
         production: false,
-        dev: 'http://192.168.1.60/api/', 
-        prod: 'http://10.0.0.2/api/'
+        dev: 'http://localhost:9010/api/v1/', 
+        prod: 'http://localhost/api/v1/'
     },
     headers: {
         production: false,
