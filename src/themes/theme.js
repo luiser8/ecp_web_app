@@ -7,6 +7,7 @@ const Theme = () => {
             light: '#63ccff',
             main: '#009be5',
             dark: '#006db3',
+            header: '#eaeff1',
           },
         },
         typography: {

@@ -1,21 +1,21 @@
-import * as React from 'react';
+import React, { useState, useContext } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
-import Navigator from './Navigator';
-import Content from './Content';
-import Header from './Header';
-import Copyright from './Copyright';
-import Theme from '../../themes/theme';
 import { Context } from '../../auth/Context';
+import Navigator from '../../components/layouts/Navigator';
+import Header from '../../components/layouts/Header';
+import Copyright from '../../components/layouts/Copyright';
+import Theme from '../../themes/theme';
+import RoutesCustom from '../../helpers/RoutesCustom';
 import Login from '../user/Login';
 
 const drawerWidth = 256;
 
 const Layout = () => {
-    const { checkUser } = React.useContext(Context);
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const { checkUser } = useContext(Context);
+    const [mobileOpen, setMobileOpen] = useState(false);
     const isSmUp = useMediaQuery(Theme().theme.breakpoints.up('sm'));
 
     const handleDrawerToggle = () => {
@@ -46,8 +46,8 @@ const Layout = () => {
                     </Box>
                     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <Header onDrawerToggle={handleDrawerToggle} />
-                        <Box component="main" sx={{ flex: 1, py: 6, px: 4, bgcolor: '#eaeff1' }}>
-                            <Content />
+                        <Box component="main" sx={{ flex: 1, py: 4, px: 4, bgcolor: '#eaeff1' }}>
+                            <RoutesCustom />
                         </Box>
                         <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
                             <Copyright />

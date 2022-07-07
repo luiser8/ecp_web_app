@@ -12,7 +12,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 import { ThemeProvider } from '@mui/material/styles';
-import Copyright from '../layouts/Copyright';
+import Copyright from '../../components/layouts/Copyright';
 import Theme from '../../themes/theme';
 import { Context } from '../../auth/Context';
 import { loginUser } from '../../services/userService';
@@ -53,6 +53,7 @@ const Login = () => {
         ]).catch(error => {
             new Error(error);
         }));
+        setLoading(false);
         setError(false); 
         setErrorMsj(''); 
         setErrorMsjContent('');
@@ -121,14 +122,14 @@ const Login = () => {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2 }}
+                                sx={{ mt: 3, mb: 2, bgcolor: '#01579b' }}
                                 disabled={username !== '' && password !== '' ? false : true}
                             >
                                 Iniciar sesión
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2">
+                                    <Link href="#" variant="body2" sx={{color: '#01579b' }}>
                                         Olvido su contraseña?
                                     </Link>
                                 </Grid>
