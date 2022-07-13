@@ -16,6 +16,11 @@ export const usePaths = () => {
             'Name': 'Storage'
         },
         {
+            'id': 4,
+            'path': '/product/:id',
+            'Name': 'Details'
+        },
+        {
             'id': 10,
             'path': '/404',
             'Name': 'Error 404'

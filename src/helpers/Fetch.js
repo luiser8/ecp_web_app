@@ -1,15 +1,13 @@
 import PropTypes from 'prop-types';
 
 const apiurl = import.meta.env.VITE_API_URL;
-const headers = new Headers({ 'Content-Type': 'application/json'});
-const blobHeader = new Headers({ 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'});
 
-export const get = async (route) => {
+export const get = async (route, token) => {
     const url = `${apiurl}${route}`;
     return await fetch(url, {
         method: 'GET',
         mode: 'cors',
-        headers,
+        headers: new Headers({ 'Content-Type': 'application/json', 'x-access-token': token}),
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
@@ -22,12 +20,12 @@ export const get = async (route) => {
         }
     }).catch(e => console.log(e));
 }
-export const post = async (route, data) => {
+export const post = async (route, data, token) => {
     const url = `${apiurl}${route}`;
     return await fetch(url, {
         method: 'POST',
         mode: 'cors',
-        headers,
+        headers: new Headers({ 'Content-Type': 'application/json', 'x-access-token': token}),
         body: JSON.stringify(data),
         json: true
     }).then(response => {
@@ -41,12 +39,12 @@ export const post = async (route, data) => {
         }
     }).catch(e => console.log(e));
 }
-export const put = async (route, data) => {
+export const put = async (route, data, token) => {
     const url = `${apiurl}${route}`;
     return await fetch(url, {
         method: 'PUT',
         mode: 'cors',
-        headers,
+        headers: new Headers({ 'Content-Type': 'application/json', 'x-access-token': token}),
         body: JSON.stringify(data),
         json: true
     }).then(response => {
@@ -60,12 +58,12 @@ export const put = async (route, data) => {
         }
     }).catch(e => console.log(e));
 }
-export const del = async (route) => {
+export const del = async (route, token) => {
     const url = `${apiurl}${route}`;
     return await fetch(url, {
         method: 'DELETE',
         mode: 'cors',
-        headers,
+        headers: new Headers({ 'Content-Type': 'application/json', 'x-access-token': token}),
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
@@ -79,12 +77,12 @@ export const del = async (route) => {
     }).catch(e => console.log(e));
 }
 
-export const blob = async (route) => {
+export const blob = async (route, token) => {
     const url = `${apiurl}${route}`;
     return await fetch(url, {
         method: 'GET',
         mode: 'cors',
-        headers: blobHeader,
+        headers: new Headers({ 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'x-access-token': token}),
     }).then(response => {
         return response;
     }).catch(e => console.log(e));
@@ -92,18 +90,23 @@ export const blob = async (route) => {
 
 get.propTypes = {
     route : PropTypes.string,
+    token: PropTypes.string
 }
 post.propTypes = {
     route : PropTypes.string,
-    data : PropTypes.object,
+    token: PropTypes.string,
+    data : PropTypes.object
 }
 put.propTypes = {
     route : PropTypes.string,
-    data : PropTypes.object,
+    token: PropTypes.string,
+    data : PropTypes.object
 }
 del.propTypes = {
     route : PropTypes.string,
+    token: PropTypes.string
 }
 blob.propTypes = {
     route : PropTypes.string,
+    token: PropTypes.string
 }

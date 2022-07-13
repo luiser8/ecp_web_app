@@ -19,7 +19,7 @@ import { usePaths }  from '../../hooks/usePaths';
 const Header = (props) => {
   const location = useLocation();
   const paths = usePaths();
-  const headerName =  paths.filter(p => p.path === location.pathname)[0].Name;
+  const headerName = paths.filter(p => p.path === location.pathname)[0]?.Name;
   const { logout, checkUser } = useContext(Context);
   const { onDrawerToggle } = props;
   const [anchorEl, setAnchorEl] = useState(null);
@@ -28,7 +28,7 @@ const Header = (props) => {
     <Fragment>
       <AppBar sx={{ bgcolor: '#01579b' }} position="sticky" elevation={0}>
         <Toolbar>
-          <Grid container spacing={1} alignItems="center" mb={-5}>
+          <Grid container spacing={1} alignItems="center" mb={0}>
             <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>
               <IconButton
                 color="inherit"
@@ -80,15 +80,6 @@ const Header = (props) => {
         elevation={0}
         sx={{ zIndex: 0, bgcolor: '#01579b' }}
       >
-        <Toolbar>
-          <Grid container alignItems="center" spacing={0}>
-            <Grid item xs>
-              <Typography color="inherit" variant="h5" component="h1">
-                {headerName}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Toolbar>
       </AppBar>
     </Fragment>
   );
