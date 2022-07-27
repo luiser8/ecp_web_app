@@ -2,22 +2,26 @@ import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from 
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FormProduct = ({ mode, productPayload, setProductPayload }) => {
+const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeExists, isCodeRepit }) => {
     return (
         <Grid component="div">
             <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
                 <TextField
                     value={productPayload.code}
                     onChange={(ev) => setProductPayload({ ...productPayload, code: ev.target.value })}
+                    onKeyUp={(ev) => checkCodeExists(ev.target.value)}
                     margin="normal"
                     required
+                    error={isCodeRepit}
+                    helperText={isCodeRepit ? "Código repetido" : ""}
                     type="text"
                     fullWidth
                     id="code"
-                    label="Código"
+                    label={isCodeRepit ? "Error" : "Código"}
                     name="code"
                     size="small"
                     autoFocus
+                    sx={{ marginBottom: isCodeRepit ? -1 : 1 }}
                 />
                 <TextField
                     value={productPayload.name}
@@ -127,22 +131,6 @@ const FormProduct = ({ mode, productPayload, setProductPayload }) => {
                     name="pvp_x_units"
                     size="small"
                 />
-                <FormControl fullWidth style={{ marginTop: "14px" }}>
-                    <InputLabel id="status" style={{ marginTop: "-7px" }}>Estado</InputLabel>
-                    <Select
-                        size="small"
-                        labelId="status"
-                        id="status"
-                        value={productPayload.status}
-                        label="Estado"
-                        required
-                        onChange={(ev) => setProductPayload({ ...productPayload, status: ev.target.value })}
-                    >
-                        <MenuItem value="in process">En proceso</MenuItem>
-                        <MenuItem value="finished">Terminado</MenuItem>
-                        <MenuItem value="slow">Detenido</MenuItem>
-                    </Select>
-                </FormControl>
             </Box>
         </Grid>
     )
@@ -152,6 +140,8 @@ FormProduct.propTypes = {
     mode: PropTypes.string,
     productPayload: PropTypes.object,
     setProductPayload: PropTypes.func,
+    checkCodeExists: PropTypes.func,
+    isCodeRepit: PropTypes.bool,
 };
 
 export default FormProduct;
