@@ -14,7 +14,7 @@ const union = (a, b) => {
     return [...a, ...not(b, a)];
 }
 
-const FormProductMaterial = ({ mode, materials, productMaterial, setProductMaterial, setActiveNext }) => {
+const FormProductMaterial = ({ mode, materials, productMaterial, setProductMaterial, productMaterialResume, setProductMaterialResume, setActiveNext }) => {
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
     const [right, setRight] = useState(materials);
@@ -61,6 +61,10 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
             ...productMaterial.slice(0, index),
             ...productMaterial.slice(index + 1, productMaterial.length)
         ]);
+        setProductMaterialResume([
+            ...productMaterial.slice(0, index),
+            ...productMaterial.slice(index + 1, productMaterial.length)
+        ]);
     }
 
     const handleCheckedLeft = () => {
@@ -71,6 +75,12 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
         checked.forEach((item) => {
             setProductMaterial(productMaterial => [...productMaterial, {
                 "material": item._id,
+                "qty_x_mix": 0,
+                "cost_x_mix": 0
+            }]);
+            setProductMaterialResume(productMaterial => [...productMaterial, {
+                "code": item.code,
+                "name": item.name,
                 "qty_x_mix": 0,
                 "cost_x_mix": 0
             }]);
@@ -85,8 +95,10 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
 
         if (name === "qty_x_mix") {
             productMaterial[material].qty_x_mix = Number(value);
+            productMaterialResume[material].qty_x_mix = Number(value);
         } else if (name === "cost_x_mix") {
             productMaterial[material].cost_x_mix = Number(value);
+            productMaterialResume[material].cost_x_mix = Number(value);
         }
         checkValidNext();
     }
@@ -136,7 +148,7 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
                 >
                     {Object.keys(items).map((value, index) => {
                         const labelId = `transfer-list-all-item-${value}-label`;
-
+                        const stock = !type ? `Stock ${items[value].current_amount} -` : '';
                         return (
                             <ListItem
                                 key={index}
@@ -155,7 +167,7 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
                                     />
                                 </ListItemIcon>
 
-                                <ListItemText id={labelId} primary={`${items[value].code}, Stock ${items[value].current_amount}, ${items[value].name}`} />
+                                <ListItemText id={labelId} primary={`${items[value].code} - ${stock} ${items[value].name}`} />
                                 {type ?
                                     <Fragment>
                                         <TextField
@@ -195,10 +207,10 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
 
     return (
         <Grid container spacing={1} justifyContent="center" alignItems="center">
-            <Box sx={{ width: '60%' }}>
+            <Box sx={{ width: '55%' }}>
                 <Grid item>{customList(true, 'Materia prima escogidos', left)}</Grid>
             </Box>
-            <Grid item>
+            <Grid sx={{ padding: 1 }}>
                 <Grid container direction="column" alignItems="center">
                     <Button
                         sx={{ my: 0.5 }}
@@ -222,7 +234,7 @@ const FormProductMaterial = ({ mode, materials, productMaterial, setProductMater
                     </Button>
                 </Grid>
             </Grid>
-            <Box sx={{ width: '30%' }}>
+            <Box sx={{ width: '35%' }}>
                 <Grid item>{customList(false, 'Materia prima actual', right)}</Grid>
             </Box>
         </Grid>
@@ -234,6 +246,8 @@ FormProductMaterial.propTypes = {
     materials: PropTypes.array,
     productMaterial: PropTypes.array,
     setProductMaterial: PropTypes.func,
+    productMaterialResume: PropTypes.array,
+    setProductMaterialResume: PropTypes.func,
     setActiveNext: PropTypes.func,
 };
 
