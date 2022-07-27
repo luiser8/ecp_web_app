@@ -1,11 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Box, Paper, Stack, Tab, Tabs, Typography, Stepper, Step, StepLabel, Button } from '@mui/material';
+import { Box, Stack, Typography, Stepper, Step, StepLabel, Button } from '@mui/material';
 import Page from '../../../components/layouts/Page';
-import TabPanelCustom from '../../../components/tabs/TabPanelCustom';
 import FormProduct from '../forms/FormProduct';
 import { Context } from '../../../auth/Context';
 import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
-import { postProduct } from '../../../services/productsService';
+import { getProductCodeExists, postProduct } from '../../../services/productsService';
 import FormProductMaterial from '../forms/FormProductMaterial';
 import { getMaterialsSimple } from '../../../services/materialsService';
 import FormResume from '../forms/FormResume';
@@ -24,6 +23,7 @@ const NewProductScreen = () => {
     const steps = ['Información del producto', 'Selecciona materias primas', 'Resumen'];
     //Payload formulario
     const [activeNext, setActiveNext] = useState(0);
+    const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [productPayload, setProductPayload] = useState(
         {
             "code": "",
@@ -37,7 +37,7 @@ const NewProductScreen = () => {
             "pvp_x_units": 0,
             "materials": [],
             "packing_kits": [],
-            "status": ""
+            "status": "in process"
         }
     );
 
@@ -68,6 +68,18 @@ const NewProductScreen = () => {
         productPayload.materials = [];
         productPayload.packing_kits = [];
         productPayload.status === "";
+    }
+
+    const checkCodeExists = (code) => {
+        (Promise.all([
+            getProductCodeExists(code, userToken).then((values) => {
+                if (values !== null) {
+                    setIsCodeRepit(values !== undefined ? values : isCodeRepit);
+                }
+            }),
+        ]).catch(error => {
+            new Error(error);
+        }));
     }
 
     const isStepOptional = (step) => {
@@ -202,6 +214,8 @@ const NewProductScreen = () => {
                                     mode="new"
                                     productPayload={productPayload}
                                     setProductPayload={setProductPayload}
+                                    checkCodeExists={checkCodeExists}
+                                    isCodeRepit={isCodeRepit}
                                 /> : <></>
                             }
                             {activeStep === 1 ?
@@ -239,7 +253,7 @@ const NewProductScreen = () => {
                             )}
                             <Button 
                                 onClick={handleNext} 
-                                disabled={isValidProductPayload() || isValidNext()}>
+                                disabled={isValidProductPayload() || isValidNext() || isCodeRepit}>
                                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                             </Button>
                         </Box>
