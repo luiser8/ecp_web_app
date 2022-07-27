@@ -8,12 +8,14 @@ import { getProductCodeExists, postProduct } from '../../../services/productsSer
 import FormProductMaterial from '../forms/FormProductMaterial';
 import { getMaterialsSimple } from '../../../services/materialsService';
 import FormResume from '../forms/FormResume';
+import { NavLink } from 'react-router-dom';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
     const [materials, setMaterials] = useState([]);
     const [productMaterial, setProductMaterial] = useState([]);
+    const [productMaterialResume, setProductMaterialResume] = useState([]);
     const { checkUser } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Notificaciones
@@ -22,6 +24,7 @@ const NewProductScreen = () => {
     const [msjSnackBar, setMsjOpenSnackBar] = useState("");
     const steps = ['Información del producto', 'Selecciona materias primas', 'Resumen'];
     //Payload formulario
+    const [product, setProduct] = useState("");
     const [activeNext, setActiveNext] = useState(0);
     const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [productPayload, setProductPayload] = useState(
@@ -154,6 +157,7 @@ const NewProductScreen = () => {
                 if (values !== null) {
                     settingsSnackBar("success", "Producto guardado!", true);
                     resetProductPayload();
+                    setProduct(values._id);
                 }
             }),
         ]).catch(error => {
@@ -198,12 +202,14 @@ const NewProductScreen = () => {
                 </Stepper>
                 {activeStep === steps.length ? (
                     <React.Fragment>
-                        <Typography sx={{ mt: 2, mb: 1 }}>
-                            All steps completed - you&apos;re finished
+                        <Typography sx={{ mt: 8, mb: 1, ml: 2 }}>
+                            Todos los pasos completados - has terminado
                         </Typography>
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                             <Box sx={{ flex: '1 1 auto' }} />
-                            <Button onClick={() => setActiveStep(0)}>Reiniciar</Button>
+                            <Button LinkComponent={NavLink} to={"/"}>Volver</Button>
+                            <Button LinkComponent={NavLink} to={`/product/${product}`}>Ver producto</Button>
+                            <Button onClick={() => setActiveStep(0)}>Volver a crear</Button>
                         </Box>
                     </React.Fragment>
                 ) : (
@@ -224,15 +230,15 @@ const NewProductScreen = () => {
                                     materials={materials}
                                     productMaterial={productMaterial}
                                     setProductMaterial={setProductMaterial}
+                                    productMaterialResume={productMaterialResume}
+                                    setProductMaterialResume={setProductMaterialResume}
                                     setActiveNext={setActiveNext}
                                 /> : <></>
                             }
                             {activeStep === 2 ?
                                 <FormResume
-                                    mode="new"
                                     productPayload={productPayload}
-                                    productMaterial={productMaterial}
-                                    setProductMaterial={setProductMaterial}
+                                    productMaterialResume={productMaterialResume}
                                 /> : <></>
                             }
                         </Box>
