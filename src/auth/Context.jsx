@@ -1,4 +1,5 @@
 import React, { useState, createContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Storage from './Storage';
 
 export const Context = createContext();
@@ -13,6 +14,7 @@ const userDataInitial = {
 };
 
 export const ContextProvider = ({ children }) => {
+    const navigate = useNavigate();
     const { getLocalStorage, setLocalStorage } = Storage();
     const [dataUser, setDataUser] = useState(userDataInitial);
 
@@ -23,7 +25,7 @@ export const ContextProvider = ({ children }) => {
         setLocalStorage(user); setDataUser(user);
     }
     const logout = () => {
-        setLocalStorage(null); setDataUser(null);
+        setLocalStorage(null); setDataUser(null); navigate('/');
     }
 
     return (

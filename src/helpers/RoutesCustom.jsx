@@ -5,13 +5,17 @@ import Error from '../components/layouts/Error';
 import Products from '../pages/products/Products';
 import Login from '../pages/user/Login';
 import Category from '../pages/category/Category';
-import Details from '../pages/products/Details';
+import Details from '../pages/products/screens/DetailScreen';
+import NewProductScreen from '../pages/products/screens/NewProductScreen';
 
 export default function RoutesCustom() {
     const { checkUser } = useContext(Context);
     return useRoutes([
         {
             path: '/', element: checkUser().userId !== null ? <Products /> : <Login />,
+        },
+        {
+            path: '/product/new', element: checkUser().userId !== null ? <NewProductScreen /> : <Login />,
         },
         {
             path: '/product/:id', element: checkUser().userId !== null ? <Details /> : <Login />,

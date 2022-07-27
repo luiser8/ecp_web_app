@@ -1,9 +1,9 @@
 import { Stack, Typography } from '@mui/material';
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import Page from '../../components/layouts/Page';
+import Page from '../../../components/layouts/Page';
 
-const Details = () => {
+const DetailsScreen = () => {
   let { id } = useParams();
 
   return (
@@ -17,4 +17,4 @@ const Details = () => {
   )
 }
 
-export default Details;
+export default DetailsScreen;
