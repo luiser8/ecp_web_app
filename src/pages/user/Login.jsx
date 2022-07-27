@@ -8,15 +8,14 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
-import Stack from '@mui/material/Stack';
 import { ThemeProvider } from '@mui/material/styles';
 import Copyright from '../../components/layouts/Copyright';
 import Theme from '../../themes/theme';
 import { Context } from '../../auth/Context';
 import { loginUser } from '../../services/userService';
 import BackdropCustom from '../../components/alerts/BackdropCustom';
+import AlertCustom from '../../components/alerts/AlertCustom';
+import Page from '../../components/layouts/Page';
 
 const Login = () => {
     const { login } = useContext(Context);
@@ -61,6 +60,7 @@ const Login = () => {
 
     return (
         <ThemeProvider theme={Theme().theme}>
+            <Page title="Inicio de sesión"> 
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <Grid
                     item
@@ -115,21 +115,21 @@ const Login = () => {
                                 error={error}
                             />
                             <FormControlLabel
-                                control={<Checkbox value="remember" color="primary" />}
+                                control={<Checkbox value="remember" />}
                                 label="Recuérdeme"
                             />
                             <Button
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, bgcolor: '#01579b' }}
+                                sx={{ mt: 3, mb: 2, bgcolor: 'primary.customdark' }}
                                 disabled={username !== '' && password !== '' ? false : true}
                             >
                                 Iniciar sesión
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2" sx={{color: '#01579b' }}>
+                                    <Link href="#" variant="body2" sx={{color: 'primary.customdark' }}>
                                         Olvido su contraseña?
                                     </Link>
                                 </Grid>
@@ -140,18 +140,14 @@ const Login = () => {
                             <BackdropCustom open={true} />
                         ) : (<></>)}
                         {error ? (
-                        <Stack sx={{ minWidth: '41.5%' }} spacing={2} position="fixed" style={{ flexShrink: 0, top: 'auto', bottom: 0 }}>
-                            <Alert severity="error" square>
-                                <AlertTitle>{errorMsj}</AlertTitle>
-                                <strong>{errorMsjContent}</strong>
-                            </Alert>
-                        </Stack>
+                            <AlertCustom severity="error" errorMsj={errorMsj} errorMsjContent={errorMsjContent} />
                         ) : (
                             <></>
                         )}
                     </Box>
                 </Grid>
             </Grid>
+            </Page>
         </ThemeProvider>
     );
 }

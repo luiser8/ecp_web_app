@@ -1,6 +1,5 @@
 import React, { useContext, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { useLocation } from "react-router-dom";
 import AppBar from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Grid from '@mui/material/Grid';
@@ -9,24 +8,19 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
-import Typography from '@mui/material/Typography';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import Divider from '@mui/material/Divider';
 import { Context } from '../../auth/Context';
-import { usePaths }  from '../../hooks/usePaths';
 
 const Header = (props) => {
-  const location = useLocation();
-  const paths = usePaths();
-  const headerName = paths.filter(p => p.path === location.pathname)[0]?.Name;
   const { logout, checkUser } = useContext(Context);
   const { onDrawerToggle } = props;
   const [anchorEl, setAnchorEl] = useState(null);
 
   return (
     <Fragment>
-      <AppBar sx={{ bgcolor: '#01579b' }} position="sticky" elevation={0}>
+      <AppBar sx={{ bgcolor: 'primary.customdark' }} position="sticky" elevation={0}>
         <Toolbar>
           <Grid container spacing={1} alignItems="center" mb={0}>
             <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>

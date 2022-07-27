@@ -4,10 +4,11 @@ const Theme = () => {
     let theme = createTheme({
         palette: {
           primary: {
-            light: '#63ccff',
-            main: '#009be5',
+            light: '#eaeff1',
+            main: '#01579b',
             dark: '#006db3',
-            header: '#eaeff1',
+            customdark: '#01579b',
+            customred: '#bdbdbd',
           },
         },
         typography: {
@@ -130,6 +131,50 @@ const Theme = () => {
                 marginRight: theme.spacing(2),
                 '& svg': {
                   fontSize: 20,
+                },
+              },
+            },
+          },
+          MuiListItem: {
+            styleOverrides: {
+              root: {
+                  "& .MuiListItem-root": {
+                    "&.Mui-selected": {
+                      backgroundColor: "rgb(255,255,255,0.15)",
+                    },
+                  }
+              },
+            },
+          },
+          MuiFormLabel: {
+            styleOverrides: {
+              root: {
+                "& .MuiInputLabel-root": {
+                  "&.Mui-focused": {
+                    color: "#01579b",
+                  },
+                },
+              },
+            },
+          },
+          MuiTextField: {
+            styleOverrides: {
+              root: {
+                "& .MuiOutlinedInput-root": {
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#01579b",
+                  },
+                },
+              },
+            },
+          },
+          MuiCheckbox: {
+            styleOverrides: {
+              root: {
+                "&.MuiCheckbox-root": {
+                  "&.Mui-checked": {
+                    color: "#01579b",
+                  },
                 },
               },
             },
