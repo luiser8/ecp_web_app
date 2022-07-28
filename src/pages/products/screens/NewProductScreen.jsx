@@ -71,6 +71,8 @@ const NewProductScreen = () => {
         productPayload.materials = [];
         productPayload.packing_kits = [];
         productPayload.status === "";
+        setProductMaterial([]);
+        setProductMaterialResume([]);
     }
 
     const checkCodeExists = (code) => {
@@ -91,6 +93,11 @@ const NewProductScreen = () => {
 
     const isStepSkipped = (step) => {
         return skipped.has(step);
+    };
+
+    const stepResets = () => {
+        setActiveStep(0);
+        resetProductPayload();
     };
 
     const handleNext = () => {
@@ -157,7 +164,7 @@ const NewProductScreen = () => {
                 if (values !== null) {
                     settingsSnackBar("success", "Producto guardado!", true);
                     resetProductPayload();
-                    setProduct(values._id);
+                    setProduct(values);
                 }
             }),
         ]).catch(error => {
@@ -171,7 +178,7 @@ const NewProductScreen = () => {
         return () => {
             setMaterials([]);
         };
-    }, [activeNext]);
+    }, []);
 
     return (
         <Page title="Nuevo producto">
@@ -246,10 +253,10 @@ const NewProductScreen = () => {
                             <Button
                                 color="inherit"
                                 disabled={activeStep === 0}
-                                onClick={() => setActiveStep((prevActiveStep) => prevActiveStep - 1)}
+                                onClick={() => activeStep === 2 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
                                 sx={{ mr: 1 }}
                             >
-                                Atrás
+                                {activeStep === 2 ? "Cancelar" : "Atrás"}
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(activeStep) && (
