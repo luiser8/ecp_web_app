@@ -14,19 +14,20 @@ const union = (a, b) => {
     return [...a, ...not(b, a)];
 }
 
-const FormProductMaterial = 
+const FormProductKits = 
     ({ 
         mode, 
-        materials, 
-        productMaterial, 
-        setProductMaterial, 
-        productMaterialResume, 
-        setProductMaterialResume, 
-        setActiveNextMaterial
+        packingKits, 
+        productPackingkits, 
+        setProductPackingkits, 
+        productPackingkitsResume, 
+        setProductPackingkitsResume, 
+        setActiveNextPackingkits 
+        
     }) => {
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
-    const [right, setRight] = useState(materials);
+    const [right, setRight] = useState(packingKits);
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
 
@@ -59,20 +60,20 @@ const FormProductMaterial =
         setChecked(not(checked, leftChecked));
 
         checked.forEach((_) => {
-            const material = productMaterial.findIndex(pm => pm.material === _._id);
-            removeMaterial(material);
+            const packingKits = productPackingkits.findIndex(pm => pm.packing_kit === _._id);
+            removePackingkit(packingKits);
         });
         checkValidNext();
     };
 
-    const removeMaterial = (index) => {
-        setProductMaterial([
-            ...productMaterial.slice(0, index),
-            ...productMaterial.slice(index + 1, productMaterial.length)
+    const removePackingkit = (index) => {
+        setProductPackingkits([
+            ...productPackingkits.slice(0, index),
+            ...productPackingkits.slice(index + 1, productPackingkits.length)
         ]);
-        setProductMaterialResume([
-            ...productMaterial.slice(0, index),
-            ...productMaterial.slice(index + 1, productMaterial.length)
+        setProductPackingkitsResume([
+            ...productPackingkits.slice(0, index),
+            ...productPackingkits.slice(index + 1, productPackingkits.length)
         ]);
     }
 
@@ -82,16 +83,15 @@ const FormProductMaterial =
         setChecked(not(checked, rightChecked));
 
         checked.forEach((item) => {
-            setProductMaterial(productMaterial => [...productMaterial, {
-                "material": item._id,
-                "qty_x_mix": 0,
-                "cost_x_mix": 0
+            setProductPackingkits(productPackingkits => [...productPackingkits, {
+                "packing_kit": item._id,
+                "cost_unit_x_mix": 0,
+                "qty_x_box": 0
             }]);
-            setProductMaterialResume(productMaterial => [...productMaterial, {
-                "code": item.code,
+            setProductPackingkitsResume(productPackingkits => [...productPackingkits, {
                 "name": item.name,
-                "qty_x_mix": 0,
-                "cost_x_mix": 0
+                "cost_unit_x_mix": 0,
+                "qty_x_box": 0
             }]);
         });
         checkValidNext();
@@ -100,26 +100,26 @@ const FormProductMaterial =
     const handleChanges = (ev, index) => {
         const { name, value } = ev.target;
 
-        const material = productMaterial.findIndex(pm => pm.material === index);
+        const packingKit = productPackingkits.findIndex(pm => pm.packing_kit === index);
 
-        if (name === "qty_x_mix") {
-            productMaterial[material].qty_x_mix = Number(value);
-            productMaterialResume[material].qty_x_mix = Number(value);
-        } else if (name === "cost_x_mix") {
-            productMaterial[material].cost_x_mix = Number(value);
-            productMaterialResume[material].cost_x_mix = Number(value);
+        if (name === "cost_unit_x_mix") {
+            productPackingkits[packingKit].cost_unit_x_mix = Number(value);
+            productPackingkitsResume[packingKit].cost_unit_x_mix = Number(value);
+        } else if (name === "qty_x_box") {
+            productPackingkits[packingKit].qty_x_box = Number(value);
+            productPackingkitsResume[packingKit].qty_x_box = Number(value);
         }
         checkValidNext();
     }
 
     const checkValidNext = () => {
-        let suma_qty_x_mix = 0;
-        let suma_cost_x_mix = 0;
-        productMaterial.map((_, index) => {
-            suma_qty_x_mix += productMaterial[index].qty_x_mix;
-            suma_cost_x_mix += productMaterial[index].cost_x_mix;
+        let suma_cost_unit_x_mix = 0;
+        let suma_qty_x_box = 0;
+        productPackingkits.map((_, index) => {
+            suma_cost_unit_x_mix += productPackingkits[index].cost_unit_x_mix;
+            suma_qty_x_box += productPackingkits[index].qty_x_box;
         });
-        setActiveNextMaterial(suma_qty_x_mix + suma_cost_x_mix);
+        setActiveNextPackingkits(suma_cost_unit_x_mix + suma_qty_x_box);
     }
 
     const customList = (type, title, items) => (
@@ -176,7 +176,7 @@ const FormProductMaterial =
                                     />
                                 </ListItemIcon>
 
-                                <ListItemText id={labelId} primary={`${items[value].code} - ${stock} ${items[value].name}`} />
+                                <ListItemText id={labelId} primary={`${stock} ${items[value].name}`} />
                                 {type ?
                                     <Fragment>
                                         <TextField
@@ -185,9 +185,9 @@ const FormProductMaterial =
                                             margin="normal"
                                             required
                                             type="number"
-                                            id="qty_x_mix"
-                                            label="Cantidad x mezcla"
-                                            name="qty_x_mix"
+                                            id="cost_unit_x_mix"
+                                            label="Costo un x mezcla"
+                                            name="cost_unit_x_mix"
                                             size="small"
                                             sx={{ width: "150px" }}
                                         />
@@ -197,9 +197,9 @@ const FormProductMaterial =
                                             margin="normal"
                                             required
                                             type="number"
-                                            id="cost_x_mix"
-                                            label="Costo x mezcla"
-                                            name="cost_x_mix"
+                                            id="qty_x_box"
+                                            label="Cantidad x caja"
+                                            name="qty_x_box"
                                             size="small"
                                             sx={{ width: "150px" }}
                                         />
@@ -217,7 +217,7 @@ const FormProductMaterial =
     return (
         <Grid container spacing={1} justifyContent="center" alignItems="center">
             <Box sx={{ width: '55%' }}>
-                <Grid item>{customList(true, 'Materia prima escogidos', left)}</Grid>
+                <Grid item>{customList(true, 'Kits de embalaje escogidos', left)}</Grid>
             </Box>
             <Grid sx={{ padding: 1 }}>
                 <Grid container direction="column" alignItems="center">
@@ -244,20 +244,20 @@ const FormProductMaterial =
                 </Grid>
             </Grid>
             <Box sx={{ width: '35%' }}>
-                <Grid item>{customList(false, 'Materia prima actual', right)}</Grid>
+                <Grid item>{customList(false, 'Kits de embalaje actual', right)}</Grid>
             </Box>
         </Grid>
     )
 }
 
-FormProductMaterial.propTypes = {
+FormProductKits.propTypes = {
     mode: PropTypes.string,
-    materials: PropTypes.array,
-    productMaterial: PropTypes.array,
-    setProductMaterial: PropTypes.func,
-    productMaterialResume: PropTypes.array,
-    setProductMaterialResume: PropTypes.func,
-    setActiveNextMaterial: PropTypes.func,
+    packingKits: PropTypes.array,
+    productPackingkits: PropTypes.array,
+    setProductPackingkits: PropTypes.func,
+    productPackingkitsResume: PropTypes.array,
+    setProductPackingkitsResume: PropTypes.func,
+    setActiveNextPackingkits: PropTypes.func,
 };
 
-export default FormProductMaterial;
+export default FormProductKits;

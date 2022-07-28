@@ -9,23 +9,29 @@ import FormProductMaterial from '../forms/FormProductMaterial';
 import { getMaterialsSimple } from '../../../services/materialsService';
 import FormResume from '../forms/FormResume';
 import { NavLink } from 'react-router-dom';
+import FormProductKits from '../forms/FormProductKits';
+import { getPackingKitAll } from '../../../services/packingKitsService';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
     const [materials, setMaterials] = useState([]);
+    const [packingKits, setPackingkits] = useState([]);
     const [productMaterial, setProductMaterial] = useState([]);
     const [productMaterialResume, setProductMaterialResume] = useState([]);
+    const [productPackingkits, setProductPackingkits] = useState([]);
+    const [productPackingkitsResume, setProductPackingkitsResume] = useState([]);
     const { checkUser } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Notificaciones
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [severitySnackBar, setSeverityOpenSnackBar] = useState("");
     const [msjSnackBar, setMsjOpenSnackBar] = useState("");
-    const steps = ['Información del producto', 'Selecciona materias primas', 'Resumen'];
+    const steps = ['Información del producto', 'Selecciona materias primas','Selecciona kit de embalaje', 'Resumen'];
     //Payload formulario
     const [product, setProduct] = useState("");
-    const [activeNext, setActiveNext] = useState(0);
+    const [activeNextMaterial, setActiveNextMaterial] = useState(0);
+    const [activeNextPackingkits, setActiveNextPackingkits] = useState(0);
     const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [productPayload, setProductPayload] = useState(
         {
@@ -45,7 +51,7 @@ const NewProductScreen = () => {
     );
 
     const isValidNext = () => {
-        return activeStep === 1 ? (activeNext !== 0 ? false : true ) : false;
+        return activeStep === 1 ? (activeNextMaterial !== 0 ? false : true ) : false;
     }
 
     const isValidProductPayload = () => {
@@ -73,22 +79,16 @@ const NewProductScreen = () => {
         productPayload.status === "";
         setProductMaterial([]);
         setProductMaterialResume([]);
-    }
-
-    const checkCodeExists = (code) => {
-        (Promise.all([
-            getProductCodeExists(code, userToken).then((values) => {
-                if (values !== null) {
-                    setIsCodeRepit(values !== undefined ? values : isCodeRepit);
-                }
-            }),
-        ]).catch(error => {
-            new Error(error);
-        }));
+        setProductPackingkits([]);
+        setProductPackingkitsResume([]);
     }
 
     const isStepOptional = (step) => {
-        return step === 1;
+        if(step === 1){
+            return 1;
+        }else if (step === 2){
+            return 2;
+        }
     };
 
     const isStepSkipped = (step) => {
@@ -118,7 +118,10 @@ const NewProductScreen = () => {
         }
 
         if (activeStep === 2) {
-            console.log(productMaterial);
+            setProductPayload((payload) => ({
+                ...payload,
+                "packing_kits": productPackingkits,
+            }));
         }
 
         if (activeStep === steps.length - 1) {
@@ -131,13 +134,20 @@ const NewProductScreen = () => {
             throw new Error("You can't skip a step that isn't optional.");
         }
 
+        if (activeStep === 1) {
+            setProductMaterial([]);
+        }
+
+        if (activeStep === 2) {
+            setProductPackingkits([]);
+        }
+
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
         setSkipped((prevSkipped) => {
             const newSkipped = new Set(prevSkipped.values());
             newSkipped.add(activeStep);
             return newSkipped;
         });
-        setProductMaterial([]);
     };
 
     const settingsSnackBar = (severity, msj, show) => {
@@ -146,11 +156,35 @@ const NewProductScreen = () => {
         setOpenSnackBar(show);
     }
 
+    const checkCodeExists = (code) => {
+        (Promise.all([
+            getProductCodeExists(code, userToken).then((values) => {
+                if (values !== null) {
+                    setIsCodeRepit(values !== undefined ? values : isCodeRepit);
+                }
+            }),
+        ]).catch(error => {
+            new Error(error);
+        }));
+    }
+
     const getMaterials = async () => {
         (Promise.all([
             getMaterialsSimple(userToken).then((values) => {
                 if (values !== null) {
                     setMaterials(values !== undefined ? values : []);
+                }
+            }),
+        ]).catch(error => {
+            new Error(error);
+        }));
+    }
+
+    const getPackingKits = async () => {
+        (Promise.all([
+            getPackingKitAll(userToken).then((values) => {
+                if (values !== null) {
+                    setPackingkits(values !== undefined ? values : []);
                 }
             }),
         ]).catch(error => {
@@ -175,8 +209,10 @@ const NewProductScreen = () => {
 
     useEffect(() => {
         getMaterials();
+        getPackingKits();
         return () => {
             setMaterials([]);
+            setPackingkits([]);
         };
     }, []);
 
@@ -239,10 +275,21 @@ const NewProductScreen = () => {
                                     setProductMaterial={setProductMaterial}
                                     productMaterialResume={productMaterialResume}
                                     setProductMaterialResume={setProductMaterialResume}
-                                    setActiveNext={setActiveNext}
+                                    setActiveNextMaterial={setActiveNextMaterial}
                                 /> : <></>
                             }
                             {activeStep === 2 ?
+                                <FormProductKits
+                                    mode="new"
+                                    packingKits={packingKits}
+                                    productPackingkits={productPackingkits}
+                                    setProductPackingkits={setProductPackingkits}
+                                    productPackingkitsResume={productPackingkitsResume}
+                                    setProductPackingkitsResume={setProductPackingkitsResume}
+                                    setActiveNextPackingkits={setActiveNextPackingkits}
+                                /> : <></>
+                            }
+                            {activeStep === 3 ?
                                 <FormResume
                                     productPayload={productPayload}
                                     productMaterialResume={productMaterialResume}
@@ -253,10 +300,10 @@ const NewProductScreen = () => {
                             <Button
                                 color="inherit"
                                 disabled={activeStep === 0}
-                                onClick={() => activeStep === 2 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
+                                onClick={() => activeStep === 3 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
                                 sx={{ mr: 1 }}
                             >
-                                {activeStep === 2 ? "Cancelar" : "Atrás"}
+                                {activeStep === 3 ? "Cancelar" : "Atrás"}
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(activeStep) && (
