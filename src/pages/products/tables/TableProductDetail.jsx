@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { useIntl } from '../../../hooks/useIntl';
 
 const TableProductDetail = (
     {
@@ -37,12 +38,12 @@ const TableProductDetail = (
                                 <TableCell align="left">{rows.materials[row].material.name}</TableCell>
                                 <TableCell align="left" width={1}>{rows.materials[row].material.unit.code}</TableCell>
                                 <TableCell align="left">{rows.materials[row].qty_x_mix}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.materials[row].cost_x_mix)}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.materials[row].cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.materials[row].cost_x_mix)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.materials[row].cost_unit_x_mix)}</TableCell>
                                 <TableCell align="left">{rows.materials[row].qty_x_box}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.materials[row].cost_x_box)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.materials[row].cost_x_box)}</TableCell>
                                 <TableCell align="left">{rows.materials[row].qty_x_unit}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.materials[row].cost_x_unit)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.materials[row].cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
                         {Object.keys(rows.total_x_materials).map((row) => (
@@ -51,26 +52,54 @@ const TableProductDetail = (
                                 <TableCell align="left">Materia prima</TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left">{rows.total_x_materials[row].total_qty_x_mix}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials[row].total_cost_x_mix)}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials[row].total_cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_mix)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_unit_x_mix)}</TableCell>
                                 <TableCell align="left">{rows.total_x_materials[row].total_qty_x_box}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_box)}</TableCell>
                                 <TableCell align="left">{rows.total_x_materials[row].total_qty_x_unit}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials[row].total_cost_x_unit)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_unit)}</TableCell>
+                            </TableRow>
+                        ))}
+                        {Object.keys(rows.packing_kits).map((row) => (
+                            <TableRow key={rows.packing_kits[row]._id} style={{fontWeight: "bold"}}>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left">{rows.packing_kits[row].packing_kit.name}</TableCell>
+                                <TableCell align="left" width={1}>{rows.packing_kits[row].packing_kit.unit.code}</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.packing_kits[row].cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left">{rows.packing_kits[row].qty_x_box}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.packing_kits[row].cost_x_box)}</TableCell>
+                                <TableCell align="left">{rows.packing_kits[row].qty_x_unit}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.packing_kits[row].cost_x_unit)}</TableCell>
+                            </TableRow>
+                        ))}
+                        {Object.keys(rows.total_x_packing_kits).map((row) => (
+                            <TableRow key={rows.total_x_packing_kits[row]._id} style={{fontWeight: "bold"}}>
+                                <TableCell align="left">Totales</TableCell>
+                                <TableCell align="left">Kit de embalaje</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left">{rows.total_x_packing_kits[row].total_qty_x_box}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left">{rows.total_x_packing_kits[row].total_qty_x_unit}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
                         {Object.keys(rows.total_x_materials_packing_kits).map((row) => (
                             <TableRow key={rows.total_x_materials_packing_kits[row]._id} style={{fontWeight: "bold"}}>
                                 <TableCell align="left">Totales</TableCell>
-                                <TableCell align="left">MP + KE</TableCell>
+                                <TableCell align="left">Materia Prima + Kits</TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
                                 <TableCell align="left">{rows.total_x_materials_packing_kits[row].total_qty_x_box}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials_packing_kits[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_x_box)}</TableCell>
                                 <TableCell align="left">{rows.total_x_materials_packing_kits[row].total_qty_x_unit}</TableCell>
-                                <TableCell align="left">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(rows.total_x_materials_packing_kits[row].total_cost_x_unit)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
