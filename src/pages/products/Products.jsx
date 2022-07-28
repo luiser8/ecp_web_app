@@ -17,12 +17,12 @@ const Products = () => {
   const [page, setPage] = useState(0);
 
   const columns = [
-    { id: 1, name: 'Código' },
-    { id: 2, name: 'Nombre' },
-    { id: 3, name: 'Presentación' },
-    { id: 4, name: 'Estado' },
-    { id: 5, name: 'Fecha' },
-    { id: 6, name: 'Opciones' },
+    { id: 1, name: 'Código', color: '#e3f2fd' },
+    { id: 2, name: 'Nombre', color: '#e3f2fd' },
+    { id: 3, name: 'Presentación', color: '#e3f2fd' },
+    { id: 4, name: 'Estado', color: '#e3f2fd' },
+    { id: 5, name: 'Fecha', color: '#e3f2fd' },
+    { id: 6, name: 'Opciones', color: '#e3f2fd' },
   ];
 
   const getProducts = async () => {

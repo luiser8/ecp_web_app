@@ -17,6 +17,7 @@ const TableProducts = (
         setPage,
     }
 ) => {
+
     return (
         <Fragment>
             <TableContainer component={Paper}>
@@ -24,7 +25,7 @@ const TableProducts = (
                     <TableHead>
                         <TableRow>
                             {Object.keys(columns).map((column) => (
-                                <TableCell key={columns[column].id} align="left" style={{ fontWeight: "bold" }}>
+                                <TableCell key={columns[column].id} align="left" style={{ fontWeight: "bold", backgroundColor: columns[column].color }}>
                                     {columns[column].name}
                                 </TableCell>
                             ))}
@@ -36,7 +37,9 @@ const TableProducts = (
                                 <TableCell align="left">{rows[row].code}</TableCell>
                                 <TableCell align="left">{rows[row].name}</TableCell>
                                 <TableCell align="left">{rows[row].presentation}</TableCell>
-                                <TableCell align="left">{rows[row].status}</TableCell>
+                                <TableCell align="left">
+                                    {rows[row].status === "in process" ? "En proceso" : "Finalizado" }
+                                </TableCell>
                                 <TableCell align="left">{moment(rows[row].createdAt).format("DD-MM-YYYY")}</TableCell>
                                 <TableCell align="left">
                                     <Grid item xs={20} md={20} lg={20}>
