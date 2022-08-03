@@ -2,14 +2,14 @@ import { Box, Grid, TextField } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeExists, isCodeRepit }) => {
+const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeOrNameExists, isCodeRepit, isNameRepit }) => {
     return (
         <Grid component="div">
             <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
                 <TextField
                     value={productPayload.code}
                     onChange={(ev) => setProductPayload({ ...productPayload, code: ev.target.value })}
-                    onKeyUp={(ev) => checkCodeExists(ev.target.value)}
+                    onKeyUp={(ev) => checkCodeOrNameExists('code', ev.target.value)}
                     margin="normal"
                     required
                     error={isCodeRepit}
@@ -26,14 +26,18 @@ const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeExists,
                 <TextField
                     value={productPayload.name}
                     onChange={(ev) => setProductPayload({ ...productPayload, name: ev.target.value })}
+                    onKeyUp={(ev) => checkCodeOrNameExists('name', ev.target.value)}
                     margin="normal"
                     required
+                    error={isNameRepit}
+                    helperText={isNameRepit ? "Nombre repetido" : ""}
                     type="text"
                     fullWidth
                     id="name"
-                    label="Nombre"
+                    label={isNameRepit ? "Error" : "Nombre"}
                     name="name"
                     size="small"
+                    sx={{ marginBottom: isNameRepit ? -1 : 1 }}
                 />
                 <TextField
                     value={productPayload.description}
@@ -140,8 +144,9 @@ FormProduct.propTypes = {
     mode: PropTypes.string,
     productPayload: PropTypes.object,
     setProductPayload: PropTypes.func,
-    checkCodeExists: PropTypes.func,
+    checkCodeOrNameExists: PropTypes.func,
     isCodeRepit: PropTypes.bool,
+    isNameRepit: PropTypes.bool,
 };
 
 export default FormProduct;

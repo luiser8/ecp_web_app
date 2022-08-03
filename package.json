@@ -10,23 +10,23 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@emotion/react": "^11.9.3",
-    "@emotion/styled": "^11.9.3",
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
     "@mui/icons-material": "^5.8.4",
-    "@mui/material": "^5.9.2",
-    "@mui/x-data-grid": "^5.14.0",
+    "@mui/material": "^5.9.3",
+    "@mui/lab": "^5.0.0-alpha.93",
+    "@mui/x-data-grid": "^5.15.0",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-helmet-async": "^1.3.0",
-    "react-hook-form": "^7.33.1",
     "react-router-dom": "^6.3.0"
   },
   "devDependencies": {
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.0",
-    "vite": "^3.0.3"
+    "vite": "^3.0.4"
   }
 }

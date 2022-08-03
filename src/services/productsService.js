@@ -4,8 +4,8 @@ export const getProductsSimple = async (token) => {
     return await get('product', token);
 } 
 
-export const getProductCodeExists = async (code, token) => {
-    return await get(`product/check/${code}`, token);
+export const getProductExists = async (type, value, token) => {
+    return await get(`product/check/type/${type}/value/${value}`, token);
 } 
 
 export const getProductById = async (id, token) => {

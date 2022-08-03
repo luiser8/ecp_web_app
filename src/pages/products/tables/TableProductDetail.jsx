@@ -32,8 +32,8 @@ const TableProductDetail = (
                     </TableHead>
                     {Object.keys(rows).length !== 0 ? 
                     <TableBody>
-                        {Object.keys(rows.materials).map((row) => (
-                            <TableRow key={rows.materials[row]._id}>
+                        {Object.keys(rows.materials).map((row, key) => (
+                            <TableRow key={key}>
                                 <TableCell align="left" width={2}>{rows.materials[row].material.code}</TableCell>
                                 <TableCell align="left">{rows.materials[row].material.name}</TableCell>
                                 <TableCell align="left" width={1}>{rows.materials[row].material.unit.code}</TableCell>
@@ -46,8 +46,8 @@ const TableProductDetail = (
                                 <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.materials[row].cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
-                        {Object.keys(rows.total_x_materials).map((row) => (
-                            <TableRow key={rows.total_x_materials[row]._id} style={{fontWeight: "bold"}}>
+                        {Object.keys(rows.total_x_materials).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
                                 <TableCell align="left">Totales</TableCell>
                                 <TableCell align="left">Materia prima</TableCell>
                                 <TableCell align="left"></TableCell>
@@ -60,9 +60,9 @@ const TableProductDetail = (
                                 <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
-                        {Object.keys(rows.packing_kits).map((row) => (
-                            <TableRow key={rows.packing_kits[row]._id} style={{fontWeight: "bold"}}>
-                                <TableCell align="left"></TableCell>
+                        {Object.keys(rows.packing_kits).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
+                                <TableCell align="left"width={2}>{rows.packing_kits[row].packing_kit.code}</TableCell>
                                 <TableCell align="left">{rows.packing_kits[row].packing_kit.name}</TableCell>
                                 <TableCell align="left" width={1}>{rows.packing_kits[row].packing_kit.unit.code}</TableCell>
                                 <TableCell align="left"></TableCell>
@@ -74,8 +74,8 @@ const TableProductDetail = (
                                 <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.packing_kits[row].cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
-                        {Object.keys(rows.total_x_packing_kits).map((row) => (
-                            <TableRow key={rows.total_x_packing_kits[row]._id} style={{fontWeight: "bold"}}>
+                        {Object.keys(rows.total_x_packing_kits).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
                                 <TableCell align="left">Totales</TableCell>
                                 <TableCell align="left">Kit de embalaje</TableCell>
                                 <TableCell align="left"></TableCell>
@@ -88,8 +88,8 @@ const TableProductDetail = (
                                 <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
-                        {Object.keys(rows.total_x_materials_packing_kits).map((row) => (
-                            <TableRow key={rows.total_x_materials_packing_kits[row]._id} style={{fontWeight: "bold"}}>
+                        {Object.keys(rows.total_x_materials_packing_kits).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
                                 <TableCell align="left">Totales</TableCell>
                                 <TableCell align="left">Materia Prima + Kits</TableCell>
                                 <TableCell align="left"></TableCell>

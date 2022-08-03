@@ -59,9 +59,16 @@ const FormProductKits =
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
 
+        if(checked.length === productPackingkits.length){
+            setProductPackingkits([]); setProductPackingkitsResume([]);
+            return;
+        }
+
         checked.forEach((_) => {
             const packingKits = productPackingkits.findIndex(pm => pm.packing_kit === _._id);
+            const packingKitsResume = productPackingkitsResume.findIndex(pm => pm.packing_kit === _._id);
             removePackingkit(packingKits);
+            removePackingkitResume(packingKitsResume);
         });
         checkValidNext();
     };
@@ -71,9 +78,12 @@ const FormProductKits =
             ...productPackingkits.slice(0, index),
             ...productPackingkits.slice(index + 1, productPackingkits.length)
         ]);
+    }
+
+    const removePackingkitResume = (index) => {
         setProductPackingkitsResume([
-            ...productPackingkits.slice(0, index),
-            ...productPackingkits.slice(index + 1, productPackingkits.length)
+            ...productPackingkitsResume.slice(0, index),
+            ...productPackingkitsResume.slice(index + 1, productPackingkitsResume.length)
         ]);
     }
 
@@ -88,7 +98,9 @@ const FormProductKits =
                 "cost_unit_x_mix": 0,
                 "qty_x_box": 0
             }]);
-            setProductPackingkitsResume(productPackingkits => [...productPackingkits, {
+            setProductPackingkitsResume(productPackingkitsResume => [...productPackingkitsResume, {
+                "packing_kit": item._id,
+                "code": item.code,
                 "name": item.name,
                 "cost_unit_x_mix": 0,
                 "qty_x_box": 0
@@ -101,13 +113,14 @@ const FormProductKits =
         const { name, value } = ev.target;
 
         const packingKit = productPackingkits.findIndex(pm => pm.packing_kit === index);
+        const packingKitResume = productPackingkitsResume.findIndex(pm => pm.packing_kit === index);
 
         if (name === "cost_unit_x_mix") {
             productPackingkits[packingKit].cost_unit_x_mix = Number(value);
-            productPackingkitsResume[packingKit].cost_unit_x_mix = Number(value);
+            productPackingkitsResume[packingKitResume].cost_unit_x_mix = Number(value);
         } else if (name === "qty_x_box") {
             productPackingkits[packingKit].qty_x_box = Number(value);
-            productPackingkitsResume[packingKit].qty_x_box = Number(value);
+            productPackingkitsResume[packingKitResume].qty_x_box = Number(value);
         }
         checkValidNext();
     }
@@ -176,7 +189,7 @@ const FormProductKits =
                                     />
                                 </ListItemIcon>
 
-                                <ListItemText id={labelId} primary={`${stock} ${items[value].name}`} />
+                                <ListItemText id={labelId} primary={`${items[value].code} - ${stock} ${items[value].name}`} />
                                 {type ?
                                     <Fragment>
                                         <TextField
