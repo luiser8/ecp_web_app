@@ -4,7 +4,7 @@ import Page from '../../../components/layouts/Page';
 import FormProduct from '../forms/FormProduct';
 import { Context } from '../../../auth/Context';
 import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
-import { getProductCodeExists, postProduct } from '../../../services/productsService';
+import { getProductExists, postProduct } from '../../../services/productsService';
 import FormProductMaterial from '../forms/FormProductMaterial';
 import { getMaterialsSimple } from '../../../services/materialsService';
 import FormResume from '../forms/FormResume';
@@ -33,6 +33,7 @@ const NewProductScreen = () => {
     const [activeNextMaterial, setActiveNextMaterial] = useState(0);
     const [activeNextPackingkits, setActiveNextPackingkits] = useState(0);
     const [isCodeRepit, setIsCodeRepit] = useState(false);
+    const [isNameRepit, setIsNameRepit] = useState(false);
     const [productPayload, setProductPayload] = useState(
         {
             "code": "",
@@ -50,8 +51,12 @@ const NewProductScreen = () => {
         }
     );
 
-    const isValidNext = () => {
+    const isValidNextMaterial = () => {
         return activeStep === 1 ? (activeNextMaterial !== 0 ? false : true ) : false;
+    }
+
+    const isValidNextPackingKit = () => {
+        return activeStep === 2 ? (activeNextPackingkits !== 0 ? false : true ) : false;
     }
 
     const isValidProductPayload = () => {
@@ -60,8 +65,7 @@ const NewProductScreen = () => {
         || productPayload.description === ""
         || productPayload.presentation === ""
         || productPayload.boxes_x_mix === 0
-        || productPayload.units_x_mix === 0
-        || productPayload.status === "";
+        || productPayload.units_x_mix === 0;
     }
 
     const resetProductPayload = () => {
@@ -76,7 +80,6 @@ const NewProductScreen = () => {
         productPayload.pvp_x_units = 0;
         productPayload.materials = [];
         productPayload.packing_kits = [];
-        productPayload.status === "";
         setProductMaterial([]);
         setProductMaterialResume([]);
         setProductPackingkits([]);
@@ -135,11 +138,11 @@ const NewProductScreen = () => {
         }
 
         if (activeStep === 1) {
-            setProductMaterial([]);
+            setProductMaterial([]); setProductMaterialResume([]);
         }
 
         if (activeStep === 2) {
-            setProductPackingkits([]);
+            setProductPackingkits([]); setProductPackingkitsResume([]);
         }
 
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -156,11 +159,23 @@ const NewProductScreen = () => {
         setOpenSnackBar(show);
     }
 
-    const checkCodeExists = (code) => {
+    const checkCodeOrNameExists = (type, value) => {
+        if(value === ""){
+            if (type === "code") {
+                setIsCodeRepit(false);
+            } else {
+                setIsNameRepit(false);
+            }
+            return;
+        }
         (Promise.all([
-            getProductCodeExists(code, userToken).then((values) => {
+            getProductExists(type, value, userToken).then((values) => {
                 if (values !== null) {
-                    setIsCodeRepit(values !== undefined ? values : isCodeRepit);
+                    if (type === "code") {
+                        setIsCodeRepit(values !== undefined ? values : isCodeRepit);
+                    }if (type === "name") {
+                        setIsNameRepit(values !== undefined ? values : isNameRepit);
+                    }
                 }
             }),
         ]).catch(error => {
@@ -263,8 +278,9 @@ const NewProductScreen = () => {
                                     mode="new"
                                     productPayload={productPayload}
                                     setProductPayload={setProductPayload}
-                                    checkCodeExists={checkCodeExists}
+                                    checkCodeOrNameExists={checkCodeOrNameExists}
                                     isCodeRepit={isCodeRepit}
+                                    isNameRepit={isNameRepit}
                                 /> : <></>
                             }
                             {activeStep === 1 ?
@@ -293,6 +309,7 @@ const NewProductScreen = () => {
                                 <FormResume
                                     productPayload={productPayload}
                                     productMaterialResume={productMaterialResume}
+                                    productPackingkitsResume={productPackingkitsResume}
                                 /> : <></>
                             }
                         </Box>
@@ -313,7 +330,7 @@ const NewProductScreen = () => {
                             )}
                             <Button 
                                 onClick={handleNext} 
-                                disabled={isValidProductPayload() || isValidNext() || isCodeRepit}>
+                                disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isCodeRepit || isNameRepit}>
                                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                             </Button>
                         </Box>

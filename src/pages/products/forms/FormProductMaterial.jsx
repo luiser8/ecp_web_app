@@ -58,9 +58,16 @@ const FormProductMaterial =
         setLeft(not(left, leftChecked));
         setChecked(not(checked, leftChecked));
 
+        if(checked.length === productMaterial.length){
+            setProductMaterial([]); setProductMaterialResume([]);
+            return;
+        }
+
         checked.forEach((_) => {
             const material = productMaterial.findIndex(pm => pm.material === _._id);
+            const materialResumen = productMaterialResume.findIndex(pm => pm.material === _._id);
             removeMaterial(material);
+            removeMaterialResume(materialResumen);
         });
         checkValidNext();
     };
@@ -70,9 +77,12 @@ const FormProductMaterial =
             ...productMaterial.slice(0, index),
             ...productMaterial.slice(index + 1, productMaterial.length)
         ]);
+    }
+
+    const removeMaterialResume = (index) => {
         setProductMaterialResume([
-            ...productMaterial.slice(0, index),
-            ...productMaterial.slice(index + 1, productMaterial.length)
+            ...productMaterialResume.slice(0, index),
+            ...productMaterialResume.slice(index + 1, productMaterialResume.length)
         ]);
     }
 
@@ -87,7 +97,8 @@ const FormProductMaterial =
                 "qty_x_mix": 0,
                 "cost_x_mix": 0
             }]);
-            setProductMaterialResume(productMaterial => [...productMaterial, {
+            setProductMaterialResume(productMaterialResume => [...productMaterialResume, {
+                "material": item._id,
                 "code": item.code,
                 "name": item.name,
                 "qty_x_mix": 0,
@@ -101,13 +112,14 @@ const FormProductMaterial =
         const { name, value } = ev.target;
 
         const material = productMaterial.findIndex(pm => pm.material === index);
+        const materialResume = productMaterialResume.findIndex(pm => pm.material === index);
 
         if (name === "qty_x_mix") {
             productMaterial[material].qty_x_mix = Number(value);
-            productMaterialResume[material].qty_x_mix = Number(value);
+            productMaterialResume[materialResume].qty_x_mix = Number(value);
         } else if (name === "cost_x_mix") {
             productMaterial[material].cost_x_mix = Number(value);
-            productMaterialResume[material].cost_x_mix = Number(value);
+            productMaterialResume[materialResume].cost_x_mix = Number(value);
         }
         checkValidNext();
     }
@@ -157,7 +169,7 @@ const FormProductMaterial =
                 >
                     {Object.keys(items).map((value, index) => {
                         const labelId = `transfer-list-all-item-${value}-label`;
-                        const stock = !type ? `Stock ${items[value].current_amount} -` : '';
+                        const stock = `Stock ${items[value].current_amount} -`;
                         return (
                             <ListItem
                                 key={index}
@@ -173,6 +185,7 @@ const FormProductMaterial =
                                         inputProps={{
                                             'aria-labelledby': labelId,
                                         }}
+                                        sx={{ marginRight: -1 }}
                                     />
                                 </ListItemIcon>
 
@@ -189,7 +202,7 @@ const FormProductMaterial =
                                             label="Cantidad x mezcla"
                                             name="qty_x_mix"
                                             size="small"
-                                            sx={{ width: "150px" }}
+                                            sx={{ width: "140px" }}
                                         />
                                         <TextField
                                             defaultValue={0}
@@ -201,7 +214,7 @@ const FormProductMaterial =
                                             label="Costo x mezcla"
                                             name="cost_x_mix"
                                             size="small"
-                                            sx={{ width: "150px" }}
+                                            sx={{ width: "140px" }}
                                         />
                                     </Fragment>
                                     : <></>}

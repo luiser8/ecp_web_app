@@ -128,7 +128,7 @@ const ListProductDetail = ({ product }) => {
 }
 
 ListProductDetail.propTypes = {
-    product: PropTypes.object,
+    product: PropTypes.array,
 };
 
 export default ListProductDetail;
