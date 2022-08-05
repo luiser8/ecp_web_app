@@ -16,12 +16,12 @@ const TableProductDetail = (
                     <TableHead>
                         <TableRow>
                             {Object.keys(columns).map((column) => (
-                                <TableCell 
-                                    key={columns[column].id} 
-                                    align="left" 
+                                <TableCell
+                                    key={columns[column].id}
+                                    align="left"
                                     style={
-                                        { 
-                                            fontWeight: "bold", 
+                                        {
+                                            fontWeight: "bold",
                                             backgroundColor: columns[column].color
                                         }
                                     }>
@@ -30,7 +30,7 @@ const TableProductDetail = (
                             ))}
                         </TableRow>
                     </TableHead>
-                    {Object.keys(rows).length !== 0 ? 
+                    {Object.keys(rows).length !== 0 ?
                     <TableBody>
                         {Object.keys(rows.materials).map((row, key) => (
                             <TableRow key={key}>

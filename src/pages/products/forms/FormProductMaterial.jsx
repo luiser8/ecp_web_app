@@ -14,15 +14,17 @@ const union = (a, b) => {
     return [...a, ...not(b, a)];
 }
 
-const FormProductMaterial = 
-    ({ 
-        mode, 
-        materials, 
-        productMaterial, 
-        setProductMaterial, 
-        productMaterialResume, 
-        setProductMaterialResume, 
-        setActiveNextMaterial
+const FormProductMaterial =
+    ({
+        mode,
+        materials,
+        productMaterial,
+        setProductMaterial,
+        productMaterialResume,
+        setProductMaterialResume,
+        setActiveNextMaterial,
+        errorMaterialCurrentAmount,
+        setErrorMaterialCurrentAmount
     }) => {
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
@@ -108,13 +110,22 @@ const FormProductMaterial =
         checkValidNext();
     };
 
-    const handleChanges = (ev, index) => {
+    const handleChanges = (ev, index, key) => {
         const { name, value } = ev.target;
 
         const material = productMaterial.findIndex(pm => pm.material === index);
         const materialResume = productMaterialResume.findIndex(pm => pm.material === index);
 
         if (name === "qty_x_mix") {
+            const materialCurrentAmount = materials.filter((item) => item._id === productMaterial[material].material);
+
+            if(Number(value) > materialCurrentAmount[0].current_amount){
+                setErrorMaterialCurrentAmount({...errorMaterialCurrentAmount, index: key, error: true});
+                return;
+            }
+
+            setErrorMaterialCurrentAmount({...errorMaterialCurrentAmount, index: key, error: false});
+
             productMaterial[material].qty_x_mix = Number(value);
             productMaterialResume[materialResume].qty_x_mix = Number(value);
         } else if (name === "cost_x_mix") {
@@ -125,13 +136,15 @@ const FormProductMaterial =
     }
 
     const checkValidNext = () => {
-        let suma_qty_x_mix = 0;
-        let suma_cost_x_mix = 0;
         productMaterial.map((_, index) => {
-            suma_qty_x_mix += productMaterial[index].qty_x_mix;
-            suma_cost_x_mix += productMaterial[index].cost_x_mix;
+            const material = productMaterial[index];
+
+            if(material.qty_x_mix === 0 || material.cost_x_mix === 0){
+                setActiveNextMaterial(true);
+            }else{
+                setActiveNextMaterial(false);
+            }
         });
-        setActiveNextMaterial(suma_qty_x_mix + suma_cost_x_mix);
     }
 
     const customList = (type, title, items) => (
@@ -194,19 +207,20 @@ const FormProductMaterial =
                                     <Fragment>
                                         <TextField
                                             defaultValue={0}
-                                            onChange={(ev) => handleChanges(ev, items[value]._id)}
+                                            onChange={(ev) => handleChanges(ev, items[value]._id, index)}
                                             margin="normal"
                                             required
                                             type="number"
                                             id="qty_x_mix"
-                                            label="Cantidad x mezcla"
+                                            label={errorMaterialCurrentAmount.index === index ? (errorMaterialCurrentAmount.error ? "Sobrepasa stock" : "Cantidad x mezcla") : "Cantidad x mezcla"}
                                             name="qty_x_mix"
                                             size="small"
+                                            error={errorMaterialCurrentAmount.index === index ? errorMaterialCurrentAmount.error : false}
                                             sx={{ width: "140px" }}
                                         />
                                         <TextField
                                             defaultValue={0}
-                                            onChange={(ev) => handleChanges(ev, items[value]._id)}
+                                            onChange={(ev) => handleChanges(ev, items[value]._id, index)}
                                             margin="normal"
                                             required
                                             type="number"
@@ -271,6 +285,8 @@ FormProductMaterial.propTypes = {
     productMaterialResume: PropTypes.array,
     setProductMaterialResume: PropTypes.func,
     setActiveNextMaterial: PropTypes.func,
+    errorMaterialCurrentAmount: PropTypes.object,
+    setErrorMaterialCurrentAmount: PropTypes.func,
 };
 
 export default FormProductMaterial;
