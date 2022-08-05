@@ -10,9 +10,8 @@ import Copyright from '../../components/layouts/Copyright';
 import Theme from '../../themes/theme';
 import RoutesCustom from '../../helpers/RoutesCustom';
 import Login from '../user/Login';
-import { Paper } from '@mui/material';
 
-const drawerWidth = 256;
+const drawerWidth = 265;
 
 const Layout = () => {
     const { checkUser } = useContext(Context);
@@ -47,7 +46,7 @@ const Layout = () => {
                     </Box>
                     <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
                         <Header onDrawerToggle={handleDrawerToggle} />
-                        <Box component="main" sx={{ flex: 1, py: 4, px: 6, }}>
+                        <Box component="main" sx={{ flex: 1, py: 3, px: 3, }}>
                             <RoutesCustom />
                         </Box>
                         <Box component="footer" sx={{ p: 2}}>

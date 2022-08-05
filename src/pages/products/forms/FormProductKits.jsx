@@ -244,14 +244,14 @@ const FormProductKits =
     return (
         <Grid container spacing={1} justifyContent="center" alignItems="center">
             <Box sx={{ width: '55%' }}>
-                <Grid item>{customList(true, 'Kits de embalaje escogidos', left)}</Grid>
+                <Grid item>{customList(true, 'Herramientas de embalaje escogidos', left)}</Grid>
             </Box>
             <Grid sx={{ padding: 1 }}>
                 <Grid container direction="column" alignItems="center">
                     <Button
-                        sx={{ my: 0.5 }}
+                        sx={{ my: 0.5, fontWeight: "bold", fontSize: "20px", padding: 0.5 }}
                         variant="outlined"
-                        size="small"
+                        size="medium"
                         onClick={handleCheckedRight}
                         disabled={leftChecked.length === 0}
                         aria-label="move selected right"
@@ -259,9 +259,9 @@ const FormProductKits =
                         &gt;
                     </Button>
                     <Button
-                        sx={{ my: 0.5 }}
+                        sx={{ my: 0.5, fontWeight: "bold", fontSize: "20px", padding: 0.5 }}
                         variant="outlined"
-                        size="small"
+                        size="medium"
                         onClick={handleCheckedLeft}
                         disabled={rightChecked.length === 0}
                         aria-label="move selected left"
@@ -271,7 +271,7 @@ const FormProductKits =
                 </Grid>
             </Grid>
             <Box sx={{ width: '35%' }}>
-                <Grid item>{customList(false, 'Kits de embalaje actual', right)}</Grid>
+                <Grid item>{customList(false, 'Herramientas de embalaje actual', right)}</Grid>
             </Box>
         </Grid>
     )

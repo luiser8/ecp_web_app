@@ -122,7 +122,7 @@ const Login = () => {
                                 type="submit"
                                 fullWidth
                                 variant="contained"
-                                sx={{ mt: 3, mb: 2, bgcolor: 'primary.customdark' }}
+                                sx={{ mt: 1.5, mb: 3, bgcolor: 'primary.customdark' }}
                                 disabled={username !== '' && password !== '' ? false : true}
                             >
                                 Iniciar sesión
@@ -130,7 +130,7 @@ const Login = () => {
                             <Grid container>
                                 <Grid item xs>
                                     <Link href="#" variant="body2" sx={{color: 'primary.customdark' }}>
-                                        Olvido su contraseña?
+                                        Olvidó su contraseña?
                                     </Link>
                                 </Grid>
                             </Grid>

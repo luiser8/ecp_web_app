@@ -27,7 +27,6 @@ const NewProductScreen = () => {
     const [openSnackBar, setOpenSnackBar] = useState(false);
     const [severitySnackBar, setSeverityOpenSnackBar] = useState("");
     const [msjSnackBar, setMsjOpenSnackBar] = useState("");
-    const steps = ['Información del producto', 'Selecciona materias primas','Selecciona kit de embalaje', 'Resumen'];
     //Payload formulario
     const [product, setProduct] = useState("");
     const [activeNextMaterial, setActiveNextMaterial] = useState(true);
@@ -52,6 +51,8 @@ const NewProductScreen = () => {
             "status": "in process"
         }
     );
+
+    const steps = ['Información del producto', 'Selecciona materias primas','Selecciona herramientas de embalaje', 'Resumen y guardar'];
 
     const isValidNextMaterial = () => {
         if(activeStep === 1){
@@ -329,19 +330,21 @@ const NewProductScreen = () => {
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
                             <Button
                                 color="inherit"
+                                variant="contained"
                                 disabled={activeStep === 0}
                                 onClick={() => activeStep === 3 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
                                 sx={{ mr: 1 }}
                             >
-                                {activeStep === 3 ? "Cancelar" : "Atrás"}
+                            {activeStep === 3 ? "Cancelar" : "Atrás"}
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(activeStep) && (
-                                <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                                <Button variant="contained" color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
                                     Saltar
                                 </Button>
                             )}
                             <Button
+                                variant="contained"
                                 onClick={handleNext}
                                 disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isCodeRepit || isNameRepit || errorMaterialCurrentAmount.error || errorKitsCurrentAmount.error}>
                                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
