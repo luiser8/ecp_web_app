@@ -52,12 +52,12 @@ const DetailsScreen = () => {
           Productos / Detalles / {product.code}
         </Typography>
       </Stack>
-        <ListProductDetail 
-          product={product} 
+        <ListProductDetail
+          product={product}
         />
-        <TableProductDetail 
-          columns={columns} 
-          rows={product} 
+        <TableProductDetail
+          columns={columns}
+          rows={product}
         />
     </Page>
   )

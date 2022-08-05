@@ -14,16 +14,18 @@ const union = (a, b) => {
     return [...a, ...not(b, a)];
 }
 
-const FormProductKits = 
-    ({ 
-        mode, 
-        packingKits, 
-        productPackingkits, 
-        setProductPackingkits, 
-        productPackingkitsResume, 
-        setProductPackingkitsResume, 
-        setActiveNextPackingkits 
-        
+const FormProductKits =
+    ({
+        mode,
+        packingKits,
+        productPackingkits,
+        setProductPackingkits,
+        productPackingkitsResume,
+        setProductPackingkitsResume,
+        setActiveNextPackingkits,
+        errorKitsCurrentAmount,
+        setErrorKitsCurrentAmount,
+
     }) => {
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
@@ -109,30 +111,41 @@ const FormProductKits =
         checkValidNext();
     };
 
-    const handleChanges = (ev, index) => {
+    const handleChanges = (ev, index, key) => {
         const { name, value } = ev.target;
 
         const packingKit = productPackingkits.findIndex(pm => pm.packing_kit === index);
         const packingKitResume = productPackingkitsResume.findIndex(pm => pm.packing_kit === index);
 
-        if (name === "cost_unit_x_mix") {
-            productPackingkits[packingKit].cost_unit_x_mix = Number(value);
-            productPackingkitsResume[packingKitResume].cost_unit_x_mix = Number(value);
-        } else if (name === "qty_x_box") {
+        if (name === "qty_x_box") {
+            const kitsCurrentAmount = packingKits.filter((item) => item._id === productPackingkits[packingKit].packing_kit);
+
+            if(Number(value) > kitsCurrentAmount[0].current_amount){
+                setErrorKitsCurrentAmount({...errorKitsCurrentAmount, index: key, error: true});
+                return;
+            }
+
+            setErrorKitsCurrentAmount({...errorKitsCurrentAmount, index: key, error: false});
+
             productPackingkits[packingKit].qty_x_box = Number(value);
             productPackingkitsResume[packingKitResume].qty_x_box = Number(value);
+        } else if (name === "cost_unit_x_mix") {
+            productPackingkits[packingKit].cost_unit_x_mix = Number(value);
+            productPackingkitsResume[packingKitResume].cost_unit_x_mix = Number(value);
         }
         checkValidNext();
     }
 
     const checkValidNext = () => {
-        let suma_cost_unit_x_mix = 0;
-        let suma_qty_x_box = 0;
         productPackingkits.map((_, index) => {
-            suma_cost_unit_x_mix += productPackingkits[index].cost_unit_x_mix;
-            suma_qty_x_box += productPackingkits[index].qty_x_box;
+            const kit = productPackingkits[index];
+
+            if(kit.qty_x_box === 0 || kit.cost_unit_x_mix === 0){
+                setActiveNextPackingkits(true);
+            }else{
+                setActiveNextPackingkits(false);
+            }
         });
-        setActiveNextPackingkits(suma_cost_unit_x_mix + suma_qty_x_box);
     }
 
     const customList = (type, title, items) => (
@@ -170,7 +183,7 @@ const FormProductKits =
                 >
                     {Object.keys(items).map((value, index) => {
                         const labelId = `transfer-list-all-item-${value}-label`;
-                        const stock = !type ? `Stock ${items[value].current_amount} -` : '';
+                        const stock = `Stock ${items[value].current_amount} -`;
                         return (
                             <ListItem
                                 key={index}
@@ -194,25 +207,26 @@ const FormProductKits =
                                     <Fragment>
                                         <TextField
                                             defaultValue={0}
-                                            onChange={(ev) => handleChanges(ev, items[value]._id)}
+                                            onChange={(ev) => handleChanges(ev, items[value]._id, index)}
+                                            margin="normal"
+                                            required
+                                            type="number"
+                                            id="qty_x_box"
+                                            label={errorKitsCurrentAmount.index === index ? (errorKitsCurrentAmount.error ? "Sobrepasa stock" : "Cantidad x caja") : "Cantidad x caja"}
+                                            name="qty_x_box"
+                                            size="small"
+                                            error={errorKitsCurrentAmount.index === index ? errorKitsCurrentAmount.error : false}
+                                            sx={{ width: "150px" }}
+                                        />
+                                        <TextField
+                                            defaultValue={0}
+                                            onChange={(ev) => handleChanges(ev, items[value]._id, index)}
                                             margin="normal"
                                             required
                                             type="number"
                                             id="cost_unit_x_mix"
                                             label="Costo un x mezcla"
                                             name="cost_unit_x_mix"
-                                            size="small"
-                                            sx={{ width: "150px" }}
-                                        />
-                                        <TextField
-                                            defaultValue={0}
-                                            onChange={(ev) => handleChanges(ev, items[value]._id)}
-                                            margin="normal"
-                                            required
-                                            type="number"
-                                            id="qty_x_box"
-                                            label="Cantidad x caja"
-                                            name="qty_x_box"
                                             size="small"
                                             sx={{ width: "150px" }}
                                         />
@@ -271,6 +285,8 @@ FormProductKits.propTypes = {
     productPackingkitsResume: PropTypes.array,
     setProductPackingkitsResume: PropTypes.func,
     setActiveNextPackingkits: PropTypes.func,
+    errorKitsCurrentAmount: PropTypes.object,
+    setErrorKitsCurrentAmount: PropTypes.func,
 };
 
 export default FormProductKits;

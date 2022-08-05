@@ -55,7 +55,7 @@ const TableProducts = (
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
+            {/* <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 count={rows.length}
@@ -64,7 +64,7 @@ const TableProducts = (
                 page={page}
                 onPageChange={() => setPage(page++)}
                 onRowsPerPageChange={() => setRowsPerPage(rowsPerPage++)}
-            />
+            /> */}
         </Fragment>
     )
 }

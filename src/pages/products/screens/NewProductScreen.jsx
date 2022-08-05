@@ -30,10 +30,12 @@ const NewProductScreen = () => {
     const steps = ['Información del producto', 'Selecciona materias primas','Selecciona kit de embalaje', 'Resumen'];
     //Payload formulario
     const [product, setProduct] = useState("");
-    const [activeNextMaterial, setActiveNextMaterial] = useState(0);
-    const [activeNextPackingkits, setActiveNextPackingkits] = useState(0);
+    const [activeNextMaterial, setActiveNextMaterial] = useState(true);
+    const [activeNextPackingkits, setActiveNextPackingkits] = useState(true);
     const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [isNameRepit, setIsNameRepit] = useState(false);
+    const [errorMaterialCurrentAmount, setErrorMaterialCurrentAmount] = useState({ index: 0, error: false });
+    const [errorKitsCurrentAmount, setErrorKitsCurrentAmount] = useState({ index: 0, error: false });
     const [productPayload, setProductPayload] = useState(
         {
             "code": "",
@@ -52,11 +54,17 @@ const NewProductScreen = () => {
     );
 
     const isValidNextMaterial = () => {
-        return activeStep === 1 ? (activeNextMaterial !== 0 ? false : true ) : false;
+        if(activeStep === 1){
+            return activeNextMaterial;
+        }
+        return false;
     }
 
     const isValidNextPackingKit = () => {
-        return activeStep === 2 ? (activeNextPackingkits !== 0 ? false : true ) : false;
+        if(activeStep === 2){
+            return activeNextPackingkits;
+        }
+        return false;
     }
 
     const isValidProductPayload = () => {
@@ -225,11 +233,12 @@ const NewProductScreen = () => {
     useEffect(() => {
         getMaterials();
         getPackingKits();
+        isValidNextMaterial();
         return () => {
             setMaterials([]);
             setPackingkits([]);
         };
-    }, []);
+    }, [activeNextMaterial]);
 
     return (
         <Page title="Nuevo producto">
@@ -292,6 +301,8 @@ const NewProductScreen = () => {
                                     productMaterialResume={productMaterialResume}
                                     setProductMaterialResume={setProductMaterialResume}
                                     setActiveNextMaterial={setActiveNextMaterial}
+                                    errorMaterialCurrentAmount={errorMaterialCurrentAmount}
+                                    setErrorMaterialCurrentAmount={setErrorMaterialCurrentAmount}
                                 /> : <></>
                             }
                             {activeStep === 2 ?
@@ -303,6 +314,8 @@ const NewProductScreen = () => {
                                     productPackingkitsResume={productPackingkitsResume}
                                     setProductPackingkitsResume={setProductPackingkitsResume}
                                     setActiveNextPackingkits={setActiveNextPackingkits}
+                                    errorKitsCurrentAmount={errorKitsCurrentAmount}
+                                    setErrorKitsCurrentAmount={setErrorKitsCurrentAmount}
                                 /> : <></>
                             }
                             {activeStep === 3 ?
@@ -328,9 +341,9 @@ const NewProductScreen = () => {
                                     Saltar
                                 </Button>
                             )}
-                            <Button 
-                                onClick={handleNext} 
-                                disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isCodeRepit || isNameRepit}>
+                            <Button
+                                onClick={handleNext}
+                                disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isCodeRepit || isNameRepit || errorMaterialCurrentAmount.error || errorKitsCurrentAmount.error}>
                                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                             </Button>
                         </Box>
