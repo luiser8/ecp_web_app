@@ -7,41 +7,44 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DnsRoundedIcon from '@mui/icons-material/DnsRounded';
-import PermMediaOutlinedIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputComponent';
-import SettingsIcon from '@mui/icons-material/Settings';
-import { Factory } from '@mui/icons-material';
+import AdUnitsOutlinedIcon from '@mui/icons-material/AdUnitsOutlined';
+import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
+import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
+import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
+import ContentCutOutlinedIcon from '@mui/icons-material/ContentCutOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
+import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
+import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
 
 const categories = [
   {
     id: 'Producción',
     children: [
-      {
-        id: 'Productos',
-        path: '/',
-        icon: <Factory />,
-        active: true,
-      },
-      { id: 'Categorías', path: '/category',  icon:  <DnsRoundedIcon /> },
-      { id: 'Storage', path: '/st',  icon:  <PermMediaOutlinedIcon /> },
-      {
-        id: 'Machine learning',
-        icon: <SettingsInputComponentIcon />,
-      },
+      { id: 'Productos', path: '/', icon: <LocalOfferOutlinedIcon />, active: true, },
+      { id: 'Resumen de requerimientos', path: '/a',  icon:  <AssessmentOutlinedIcon /> },
+    ],
+  },
+  {
+    id: 'Inventario',
+    children: [
+      { id: 'Materia prima', path: '/b',  icon:  <InventoryOutlinedIcon /> },
+      { id: 'Herramientas para embalaje', path: '/c',  icon:  <ContentCutOutlinedIcon /> },
+      { id: 'Otros gastos', path: '/d',  icon:  <SavingsOutlinedIcon /> },
     ],
   },
   {
     id: 'Ajustes',
     children: [
-      { id: 'Analytics',  path: '/settings',  icon: <SettingsIcon /> },
+      { id: 'Categorías', path: '/e',  icon:  <CategoryOutlinedIcon /> },
+      { id: 'Proveedores', path: '/f',  icon:  <ContactPhoneOutlinedIcon /> },
+      { id: 'Unidades de medida', path: '/g',  icon:  <AdUnitsOutlinedIcon /> },
     ],
   },
 ];
 
 const item = {
-  py: '2px',
-  px: 3,
+  py: '1px',
+  px: 2,
   color: 'rgba(255, 255, 255, 0.7)',
   '&:hover, &:focus': {
     bgcolor: 'rgba(255, 255, 255, 0.08)',
@@ -50,8 +53,8 @@ const item = {
 
 const itemCategory = {
   boxShadow: '0 -1px 0 rgb(255,255,255,0.1) inset',
-  py: 1.5,
-  px: 3,
+  py: 1,
+  px: 2,
 };
 
 export default function Navigator(props) {
@@ -82,12 +85,12 @@ export default function Navigator(props) {
         </NavLink>
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>
-            <ListItem sx={{ py: 2, px: 3 }}>
+            <ListItem sx={{ py: 1, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
             {children.map(({ id: childId, icon, path }) => (
               <ListItem disablePadding key={childId}>
-                <CustomListItem to={`${path}`} icon={icon} child={childId} sx={item}/>
+                <CustomListItem to={path} icon={icon} child={childId} sx={item}/>
               </ListItem>
             ))}
             <Divider sx={{ mt: 2 }} />

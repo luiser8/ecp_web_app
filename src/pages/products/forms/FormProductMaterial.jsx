@@ -249,9 +249,9 @@ const FormProductMaterial =
             <Grid sx={{ padding: 1 }}>
                 <Grid container direction="column" alignItems="center">
                     <Button
-                        sx={{ my: 0.5 }}
+                        sx={{ my: 0.5, fontWeight: "bold", fontSize: "20px", padding: 0.5 }}
                         variant="outlined"
-                        size="small"
+                        size="medium"
                         onClick={handleCheckedRight}
                         disabled={leftChecked.length === 0}
                         aria-label="move selected right"
@@ -259,9 +259,9 @@ const FormProductMaterial =
                         &gt;
                     </Button>
                     <Button
-                        sx={{ my: 0.5 }}
+                        sx={{ my: 0.5, fontWeight: "bold", fontSize: "20px", padding: 0.5 }}
                         variant="outlined"
-                        size="small"
+                        size="medium"
                         onClick={handleCheckedLeft}
                         disabled={rightChecked.length === 0}
                         aria-label="move selected left"

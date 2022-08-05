@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { Navigate, useRoutes } from 'react-router-dom';
 import { Context } from '../auth/Context';
-import Error from '../components/layouts/Error';
 import Products from '../pages/products/Products';
 import Login from '../pages/user/Login';
 import Category from '../pages/category/Category';
 import Details from '../pages/products/screens/DetailScreen';
 import NewProductScreen from '../pages/products/screens/NewProductScreen';
+import Error from '../pages/error/Error';
 
 export default function RoutesCustom() {
     const { checkUser } = useContext(Context);

@@ -77,7 +77,7 @@ const TableProductDetail = (
                         {Object.keys(rows.total_x_packing_kits).map((row, key) => (
                             <TableRow key={key} style={{fontWeight: "bold"}}>
                                 <TableCell align="left">Totales</TableCell>
-                                <TableCell align="left">Kit de embalaje</TableCell>
+                                <TableCell align="left">Herramientas de embalaje</TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
@@ -91,7 +91,7 @@ const TableProductDetail = (
                         {Object.keys(rows.total_x_materials_packing_kits).map((row, key) => (
                             <TableRow key={key} style={{fontWeight: "bold"}}>
                                 <TableCell align="left">Totales</TableCell>
-                                <TableCell align="left">Materia Prima + Kits</TableCell>
+                                <TableCell align="left">Materia Prima + Herramientas</TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>

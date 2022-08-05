@@ -12,11 +12,11 @@ const FormResume = ({ productPayload, productMaterialResume, productPackingkitsR
     const handleToggle = (event, nodeIds) => {
         setExpanded(nodeIds);
       };
-    
+
       const handleSelect = (event, nodeIds) => {
         setSelected(nodeIds);
       };
-    
+
       const handleExpandClick = () => {
         setExpanded((oldExpanded) =>
           oldExpanded.length === 0 ? ['1', '5', '6', '7'] : [],
@@ -62,7 +62,7 @@ const FormResume = ({ productPayload, productMaterialResume, productPackingkitsR
                             </Fragment>
                         ))}
                     </TreeItem>
-                    <TreeItem nodeId="16" label="Kit de embalaje">
+                    <TreeItem nodeId="16" label="Herramientas de embalaje">
                         {productPackingkitsResume.map((item, key) => (
                             <Fragment key={key}>
                                 <TreeItem nodeId="17" label={`Item: ${item.code}`} />
