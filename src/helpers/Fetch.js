@@ -13,8 +13,8 @@ export const get = async (route, token) => {
         if (response.status >= 200 && response.status <= 299) {
             return response.json()
         }else {
-            response.json().then((json) => { 
-                return json; 
+            response.json().then((json) => {
+                return json;
             });
             return null
         }
@@ -32,8 +32,8 @@ export const post = async (route, data, token) => {
         if (response.status >= 200 && response.status <= 299) {
             return response.json()
         }else {
-            response.json().then((json) => { 
-                return json; 
+            response.json().then((json) => {
+                return json;
             });
             return null
         }
@@ -51,15 +51,15 @@ export const put = async (route, data, token) => {
         if (response.status >= 200 && response.status <= 299) {
             return response.json()
         }else {
-            response.json().then((json) => { 
-                return json; 
+            response.json().then((json) => {
+                return json;
             });
             return null
         }
     }).catch(e => console.log(e));
 }
-export const del = async (route, token) => {
-    const url = `${apiurl}${route}`;
+export const del = async (route, id, token) => {
+    const url = `${apiurl}${route}/${id}`;
     return await fetch(url, {
         method: 'DELETE',
         mode: 'cors',
@@ -69,8 +69,8 @@ export const del = async (route, token) => {
         if (response.status >= 200 && response.status <= 299) {
             return response.json()
         }else {
-            response.json().then((json) => { 
-                return json; 
+            response.json().then((json) => {
+                return json;
             });
             return null
         }
