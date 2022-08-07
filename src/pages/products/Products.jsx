@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../auth/Context';
-import { getProductsSimple } from '../../services/productsService';
+import { getProductsSimple, deleteProduct } from '../../services/productsService';
 import { Button, Stack, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
 import Page from '../../components/layouts/Page';
-import SpinnerCustom from '../../components/alerts/SpinnerCustom';
 import TableProducts from './tables/TableProducts';
+import EmptyResponse from '../../components/alerts/EmptyResponse';
 
 const Products = () => {
   const { checkUser } = useContext(Context);
@@ -15,6 +15,9 @@ const Products = () => {
   //Paginación
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [page, setPage] = useState(0);
+  //Eliminación
+  const [productValue, setProductValue] = useState({ open: false, product: { id: "", name: "" } });
+  const [openDelete, setOpenDelete] = useState(false);
 
   const columns = [
     { id: 1, name: 'Código', color: '#e3f2fd', align: 'left' },
@@ -25,9 +28,36 @@ const Products = () => {
     { id: 6, name: 'Opciones', color: '#e3f2fd', align: 'right' },
   ];
 
+  const showDeleteProduct = (obj) => {
+    if(obj.open){
+      setOpenDelete(obj.open);
+      setProductValue({...productValue, ...obj});
+    }
+  }
+
+  const handleConfirm = async (open) => {
+    if(open){
+      await confirmDeleteProduct(productValue.product.id);
+    }else{
+      setOpenDelete(open);
+    }
+  }
+
+  const confirmDeleteProduct = async (id) => {
+    (Promise.all([
+      await deleteProduct(id, userToken).then((values) => {
+        if (values !== null) {
+          getProducts(); setOpenDelete(false);
+        }
+      }),
+    ]).catch(error => {
+      new Error(error);
+    }));
+  }
+
   const getProducts = async () => {
     (Promise.all([
-      getProductsSimple(userToken).then((values) => {
+      await getProductsSimple(userToken).then((values) => {
         if (values !== null) {
           setProducts(values !== undefined ? values : []);
         }
@@ -63,7 +93,13 @@ const Products = () => {
           setRowsPerPage={setRowsPerPage}
           page={page}
           setPage={setPage}
-        /> : <SpinnerCustom />
+          openDelete={openDelete}
+          setOpenDelete={setOpenDelete}
+          showDeleteProduct={showDeleteProduct}
+          handleConfirm={handleConfirm}
+        />
+        :
+        <EmptyResponse title="Productos" />
       }
     </Page>
   )

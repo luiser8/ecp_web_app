@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import { Box, Stack, Typography, Stepper, Step, StepLabel, Button } from '@mui/material';
 import Page from '../../../components/layouts/Page';
 import FormProduct from '../forms/FormProduct';
@@ -11,6 +11,7 @@ import FormResume from '../forms/FormResume';
 import { NavLink } from 'react-router-dom';
 import FormProductKits from '../forms/FormProductKits';
 import { getPackingKitAll } from '../../../services/packingKitsService';
+import SuccessAdd from '../../../components/alerts/SuccessAdd';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -112,7 +113,7 @@ const NewProductScreen = () => {
         resetProductPayload();
     };
 
-    const handleNext = () => {
+    const handleNext = async () => {
         let newSkipped = skipped;
         if (isStepSkipped(activeStep)) {
             newSkipped = new Set(newSkipped.values());
@@ -137,11 +138,11 @@ const NewProductScreen = () => {
         }
 
         if (activeStep === steps.length - 1) {
-            postProducts();
+            await postProducts();
         }
     };
 
-    const handleSkip = () => {
+    const handleSkip = async () => {
         if (!isStepOptional(activeStep)) {
             throw new Error("You can't skip a step that isn't optional.");
         }
@@ -168,7 +169,7 @@ const NewProductScreen = () => {
         setOpenSnackBar(show);
     }
 
-    const checkCodeOrNameExists = (type, value) => {
+    const checkCodeOrNameExists = async (type, value) => {
         if(value === ""){
             if (type === "code") {
                 setIsCodeRepit(false);
@@ -178,7 +179,7 @@ const NewProductScreen = () => {
             return;
         }
         (Promise.all([
-            getProductExists(type, value, userToken).then((values) => {
+            await getProductExists(type, value, userToken).then((values) => {
                 if (values !== null) {
                     if (type === "code") {
                         setIsCodeRepit(values !== undefined ? values : isCodeRepit);
@@ -194,7 +195,7 @@ const NewProductScreen = () => {
 
     const getMaterials = async () => {
         (Promise.all([
-            getMaterialsSimple(userToken).then((values) => {
+            await getMaterialsSimple(userToken).then((values) => {
                 if (values !== null) {
                     setMaterials(values !== undefined ? values : []);
                 }
@@ -206,7 +207,7 @@ const NewProductScreen = () => {
 
     const getPackingKits = async () => {
         (Promise.all([
-            getPackingKitAll(userToken).then((values) => {
+            await getPackingKitAll(userToken).then((values) => {
                 if (values !== null) {
                     setPackingkits(values !== undefined ? values : []);
                 }
@@ -218,7 +219,7 @@ const NewProductScreen = () => {
 
     const postProducts = async () => {
         (Promise.all([
-            postProduct(productPayload, userToken).then((values) => {
+            await postProduct(productPayload, userToken).then((values) => {
                 if (values !== null) {
                     settingsSnackBar("success", "Producto guardado!", true);
                     resetProductPayload();
@@ -270,14 +271,14 @@ const NewProductScreen = () => {
                 </Stepper>
                 {activeStep === steps.length ? (
                     <React.Fragment>
-                        <Typography sx={{ mt: 8, mb: 1, ml: 2 }}>
-                            Todos los pasos completados - has terminado
-                        </Typography>
+                        <Fragment>
+                            <SuccessAdd />
+                        </Fragment>
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                             <Box sx={{ flex: '1 1 auto' }} />
-                            <Button LinkComponent={NavLink} to={"/"}>Volver</Button>
-                            <Button LinkComponent={NavLink} to={`/product/${product}`}>Ver producto</Button>
-                            <Button onClick={() => setActiveStep(0)}>Volver a crear</Button>
+                            <Button sx={{ mr: 1 }} variant="contained" LinkComponent={NavLink} to={"/"}>Volver</Button>
+                            <Button sx={{ mr: 1 }} variant="contained" LinkComponent={NavLink} to={`/product/${product}`}>Ver producto</Button>
+                            <Button variant="contained" onClick={() => setActiveStep(0)}>Volver a crear</Button>
                         </Box>
                     </React.Fragment>
                 ) : (
@@ -339,13 +340,13 @@ const NewProductScreen = () => {
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(activeStep) && (
-                                <Button variant="contained" color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                                <Button variant="contained" color="inherit" onClick={async () => handleSkip()} sx={{ mr: 1 }}>
                                     Saltar
                                 </Button>
                             )}
                             <Button
                                 variant="contained"
-                                onClick={handleNext}
+                                onClick={async () => handleNext()}
                                 disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isCodeRepit || isNameRepit || errorMaterialCurrentAmount.error || errorKitsCurrentAmount.error}>
                                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                             </Button>

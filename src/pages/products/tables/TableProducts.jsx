@@ -5,6 +5,7 @@ import { DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material';
 import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import moment from 'moment';
+import DialogCustomConfirm from '../../../components/dialogs/DialogCustomConfirm';
 
 const TableProducts = (
     {
@@ -15,6 +16,10 @@ const TableProducts = (
         setRowsPerPage,
         page,
         setPage,
+        openDelete,
+        setOpenDelete,
+        showDeleteProduct,
+        handleConfirm,
     }
 ) => {
 
@@ -49,7 +54,15 @@ const TableProducts = (
                                         <NavLink style={{ marginRight: 8 }} to={`#`}>
                                             <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
                                         </NavLink>
-                                        <DeleteOutlineOutlined style={{ fontSize: '36px' }} />
+                                        <NavLink style={{ marginRight: 8 }} to={`#`}
+                                            onClick={() => showDeleteProduct(
+                                                {
+                                                    open: true,
+                                                    product: { id: rows[row]._id, name: rows[row].name}
+                                                }
+                                            )}>
+                                            <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                        </NavLink>
                                     </Grid>
                                 </TableCell>
                             </TableRow>
@@ -67,6 +80,14 @@ const TableProducts = (
                 onPageChange={() => setPage(page++)}
                 onRowsPerPageChange={() => setRowsPerPage(rowsPerPage++)}
             /> */}
+            {/* Modal confirmación eliminar */}
+            <DialogCustomConfirm
+                open={openDelete}
+                setOpen={setOpenDelete}
+                title="Eliminar producto"
+                content="Seguro que desea eliminar este producto?"
+                handleConfirm={handleConfirm}
+            />
         </Fragment>
     )
 }
@@ -79,6 +100,10 @@ TableProducts.propTypes = {
     setRowsPerPage: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
     setPage: PropTypes.func.isRequired,
+    openDelete: PropTypes.bool.isRequired,
+    setOpenDelete: PropTypes.func.isRequired,
+    showDeleteProduct: PropTypes.func.isRequired,
+    handleConfirm: PropTypes.func.isRequired,
 };
 
 export default TableProducts;
