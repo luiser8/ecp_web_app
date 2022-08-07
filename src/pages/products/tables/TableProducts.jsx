@@ -20,6 +20,7 @@ const TableProducts = (
         setOpenDelete,
         showDeleteProduct,
         handleConfirm,
+        productValue,
     }
 ) => {
 
@@ -84,7 +85,7 @@ const TableProducts = (
             <DialogCustomConfirm
                 open={openDelete}
                 setOpen={setOpenDelete}
-                title="Eliminar producto"
+                title={`Eliminar producto ${productValue.product.name}`}
                 content="Seguro que desea eliminar este producto?"
                 handleConfirm={handleConfirm}
             />
@@ -104,6 +105,7 @@ TableProducts.propTypes = {
     setOpenDelete: PropTypes.func.isRequired,
     showDeleteProduct: PropTypes.func.isRequired,
     handleConfirm: PropTypes.func.isRequired,
+    productValue: PropTypes.object,
 };
 
 export default TableProducts;

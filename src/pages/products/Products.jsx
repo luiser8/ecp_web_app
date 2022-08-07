@@ -97,6 +97,7 @@ const Products = () => {
           setOpenDelete={setOpenDelete}
           showDeleteProduct={showDeleteProduct}
           handleConfirm={handleConfirm}
+          productValue={productValue}
         />
         :
         <EmptyResponse title="Productos" />
