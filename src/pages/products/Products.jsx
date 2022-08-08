@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 import Page from '../../components/layouts/Page';
 import TableProducts from './tables/TableProducts';
 import EmptyResponse from '../../components/alerts/EmptyResponse';
+import SnackBarCustom from '../../components/alerts/SnackBarCustom';
 
 const Products = () => {
   const { checkUser } = useContext(Context);
@@ -18,6 +19,7 @@ const Products = () => {
   //Eliminación
   const [productValue, setProductValue] = useState({ open: false, product: { id: "", name: "" } });
   const [openDelete, setOpenDelete] = useState(false);
+  const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const columns = [
     { id: 1, name: 'Código', color: '#e3f2fd', align: 'left' },
@@ -29,25 +31,38 @@ const Products = () => {
   ];
 
   const showDeleteProduct = (obj) => {
-    if(obj.open){
+    if (obj.open) {
       setOpenDelete(obj.open);
-      setProductValue({...productValue, ...obj});
+      setProductValue({ ...productValue, ...obj });
     }
   }
 
   const handleConfirm = async (open) => {
-    if(open){
+    if (open) {
       await confirmDeleteProduct(productValue.product.id);
-    }else{
+    } else {
       setOpenDelete(open);
     }
+  }
+
+  const showSnackBar = () => {
+    return (
+      <SnackBarCustom
+        open={openSnackBar}
+        setOpen={setOpenSnackBar}
+        vertical="top"
+        horizontal="right"
+        severityOption={"success"}
+        msj={"Producto eliminado!"}
+      />
+    )
   }
 
   const confirmDeleteProduct = async (id) => {
     (Promise.all([
       await deleteProduct(id, userToken).then((values) => {
         if (values !== null) {
-          getProducts(); setOpenDelete(false);
+          getProducts(); setOpenDelete(false); setOpenSnackBar(true);
         }
       }),
     ]).catch(error => {
@@ -102,6 +117,8 @@ const Products = () => {
         :
         <EmptyResponse title="Productos" />
       }
+      {/* SnackBar */}
+      {openSnackBar ? showSnackBar() : null}
     </Page>
   )
 }

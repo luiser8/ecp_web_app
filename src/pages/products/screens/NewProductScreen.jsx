@@ -163,10 +163,17 @@ const NewProductScreen = () => {
         });
     };
 
-    const settingsSnackBar = (severity, msj, show) => {
-        setSeverityOpenSnackBar(severity);
-        setMsjOpenSnackBar(msj);
-        setOpenSnackBar(show);
+    const showSnackBar = () => {
+        return (
+          <SnackBarCustom
+            open={openSnackBar}
+            setOpen={setOpenSnackBar}
+            vertical="top"
+            horizontal="right"
+            severityOption={"success"}
+            msj={"Producto guardado!"}
+          />
+        )
     }
 
     const checkCodeOrNameExists = async (type, value) => {
@@ -221,7 +228,7 @@ const NewProductScreen = () => {
         (Promise.all([
             await postProduct(productPayload, userToken).then((values) => {
                 if (values !== null) {
-                    settingsSnackBar("success", "Producto guardado!", true);
+                    setOpenSnackBar(true);
                     resetProductPayload();
                     setProduct(values);
                 }
@@ -355,14 +362,7 @@ const NewProductScreen = () => {
                 )}
             </Box>
             {/* SnackBar */}
-            <SnackBarCustom
-                open={openSnackBar}
-                setOpen={setOpenSnackBar}
-                vertical="top"
-                horizontal="right"
-                severityOption={severitySnackBar}
-                msj={msjSnackBar}
-            />
+            {openSnackBar ? showSnackBar() : null}
         </Page>
     )
 }

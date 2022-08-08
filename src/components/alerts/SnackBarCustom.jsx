@@ -18,11 +18,11 @@ const SnackBarCustom = (
             {msj}
         </Alert>
       ));
-      
+
     return (
-        <Snackbar 
-            open={open} 
-            autoHideDuration={6000} 
+        <Snackbar
+            open={open}
+            autoHideDuration={6000}
             onClose={() => setOpen(false)}
             anchorOrigin={{ vertical, horizontal }}
             >
