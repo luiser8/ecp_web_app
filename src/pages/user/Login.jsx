@@ -12,7 +12,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import Copyright from '../../components/layouts/Copyright';
 import Theme from '../../themes/theme';
 import { Context } from '../../auth/Context';
-import { loginUser } from '../../services/userService';
+import { loginUser } from '../../client/userClient';
 import BackdropCustom from '../../components/alerts/BackdropCustom';
 import AlertCustom from '../../components/alerts/AlertCustom';
 import Page from '../../components/layouts/Page';
@@ -44,8 +44,8 @@ const Login = () => {
                     }
                     return;
                 }
-                setError(true); 
-                setErrorMsj('Error iniciando sesión.'); 
+                setError(true);
+                setErrorMsj('Error iniciando sesión.');
                 setErrorMsjContent('Pueda que estés colocando algunos datos equivocados. Por favor verifica.');
                 setLoading(false);
             }),
@@ -53,14 +53,14 @@ const Login = () => {
             new Error(error);
         }));
         setLoading(false);
-        setError(false); 
-        setErrorMsj(''); 
+        setError(false);
+        setErrorMsj('');
         setErrorMsjContent('');
     };
 
     return (
         <ThemeProvider theme={Theme().theme}>
-            <Page title="Inicio de sesión"> 
+            <Page title="Inicio de sesión">
             <Grid container component="main" sx={{ height: '100vh' }}>
                 <Grid
                     item

@@ -39,8 +39,8 @@ export const post = async (route, data, token) => {
         }
     }).catch(e => console.log(e));
 }
-export const put = async (route, data, token) => {
-    const url = `${apiurl}${route}`;
+export const put = async (route, id, data, token) => {
+    const url = `${apiurl}${route}/${id}`;
     return await fetch(url, {
         method: 'PUT',
         mode: 'cors',

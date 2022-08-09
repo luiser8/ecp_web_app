@@ -2,12 +2,13 @@ import { Stack, Typography } from '@mui/material';
 import React, { useEffect, useState, useContext, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../auth/Context';
-import { getProductById } from '../../../services/productsService';
+import { getProductById } from '../../../client/productsClient';
+import EmptyResponse from '../../../components/alerts/EmptyResponse';
 import Page from '../../../components/layouts/Page';
 import ListProductDetail from '../lists/ListProductDetail';
 import TableProductDetail from '../tables/TableProductDetail';
 
-const DetailsScreen = () => {
+const DetailsProductScreen = () => {
   const { checkUser } = useContext(Context);
   const userToken = checkUser().accesstoken;
   let { id } = useParams();
@@ -46,21 +47,31 @@ const DetailsScreen = () => {
   }, []);
 
   return (
-    <Page title={`Producto - ${product.code}`}>
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
-        <Typography variant="h4" gutterBottom>
-          Productos / Detalles / {product.code}
-        </Typography>
-      </Stack>
-        <ListProductDetail
-          product={product}
-        />
-        <TableProductDetail
-          columns={columns}
-          rows={product}
-        />
-    </Page>
+    <Fragment>
+      {(Object.keys(product).length !== 0) ?
+        <Page title={`Producto - ${product.code}`}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
+            <Typography variant="h4" gutterBottom>
+              Productos / Detalles / {product.code}
+            </Typography>
+          </Stack>
+          {(Object.keys(product).length !== 0) ?
+            <>
+              <ListProductDetail
+                product={product}
+              />
+              <TableProductDetail
+                columns={columns}
+                rows={product}
+              />
+            </> : <></>
+          }
+        </Page>
+        :
+        <EmptyResponse title="Producto" />
+      }
+    </Fragment>
   )
 }
 
-export default DetailsScreen;
+export default DetailsProductScreen;
