@@ -10,7 +10,7 @@ const SpinnerCustom = () => {
             direction="column"
             alignItems="center"
             justifyContent="center"
-            style={{ minHeight: '50vh' }}
+            style={{ minHeight: '60vh' }}
         >
             <Grid item xs={3}>
                 <Box sx={{ display: 'flex' }}>

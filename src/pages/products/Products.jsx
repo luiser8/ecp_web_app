@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../auth/Context';
-import { getProductsSimple, deleteProduct } from '../../services/productsService';
+import { getProductsSimple, deleteProduct } from '../../client/productsClient';
 import { Button, Stack, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
@@ -92,9 +92,7 @@ const Products = () => {
   return (
     <Page title="Productos">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
-        <Typography variant="h4" gutterBottom>
-          Productos
-        </Typography>
+        <Typography variant="h4" gutterBottom>Productos</Typography>
         <Button sx={{ bgcolor: 'primary.header' }} variant="contained" component={NavLink} to="/product/new" startIcon={<Add icon="eva:plus-fill" />}>
           Nuevo producto
         </Button>

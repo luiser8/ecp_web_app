@@ -4,13 +4,13 @@ import Page from '../../../components/layouts/Page';
 import FormProduct from '../forms/FormProduct';
 import { Context } from '../../../auth/Context';
 import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
-import { getProductExists, postProduct } from '../../../services/productsService';
+import { getProductExists, postProduct } from '../../../client/productsClient';
 import FormProductMaterial from '../forms/FormProductMaterial';
-import { getMaterialsSimple } from '../../../services/materialsService';
+import { getMaterialsSimple } from '../../../client/materialsClient';
 import FormResume from '../forms/FormResume';
 import { NavLink } from 'react-router-dom';
 import FormProductKits from '../forms/FormProductKits';
-import { getPackingKitAll } from '../../../services/packingKitsService';
+import { getPackingKitAll } from '../../../client/packingKitsClient';
 import SuccessAdd from '../../../components/alerts/SuccessAdd';
 
 const NewProductScreen = () => {
@@ -26,8 +26,6 @@ const NewProductScreen = () => {
     const userToken = checkUser().accesstoken;
     //Notificaciones
     const [openSnackBar, setOpenSnackBar] = useState(false);
-    const [severitySnackBar, setSeverityOpenSnackBar] = useState("");
-    const [msjSnackBar, setMsjOpenSnackBar] = useState("");
     //Payload formulario
     const [product, setProduct] = useState("");
     const [activeNextMaterial, setActiveNextMaterial] = useState(true);
