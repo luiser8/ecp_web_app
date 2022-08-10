@@ -6,7 +6,6 @@ import { Context } from '../../../auth/Context';
 import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
 import FormMaterial from '../forms/FormMaterial';
 import { getMaterialByIdService, getMaterialsExistsService, postMaterialService, putMaterialService } from '../../../services/materialsService';
-import { getCategorySimpleService } from '../../../services/categoryService';
 import { getUnitsSimpleService } from '../../../services/unitsService';
 import { getSuppliersSimpleService } from '../../../services/suppliersService';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -14,7 +13,6 @@ import { useParams, useNavigate } from 'react-router-dom';
 const MaterialScreen = ({ mode }) => {
     const { checkUser } = useContext(Context);
     const userToken = checkUser().accesstoken;
-    const [category, setCategory] = useState([]);
     const [units, setUnits] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
     //Router, params / navigate
@@ -27,7 +25,6 @@ const MaterialScreen = ({ mode }) => {
     const [isNameRepit, setIsNameRepit] = useState(false);
     const [materialPayload, setMaterialPayload] = useState(
         {
-            "category": "",
             "unit": "",
             "supplier": "",
             "code": "",
@@ -49,7 +46,6 @@ const MaterialScreen = ({ mode }) => {
     }
 
     const resetMaterialPayload = () => {
-        materialPayload.category = "";
         materialPayload.unit = "";
         materialPayload.supplier = "";
         materialPayload.code = "";
@@ -61,8 +57,7 @@ const MaterialScreen = ({ mode }) => {
     }
 
     const isValidMaterialPayload = () => {
-        return materialPayload.category === ""
-            || materialPayload.unit === ""
+        return materialPayload.unit === ""
             || materialPayload.supplier === ""
             || materialPayload.code === ""
             || materialPayload.name === ""
@@ -109,10 +104,6 @@ const MaterialScreen = ({ mode }) => {
         }
     }
 
-    const getCategory = async () => {
-        setCategory(await getCategorySimpleService(userToken));
-    }
-
     const getUnits = async () => {
         setUnits(await getUnitsSimpleService(userToken));
     }
@@ -124,7 +115,6 @@ const MaterialScreen = ({ mode }) => {
     const getMaterial = async () => {
         const materialItem = await getMaterialByIdService(id, userToken);
         if (materialItem !== undefined || null) {
-            materialPayload.category = materialItem.category._id;
             materialPayload.unit = materialItem.unit._id;
             materialPayload.supplier = materialItem.supplier._id;
             materialPayload.code = materialItem.code;
@@ -160,11 +150,9 @@ const MaterialScreen = ({ mode }) => {
         } else {
             null;
         }
-        getCategory();
         getUnits();
         getSuppliers();
         return () => {
-            setCategory([]);
             setUnits([]);
             setSuppliers([]);
         };
@@ -178,7 +166,6 @@ const MaterialScreen = ({ mode }) => {
             <Box sx={{ width: '100%' }}>
                 <FormMaterial
                     mode={mode}
-                    category={category}
                     units={units}
                     suppliers={suppliers}
                     materialPayload={materialPayload}
