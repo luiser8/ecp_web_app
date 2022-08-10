@@ -10,7 +10,7 @@ import { getMaterialsSimple } from '../../../client/materialsClient';
 import FormResume from '../forms/FormResume';
 import { NavLink } from 'react-router-dom';
 import FormProductKits from '../forms/FormProductKits';
-import { getPackingKitAll } from '../../../client/packingKitsClient';
+import { getPackingKitSimple } from '../../../client/packingKitsClient';
 import SuccessAdd from '../../../components/alerts/SuccessAdd';
 
 const NewProductScreen = () => {
@@ -212,7 +212,7 @@ const NewProductScreen = () => {
 
     const getPackingKits = async () => {
         (Promise.all([
-            await getPackingKitAll(userToken).then((values) => {
+            await getPackingKitSimple(userToken).then((values) => {
                 if (values !== null) {
                     setPackingkits(values !== undefined ? values : []);
                 }

@@ -17,16 +17,6 @@ const ListMaterialDetail = ({ material }) => {
                                     variant="body2"
                                     color="text.primary"
                                 >
-                                    Categoría {` — ${material.category.name}`}
-                                </Typography>
-                            </Fragment>
-                            <Fragment>
-                                <Typography
-                                    sx={{ display: 'block', fontWeight: "bold" }}
-                                    component="span"
-                                    variant="body2"
-                                    color="text.primary"
-                                >
                                     Unidad de medida {` — ${material.unit.name} (${material.unit.code})`}
                                 </Typography>
                             </Fragment>

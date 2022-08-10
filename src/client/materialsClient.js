@@ -4,6 +4,10 @@ export const getMaterialsSimple = async (token) => {
     return await get('material', token);
 }
 
+export const getMaterialsAll = async (token) => {
+    return await get('material/all', token);
+}
+
 export const getMaterialExists = async (type, value, token) => {
     return await get(`material/check/type/${type}/value/${value}`, token);
 }

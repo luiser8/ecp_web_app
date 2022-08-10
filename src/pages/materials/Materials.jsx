@@ -24,7 +24,7 @@ const Materials = () => {
   const columns = [
     { id: 1, name: 'Código', color: '#e3f2fd', align: 'left' },
     { id: 2, name: 'Nombre', color: '#e3f2fd', align: 'left' },
-    { id: 3, name: 'Descripción', color: '#e3f2fd', align: 'left' },
+    { id: 3, name: 'Unidad de medida', color: '#e3f2fd', align: 'left' },
     { id: 4, name: 'Cantidad ingresada', color: '#e3f2fd', align: 'left' },
     { id: 5, name: 'Cantidad actual', color: '#e3f2fd', align: 'left' },
     { id: 6, name: 'Estado', color: '#e3f2fd', align: 'left' },

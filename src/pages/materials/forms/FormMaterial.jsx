@@ -9,7 +9,6 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 const FormMaterial =
   ({
     mode,
-    category,
     units,
     suppliers,
     materialPayload,
@@ -23,22 +22,6 @@ const FormMaterial =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
-          <FormControl fullWidth style={{ marginTop: "14px" }}>
-            <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
-            <Select
-              size="small"
-              labelId="category"
-              id="category"
-              value={materialPayload.category}
-              label="Categoría"
-              required
-              onChange={(ev) => setMaterialPayload({ ...materialPayload, category: ev.target.value })}
-            >
-              {category.map((_, item) => (
-                <MenuItem key={category[item]._id} value={category[item]._id}>{category[item].name}</MenuItem>
-              ))}
-            </Select>
-          </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
             <InputLabel id="unit" style={{ marginTop: "-7px" }}>Unidad de medida</InputLabel>
             <Select
@@ -210,7 +193,6 @@ const FormMaterial =
 
 FormMaterial.propTypes = {
   mode: PropTypes.string,
-  category: PropTypes.array,
   units: PropTypes.array,
   suppliers: PropTypes.array,
   materialPayload: PropTypes.object,
