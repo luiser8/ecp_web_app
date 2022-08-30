@@ -2,9 +2,9 @@ import { Stack, Typography } from '@mui/material';
 import React, { useEffect, useState, useContext, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../auth/Context';
-import { getProductById } from '../../../client/productsClient';
 import EmptyResponse from '../../../components/alerts/EmptyResponse';
 import Page from '../../../components/layouts/Page';
+import { getProductByIdService } from '../../../services/productsService';
 import ListProductDetail from '../lists/ListProductDetail';
 import TableProductDetail from '../tables/TableProductDetail';
 
@@ -28,15 +28,7 @@ const DetailsProductScreen = () => {
   ];
 
   const getProduct = async () => {
-    (Promise.all([
-      getProductById(id, userToken).then((values) => {
-        if (values !== null) {
-          setProduct(values !== undefined ? values : []);
-        }
-      }),
-    ]).catch(error => {
-      new Error(error);
-    }));
+    setProduct(await getProductByIdService(id, userToken));
   }
 
   useEffect(() => {

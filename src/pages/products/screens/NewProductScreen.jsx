@@ -4,14 +4,14 @@ import Page from '../../../components/layouts/Page';
 import FormProduct from '../forms/FormProduct';
 import { Context } from '../../../auth/Context';
 import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
-import { getProductExists, postProduct } from '../../../client/productsClient';
 import FormProductMaterial from '../forms/FormProductMaterial';
-import { getMaterialsSimple } from '../../../client/materialsClient';
 import FormResume from '../forms/FormResume';
 import { NavLink } from 'react-router-dom';
 import FormProductKits from '../forms/FormProductKits';
-import { getPackingKitSimple } from '../../../client/packingKitsClient';
 import SuccessAdd from '../../../components/alerts/SuccessAdd';
+import { getProductsExistsService, postProductService } from '../../../services/productsService';
+import { getMaterialsSimpleService } from '../../../services/materialsService';
+import { getPackingKitSimpleService } from '../../../services/packingkitService';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -183,57 +183,29 @@ const NewProductScreen = () => {
             }
             return;
         }
-        (Promise.all([
-            await getProductExists(type, value, userToken).then((values) => {
-                if (values !== null) {
-                    if (type === "code") {
-                        setIsCodeRepit(values !== undefined ? values : isCodeRepit);
-                    }if (type === "name") {
-                        setIsNameRepit(values !== undefined ? values : isNameRepit);
-                    }
-                }
-            }),
-        ]).catch(error => {
-            new Error(error);
-        }));
+        const product = await getProductsExistsService(type, value, userToken);
+        if (product !== null) {
+            if (type === "code") {
+                setIsCodeRepit(product !== undefined ? product : isCodeRepit);
+            }if (type === "name") {
+                setIsNameRepit(product !== undefined ? product : isNameRepit);
+            }
+        }
     }
 
     const getMaterials = async () => {
-        (Promise.all([
-            await getMaterialsSimple(userToken).then((values) => {
-                if (values !== null) {
-                    setMaterials(values !== undefined ? values : []);
-                }
-            }),
-        ]).catch(error => {
-            new Error(error);
-        }));
+        setMaterials(await getMaterialsSimpleService(userToken));
     }
 
     const getPackingKits = async () => {
-        (Promise.all([
-            await getPackingKitSimple(userToken).then((values) => {
-                if (values !== null) {
-                    setPackingkits(values !== undefined ? values : []);
-                }
-            }),
-        ]).catch(error => {
-            new Error(error);
-        }));
+        setPackingkits(await getPackingKitSimpleService(userToken));
     }
 
     const postProducts = async () => {
-        (Promise.all([
-            await postProduct(productPayload, userToken).then((values) => {
-                if (values !== null) {
-                    setOpenSnackBar(true);
-                    resetProductPayload();
-                    setProduct(values);
-                }
-            }),
-        ]).catch(error => {
-            new Error(error);
-        }));
+        const payload = await postProductService(productPayload, userToken);
+        if (payload !== null) {
+            setOpenSnackBar(true); resetProductPayload(); setProduct(payload);
+        }
         resetProductPayload();
     }
 

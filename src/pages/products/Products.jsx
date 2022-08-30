@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../auth/Context';
-import { getProductsSimple, deleteProduct } from '../../client/productsClient';
 import { Button, Stack, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { NavLink } from 'react-router-dom';
@@ -8,6 +7,7 @@ import Page from '../../components/layouts/Page';
 import TableProducts from './tables/TableProducts';
 import EmptyResponse from '../../components/alerts/EmptyResponse';
 import SnackBarCustom from '../../components/alerts/SnackBarCustom';
+import { deleteProductService, getProductsSimpleService } from '../../services/productsService';
 
 const Products = () => {
   const { checkUser } = useContext(Context);
@@ -59,27 +59,14 @@ const Products = () => {
   }
 
   const confirmDeleteProduct = async (id) => {
-    (Promise.all([
-      await deleteProduct(id, userToken).then((values) => {
-        if (values !== null) {
-          getProducts(); setOpenDelete(false); setOpenSnackBar(true);
-        }
-      }),
-    ]).catch(error => {
-      new Error(error);
-    }));
+    const product = await deleteProductService(id, userToken);
+    if (product !== null) {
+      getProducts(); setOpenDelete(false); setOpenSnackBar(true);
+    }
   }
 
   const getProducts = async () => {
-    (Promise.all([
-      await getProductsSimple(userToken).then((values) => {
-        if (values !== null) {
-          setProducts(values !== undefined ? values : []);
-        }
-      }),
-    ]).catch(error => {
-      new Error(error);
-    }));
+    setProducts(await getProductsSimpleService(userToken));
   }
 
   useEffect(() => {
