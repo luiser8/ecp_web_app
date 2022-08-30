@@ -43,7 +43,6 @@ const TableMaterials = (
                                 <TableCell align="left">{rows[row].code}</TableCell>
                                 <TableCell align="left">{rows[row].name}</TableCell>
                                 <TableCell align="left">{rows[row].unit.code}</TableCell>
-                                <TableCell align="left">{rows[row].entered_amount}</TableCell>
                                 <TableCell align="left">{rows[row].current_amount}</TableCell>
                                 <TableCell align="left">
                                     {rows[row].status === "in stock" ? "En stock" : "En orden" }
