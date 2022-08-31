@@ -112,7 +112,7 @@ const TableProductDetail = (
 
 TableProductDetail.propTypes = {
     columns: PropTypes.array,
-    materials: PropTypes.array,
+    rows: PropTypes.array,
 };
 
 export default TableProductDetail;
