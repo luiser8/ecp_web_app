@@ -1,4 +1,4 @@
-import { deleteMaterial, getMaterialById, getMaterialExists, getMaterialsSimple, postMaterial, putMaterial } from '../client/materialsClient';
+import { deleteMaterial, getMaterialById, getMaterialExists, getMaterialsSimple, getMaterialWithProduct, postMaterial, putMaterial } from '../client/materialsClient';
 
 export const getMaterialsSimpleService = async (userToken) => {
     let materials = [];
@@ -20,6 +20,20 @@ export const getMaterialByIdService = async (id, userToken) => {
         await getMaterialById(id, userToken).then((values) => {
             if (values !== null) {
                 material = {...material, ...values !== undefined ? values : {}};
+            }
+        }),
+    ]).catch(error => {
+        new Error(error);
+    }));
+    return material;
+}
+
+export const getMaterialWithProducts = async (id, userToken) => {
+    let material = [];
+    (Promise.all([
+        await getMaterialWithProduct(id, userToken).then((values) => {
+            if (values !== null) {
+                material = [...material, ...values !== undefined ? values : []];
             }
         }),
     ]).catch(error => {

@@ -16,6 +16,10 @@ export const getMaterialById = async (id, token) => {
     return await get(`material/${id}`, token);
 }
 
+export const getMaterialWithProduct = async (material, token) => {
+    return await get(`material/products/${material}`, token);
+}
+
 export const postMaterial = async (payload, token) => {
     return await post('material', payload, token);
 }
