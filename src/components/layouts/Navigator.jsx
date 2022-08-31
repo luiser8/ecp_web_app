@@ -7,12 +7,10 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import AdUnitsOutlinedIcon from '@mui/icons-material/AdUnitsOutlined';
 import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import ContentCutOutlinedIcon from '@mui/icons-material/ContentCutOutlined';
-import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
 import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
 
@@ -35,9 +33,7 @@ const categories = [
   {
     id: 'Ajustes',
     children: [
-      { id: 'Categorías', path: '/e',  icon:  <CategoryOutlinedIcon /> },
       { id: 'Proveedores', path: '/f',  icon:  <ContactPhoneOutlinedIcon /> },
-      { id: 'Unidades de medida', path: '/g',  icon:  <AdUnitsOutlinedIcon /> },
     ],
   },
 ];
