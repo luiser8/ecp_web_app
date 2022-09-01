@@ -10,6 +10,9 @@ import Error from '../pages/error/Error';
 import Materials from '../pages/materials/Materials';
 import MaterialScreen from '../pages/materials/screens/MaterialScreen';
 import DetailsMaterialScreen from '../pages/materials/screens/DetailsMaterialScreen';
+import Suppliers from '../pages/suppliers/Suppliers';
+import SupplierScreen from '../pages/suppliers/screens/SupplierScreen';
+import DetailsSuppliersScreen from '../pages/suppliers/screens/DetailsSuppliersScreen';
 
 export default function RoutesCustom() {
     const { checkUser } = useContext(Context);
@@ -37,9 +40,18 @@ export default function RoutesCustom() {
         {
             path: '/materials/:id', element: checkUser().userId !== null ? <DetailsMaterialScreen /> : <Login />,
         },
-        //Category
+        //Suppliers
         {
-            path: '/category', element: checkUser().userId !== null ? <Category /> : <Login />,
+            path: '/suppliers', element: checkUser().userId !== null ? <Suppliers /> : <Login />,
+        },
+        {
+            path: '/suppliers/new', element: checkUser().userId !== null ? <SupplierScreen mode="new" /> : <Login />,
+        },
+        {
+            path: '/suppliers/edit/:id', element: checkUser().userId !== null ? <SupplierScreen mode="edit" /> : <Login />,
+        },
+        {
+            path: '/suppliers/:id', element: checkUser().userId !== null ? <DetailsSuppliersScreen /> : <Login />,
         },
         //Error
         {

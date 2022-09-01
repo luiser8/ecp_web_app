@@ -19,6 +19,7 @@ const FormMaterial =
     isValidMaterialPayload,
     submit
   }) => {
+    console.log(materialPayload);
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>

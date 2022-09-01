@@ -115,15 +115,9 @@ const MaterialScreen = ({ mode }) => {
     const getMaterial = async () => {
         const materialItem = await getMaterialByIdService(id, userToken);
         if (materialItem !== undefined || null) {
-            materialPayload.unit = materialItem.unit._id;
-            materialPayload.supplier = materialItem.supplier._id;
-            materialPayload.code = materialItem.code;
-            materialPayload.name = materialItem.name;
-            materialPayload.description = materialItem.description;
-            materialPayload.entered_amount = materialItem.entered_amount;
-            materialPayload.purchase_price = materialItem.purchase_price;
-            materialPayload.expiration_date = materialItem.expiration_date;
-            materialPayload.status = materialItem.status;
+            materialItem.unit = materialItem.unit._id;
+            materialItem.supplier = materialItem.supplier._id;
+            setMaterialPayload({ ...materialPayload, ...materialItem });
         }
     }
 

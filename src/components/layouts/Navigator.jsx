@@ -33,7 +33,7 @@ const categories = [
   {
     id: 'Ajustes',
     children: [
-      { id: 'Proveedores', path: '/f',  icon:  <ContactPhoneOutlinedIcon /> },
+      { id: 'Proveedores', path: '/suppliers',  icon:  <ContactPhoneOutlinedIcon /> },
     ],
   },
 ];
