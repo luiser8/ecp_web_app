@@ -3,7 +3,6 @@ import { Navigate, useRoutes } from 'react-router-dom';
 import { Context } from '../auth/Context';
 import Products from '../pages/products/Products';
 import Login from '../pages/user/Login';
-import Category from '../pages/category/Category';
 import DetailsProductScreen from '../pages/products/screens/DetailsProductScreen';
 import NewProductScreen from '../pages/products/screens/NewProductScreen';
 import Error from '../pages/error/Error';
@@ -13,6 +12,9 @@ import DetailsMaterialScreen from '../pages/materials/screens/DetailsMaterialScr
 import Suppliers from '../pages/suppliers/Suppliers';
 import SupplierScreen from '../pages/suppliers/screens/SupplierScreen';
 import DetailsSuppliersScreen from '../pages/suppliers/screens/DetailsSuppliersScreen';
+import Packings from '../pages/packing_kits/Packings';
+import PackingScreen from '../pages/packing_kits/screens/PackingScreen';
+import DetailsPackingsScreen from '../pages/packing_kits/screens/DetailsPackingsScreen';
 
 export default function RoutesCustom() {
     const { checkUser } = useContext(Context);
@@ -39,6 +41,19 @@ export default function RoutesCustom() {
         },
         {
             path: '/materials/:id', element: checkUser().userId !== null ? <DetailsMaterialScreen /> : <Login />,
+        },
+        //Packings kits
+        {
+            path: '/packings', element: checkUser().userId !== null ? <Packings /> : <Login />,
+        },
+        {
+            path: '/packings/new', element: checkUser().userId !== null ? <PackingScreen mode="new" /> : <Login />,
+        },
+        {
+            path: '/packings/edit/:id', element: checkUser().userId !== null ? <PackingScreen mode="edit" /> : <Login />,
+        },
+        {
+            path: '/packings/:id', element: checkUser().userId !== null ? <DetailsPackingsScreen /> : <Login />,
         },
         //Suppliers
         {
