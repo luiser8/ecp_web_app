@@ -26,7 +26,7 @@ const categories = [
     id: 'Inventario',
     children: [
       { id: 'Materia prima', path: '/materials',  icon:  <InventoryOutlinedIcon /> },
-      { id: 'Herramientas para embalaje', path: '/c',  icon:  <ContentCutOutlinedIcon /> },
+      { id: 'Herramientas para embalaje', path: '/packings',  icon:  <ContentCutOutlinedIcon /> },
       { id: 'Otros gastos', path: '/d',  icon:  <SavingsOutlinedIcon /> },
     ],
   },
