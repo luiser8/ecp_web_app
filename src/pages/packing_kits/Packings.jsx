@@ -78,7 +78,7 @@ const Packings = () => {
   }, []);
 
   return (
-    <Page title="Materia prima">
+    <Page title="Herramienta de embalaje">
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
         <Typography variant="h4" gutterBottom>Herramienta de embalaje</Typography>
         <Button sx={{ bgcolor: 'primary.header' }} variant="contained" component={NavLink} to="/packings/new" startIcon={<Add icon="eva:plus-fill" />}>
@@ -101,7 +101,7 @@ const Packings = () => {
           packingValue={packingValue}
         />
         :
-        <EmptyResponse title="Materia prima" />
+        <EmptyResponse title="Herramienta de embalaje" />
       }
       {/* SnackBar */}
       {openSnackBar ? showSnackBar() : null}
