@@ -48,16 +48,16 @@ const TableProductDetail = (
                         ))}
                         {Object.keys(rows.total_x_materials).map((row, key) => (
                             <TableRow key={key} style={{fontWeight: "bold"}}>
-                                <TableCell align="left">Totales</TableCell>
-                                <TableCell align="left">Materia prima</TableCell>
-                                <TableCell align="left"></TableCell>
-                                <TableCell align="left">{rows.total_x_materials[row].total_qty_x_mix}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_mix)}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_unit_x_mix)}</TableCell>
-                                <TableCell align="left">{rows.total_x_materials[row].total_qty_x_box}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_box)}</TableCell>
-                                <TableCell align="left">{rows.total_x_materials[row].total_qty_x_unit}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_unit)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Totales</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Materia prima</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}></TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_materials[row].total_qty_x_mix}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_mix)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_materials[row].total_qty_x_box}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_materials[row].total_qty_x_unit}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
                         {Object.keys(rows.packing_kits).map((row, key) => (
@@ -76,30 +76,73 @@ const TableProductDetail = (
                         ))}
                         {Object.keys(rows.total_x_packing_kits).map((row, key) => (
                             <TableRow key={key} style={{fontWeight: "bold"}}>
-                                <TableCell align="left">Totales</TableCell>
-                                <TableCell align="left">Herramientas de embalaje</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Totales</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Herramientas de embalaje</TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
-                                <TableCell align="left">{rows.total_x_packing_kits[row].total_qty_x_box}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_box)}</TableCell>
-                                <TableCell align="left">{rows.total_x_packing_kits[row].total_qty_x_unit}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_unit)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_packing_kits[row].total_qty_x_box}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_packing_kits[row].total_qty_x_unit}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_packing_kits[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
                         {Object.keys(rows.total_x_materials_packing_kits).map((row, key) => (
                             <TableRow key={key} style={{fontWeight: "bold"}}>
-                                <TableCell align="left">Totales</TableCell>
-                                <TableCell align="left">Materia Prima + Herramientas</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Totales</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Materia Prima + Herramientas</TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
                                 <TableCell align="left"></TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
-                                <TableCell align="left">{rows.total_x_materials_packing_kits[row].total_qty_x_box}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_x_box)}</TableCell>
-                                <TableCell align="left">{rows.total_x_materials_packing_kits[row].total_qty_x_unit}</TableCell>
-                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_x_unit)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_unit_x_mix)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_materials_packing_kits[row].total_qty_x_box}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{rows.total_x_materials_packing_kits[row].total_qty_x_unit}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits[row].total_cost_x_unit)}</TableCell>
+                            </TableRow>
+                        ))}
+
+                        {Object.keys(rows.others_expenses).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
+                                <TableCell align="left"width={2}>{rows.others_expenses[row].other_expenses.code}</TableCell>
+                                <TableCell align="left">{rows.others_expenses[row].other_expenses.name}</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.others_expenses[row].total_cost_demanded)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.others_expenses[row].cost_x_box)}</TableCell>
+                                <TableCell align="left">{useIntl('en-US', 'currency', 'USD', rows.others_expenses[row].cost_x_unit)}</TableCell>
+                            </TableRow>
+                        ))}
+                        {Object.keys(rows.total_x_others_expenses).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Totales</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Otros gastos</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Costo total: </TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_others_expenses[row].total_cost_demanded)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_others_expenses[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_others_expenses[row].total_cost_x_unit)}</TableCell>
+                            </TableRow>
+                        ))}
+                        {Object.keys(rows.total_x_materials_packing_kits_others_expenses).map((row, key) => (
+                            <TableRow key={key} style={{fontWeight: "bold"}}>
+                               <TableCell align="left" style={{fontWeight: "bold"}}>Totales</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>MP + Herramientas + Gastos</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>Costo total: </TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits_others_expenses[row].total_cost_demanded)}</TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits_others_expenses[row].total_cost_x_box)}</TableCell>
+                                <TableCell align="left"></TableCell>
+                                <TableCell align="left" style={{fontWeight: "bold"}}>{useIntl('en-US', 'currency', 'USD', rows.total_x_materials_packing_kits_others_expenses[row].total_cost_x_unit)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

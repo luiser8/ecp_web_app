@@ -42,7 +42,7 @@ const DetailsProductScreen = () => {
     <Fragment>
       {(Object.keys(product).length !== 0) ?
         <Page title={`Producto - ${product.code}`}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={-2} mt={-1}>
             <Typography variant="h4" gutterBottom>
               Productos / Detalles / {product.code}
             </Typography>

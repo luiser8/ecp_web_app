@@ -17,9 +17,11 @@ const OtherExpensesScreen = ({ mode }) => {
     //Notificaciones
     const [openSnackBar, setOpenSnackBar] = useState(false);
     //Payload formulario
+    const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [isNameRepit, setIsNameRepit] = useState(false);
     const [otherExpensesPayload, setOtherExpensesPayload] = useState(
         {
+            "code": "",
             "name": "",
             "description": "",
             "in_use": false,
@@ -36,6 +38,7 @@ const OtherExpensesScreen = ({ mode }) => {
     }
 
     const resetOtherExpensesPayload = () => {
+        otherExpensesPayload.code = "";
         otherExpensesPayload.name = "";
         otherExpensesPayload.description = "";
         otherExpensesPayload.in_use = null;
@@ -43,7 +46,8 @@ const OtherExpensesScreen = ({ mode }) => {
     }
 
     const isValidOtherExpensesPayload = () => {
-        return otherExpensesPayload.name === ""
+        return otherExpensesPayload.code === ""
+            || otherExpensesPayload.name === ""
             || otherExpensesPayload.description === ""
             || otherExpensesPayload.in_use === null
             || otherExpensesPayload.status === null;
@@ -71,12 +75,18 @@ const OtherExpensesScreen = ({ mode }) => {
 
     const checkCodeOrNameExists = async (type, value) => {
         if (value === "") {
+            if (type === "code"){
+                setIsCodeRepit(false);
+            }
             if (type === "name"){
                 setIsNameRepit(false);
             }
             return;
         }
         const otherExpenses = await getOtherExpensesExistsService(type, value, userToken);
+        if (type === "code") {
+            setIsCodeRepit(otherExpenses !== undefined ? otherExpenses : isCodeRepit);
+        }
         if (type === "name") {
             setIsNameRepit(otherExpenses !== undefined ? otherExpenses : isNameRepit);
         }
@@ -116,7 +126,7 @@ const OtherExpensesScreen = ({ mode }) => {
 
     return (
         <Page title={getMode().title}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0} mt={-1}>
                 <Typography variant="h4" gutterBottom>{getMode().msj}</Typography>
             </Stack>
             <Box sx={{ width: '100%' }}>
@@ -125,6 +135,7 @@ const OtherExpensesScreen = ({ mode }) => {
                     otherExpensesPayload={otherExpensesPayload}
                     setOtherExpensesPayload={setOtherExpensesPayload}
                     checkCodeOrNameExists={checkCodeOrNameExists}
+                    isCodeRepit={isCodeRepit}
                     isNameRepit={isNameRepit}
                     isValidOtherExpensesPayload={isValidOtherExpensesPayload}
                     submit={getMode().method}

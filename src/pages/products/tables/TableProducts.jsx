@@ -2,10 +2,11 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import { DeleteOutlineOutlined, EditOutlined } from '@mui/icons-material';
-import ZoomOutMapOutlinedIcon from '@mui/icons-material/ZoomOutMapOutlined';
+import FilterCenterFocusOutlinedIcon from '@mui/icons-material/FilterCenterFocusOutlined';
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@mui/material';
 import moment from 'moment';
 import DialogCustomConfirm from '../../../components/dialogs/DialogCustomConfirm';
+import TooltipCustom from '../../../components/tooltips/TooltipCustom';
 
 const TableProducts = (
     {
@@ -44,25 +45,31 @@ const TableProducts = (
                                 <TableCell align="left">{rows[row].name}</TableCell>
                                 <TableCell align="left">{rows[row].presentation}</TableCell>
                                 <TableCell align="left">
-                                    {rows[row].status === "in process" ? "En proceso" : "Finalizado" }
+                                    {rows[row].status === "in process" ? "En proceso" : "Finalizado"}
                                 </TableCell>
                                 <TableCell align="left">{moment(rows[row].createdAt).format("DD-MM-YYYY")}</TableCell>
                                 <TableCell align="right">
                                     <Grid item xs={20} md={20} lg={20}>
                                         <NavLink style={{ marginRight: 10 }} to={`${routing}${rows[row]._id}`}>
-                                            <ZoomOutMapOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Ver ficha" placement="bottom">
+                                                <FilterCenterFocusOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         <NavLink style={{ marginRight: 8 }} to={`#`}>
-                                            <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Editar producto" placement="bottom">
+                                                <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         <NavLink style={{ marginRight: 8 }} to={`#`}
                                             onClick={() => showDeleteProduct(
                                                 {
                                                     open: true,
-                                                    product: { id: rows[row]._id, name: rows[row].name}
+                                                    product: { id: rows[row]._id, name: rows[row].name }
                                                 }
                                             )}>
-                                            <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Editar producto" placement="bottom">
+                                                <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                     </Grid>
                                 </TableCell>

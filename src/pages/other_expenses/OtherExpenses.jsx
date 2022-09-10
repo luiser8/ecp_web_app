@@ -22,12 +22,13 @@ const OtherExpenses = () => {
   const [openSnackBar, setOpenSnackBar] = useState(false);
 
   const columns = [
-    { id: 1, name: 'Nombre', color: '#e3f2fd', align: 'left' },
-    { id: 2, name: 'Descripción', color: '#e3f2fd', align: 'left' },
-    { id: 3, name: 'En uso', color: '#e3f2fd', align: 'left' },
-    { id: 4, name: 'Estado', color: '#e3f2fd', align: 'left' },
-    { id: 5, name: 'Fecha', color: '#e3f2fd', align: 'left' },
-    { id: 6, name: 'Opciones', color: '#e3f2fd', align: 'right' },
+    { id: 1, name: 'Código', color: '#e3f2fd', align: 'left' },
+    { id: 2, name: 'Nombre', color: '#e3f2fd', align: 'left' },
+    { id: 3, name: 'Descripción', color: '#e3f2fd', align: 'left' },
+    { id: 4, name: 'En uso', color: '#e3f2fd', align: 'left' },
+    { id: 5, name: 'Estado', color: '#e3f2fd', align: 'left' },
+    { id: 6, name: 'Fecha', color: '#e3f2fd', align: 'left' },
+    { id: 7, name: 'Opciones', color: '#e3f2fd', align: 'right' },
   ];
 
   const showDeleteOtherExpenses = (obj) => {
@@ -78,7 +79,7 @@ const OtherExpenses = () => {
 
   return (
     <Page title="Otros gastos">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} mt={-1}>
         <Typography variant="h4" gutterBottom>Otros gastos</Typography>
         <Button sx={{ bgcolor: 'primary.header' }} variant="contained" component={NavLink} to="/otherexpenses/new" startIcon={<Add icon="eva:plus-fill" />}>
           Nuevo gasto

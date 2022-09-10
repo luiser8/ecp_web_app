@@ -44,7 +44,7 @@ const DetailsMaterialScreen = () => {
     <Fragment>
       {(Object.keys(material).length !== 0) ?
         <Page title={`Materia prima - ${material.code}`}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={-2} mt={-1}>
             <Typography variant="h4" gutterBottom>
               Materia prima / Detalles / {material.code}
             </Typography>

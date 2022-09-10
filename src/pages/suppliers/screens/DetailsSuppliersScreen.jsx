@@ -28,7 +28,7 @@ const DetailsSuppliersScreen = () => {
     <Fragment>
       {(Object.keys(supplier).length !== 0) ?
         <Page title={`Proveedor - ${supplier.identifier}`}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={-2} mt={-1}>
             <Typography variant="h4" gutterBottom>
               Proveedor / Detalles / {supplier.identifier}
             </Typography>
