@@ -9,6 +9,7 @@ const FormOtherExpenses =
     otherExpensesPayload,
     setOtherExpensesPayload,
     checkCodeOrNameExists,
+    isCodeRepit,
     isNameRepit,
     isValidOtherExpensesPayload,
     submit,
@@ -16,6 +17,23 @@ const FormOtherExpenses =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+          <TextField
+              value={otherExpensesPayload.code}
+              onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, code: ev.target.value })}
+              onKeyUp={(ev) => checkCodeOrNameExists('code', ev.target.value)}
+              margin="normal"
+              required
+              error={isCodeRepit}
+              helperText={isCodeRepit ? "Código repetido" : ""}
+              type="text"
+              fullWidth
+              id="code"
+              label={isCodeRepit ? "Error" : "Código"}
+              name="code"
+              size="small"
+              autoFocus
+              sx={{ marginBottom: isCodeRepit ? -1 : 1 }}
+            />
           <TextField
             value={otherExpensesPayload.name}
             onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, name: ev.target.value })}
@@ -76,7 +94,7 @@ const FormOtherExpenses =
             variant="contained"
             type="button"
             onClick={async () => submit()}
-            disabled={isValidOtherExpensesPayload() || isNameRepit}
+            disabled={isValidOtherExpensesPayload() || isCodeRepit || isNameRepit}
           >
             Guardar
           </Button>
@@ -90,6 +108,7 @@ FormOtherExpenses.propTypes = {
   otherExpensesPayload: PropTypes.object,
   setOtherExpensesPayload: PropTypes.func,
   checkCodeOrNameExists: PropTypes.func,
+  isCodeRepit: PropTypes.bool,
   isNameRepit: PropTypes.bool,
   isValidOtherExpensesPayload: PropTypes.func,
   submit: PropTypes.func,

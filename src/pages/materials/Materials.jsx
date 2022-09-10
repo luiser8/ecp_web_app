@@ -79,7 +79,7 @@ const Materials = () => {
 
   return (
     <Page title="Materia prima">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} mt={-1}>
         <Typography variant="h4" gutterBottom>Materia prima</Typography>
         <Button sx={{ bgcolor: 'primary.header' }} variant="contained" component={NavLink} to="/materials/new" startIcon={<Add icon="eva:plus-fill" />}>
           Nueva materia prima

@@ -7,19 +7,19 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import AssessmentOutlinedIcon from '@mui/icons-material/AssessmentOutlined';
 import LocalOfferOutlinedIcon from '@mui/icons-material/LocalOfferOutlined';
 import InventoryOutlinedIcon from '@mui/icons-material/InventoryOutlined';
 import ContentCutOutlinedIcon from '@mui/icons-material/ContentCutOutlined';
-import SavingsOutlinedIcon from '@mui/icons-material/SavingsOutlined';
-import ContactPhoneOutlinedIcon from '@mui/icons-material/ContactPhoneOutlined';
+import TrendingDownOutlinedIcon from '@mui/icons-material/TrendingDownOutlined';
+import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
+import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 
 const categories = [
   {
     id: 'Producción',
     children: [
       { id: 'Productos', path: '/', icon: <LocalOfferOutlinedIcon />, active: true, },
-      { id: 'Resumen de requerimientos', path: '/a',  icon:  <AssessmentOutlinedIcon /> },
+      { id: 'Resumen de requerimientos', path: '/a',  icon:  <BarChartOutlinedIcon /> },
     ],
   },
   {
@@ -27,13 +27,13 @@ const categories = [
     children: [
       { id: 'Materia prima', path: '/materials',  icon:  <InventoryOutlinedIcon /> },
       { id: 'Herramientas para embalaje', path: '/packings',  icon:  <ContentCutOutlinedIcon /> },
-      { id: 'Otros gastos', path: '/otherexpenses',  icon:  <SavingsOutlinedIcon /> },
+      { id: 'Otros gastos', path: '/otherexpenses',  icon:  <TrendingDownOutlinedIcon /> },
     ],
   },
   {
     id: 'Ajustes',
     children: [
-      { id: 'Proveedores', path: '/suppliers',  icon:  <ContactPhoneOutlinedIcon /> },
+      { id: 'Proveedores', path: '/suppliers',  icon:  <GroupOutlinedIcon /> },
     ],
   },
 ];

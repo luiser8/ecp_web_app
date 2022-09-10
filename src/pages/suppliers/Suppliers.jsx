@@ -79,7 +79,7 @@ const Suppliers = () => {
 
   return (
     <Page title="Proveedores">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} mt={-1}>
         <Typography variant="h4" gutterBottom>Proveedores</Typography>
         <Button sx={{ bgcolor: 'primary.header' }} variant="contained" component={NavLink} to="/suppliers/new" startIcon={<Add icon="eva:plus-fill" />}>
           Nuevo proveedor

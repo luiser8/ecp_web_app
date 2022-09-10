@@ -44,7 +44,7 @@ const DetailsPackingsScreen = () => {
     <Fragment>
       {(Object.keys(packing_kits).length !== 0) ?
         <Page title={`Herramientas de embalaje - ${packing_kits.code}`}>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0}>
+          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={-2} mt={-1}>
             <Typography variant="h4" gutterBottom>
               Herramientas de embalaje / Detalles / {packing_kits.code}
             </Typography>

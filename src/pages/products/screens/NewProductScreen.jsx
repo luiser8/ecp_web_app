@@ -12,16 +12,21 @@ import SuccessAdd from '../../../components/alerts/SuccessAdd';
 import { getProductsExistsService, postProductService } from '../../../services/productsService';
 import { getMaterialsSimpleService } from '../../../services/materialsService';
 import { getPackingKitSimpleService } from '../../../services/packingkitService';
+import { getOtherExpensesAllService } from '../../../services/otherExpensesService';
+import FormOtherExpenses from '../forms/FormOtherExpenses';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
     const [skipped, setSkipped] = useState(new Set());
     const [materials, setMaterials] = useState([]);
     const [packingKits, setPackingkits] = useState([]);
+    const [othersExpenses, setOthersExpenses] = useState([]);
     const [productMaterial, setProductMaterial] = useState([]);
     const [productMaterialResume, setProductMaterialResume] = useState([]);
     const [productPackingkits, setProductPackingkits] = useState([]);
     const [productPackingkitsResume, setProductPackingkitsResume] = useState([]);
+    const [productOthersExpenses, setProductOthersExpenses] = useState([]);
+    const [productOthersExpensesResume, setProductOthersExpensesResume] = useState([]);
     const { checkUser } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Notificaciones
@@ -30,6 +35,7 @@ const NewProductScreen = () => {
     const [product, setProduct] = useState("");
     const [activeNextMaterial, setActiveNextMaterial] = useState(true);
     const [activeNextPackingkits, setActiveNextPackingkits] = useState(true);
+    const [activeNextOthersExpenses, setActiveNextOthersExpenses] = useState(true);
     const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [isNameRepit, setIsNameRepit] = useState(false);
     const [errorMaterialCurrentAmount, setErrorMaterialCurrentAmount] = useState({ index: 0, error: false });
@@ -47,11 +53,12 @@ const NewProductScreen = () => {
             "pvp_x_units": 0,
             "materials": [],
             "packing_kits": [],
+            "others_expenses": [],
             "status": "in process"
         }
     );
 
-    const steps = ['Información del producto', 'Selecciona materias primas','Selecciona herramientas de embalaje', 'Resumen y guardar'];
+    const steps = ['Información del producto', 'Materias primas', 'Herramientas de embalaje', 'Otros gastos', 'Resumen y guardar'];
 
     const isValidNextMaterial = () => {
         if(activeStep === 1){
@@ -63,6 +70,13 @@ const NewProductScreen = () => {
     const isValidNextPackingKit = () => {
         if(activeStep === 2){
             return activeNextPackingkits;
+        }
+        return false;
+    }
+
+    const isValidNextOtherExpenses = () => {
+        if(activeStep === 3){
+            return activeNextOthersExpenses;
         }
         return false;
     }
@@ -88,10 +102,13 @@ const NewProductScreen = () => {
         productPayload.pvp_x_units = 0;
         productPayload.materials = [];
         productPayload.packing_kits = [];
+        productPayload.others_expenses = [];
         setProductMaterial([]);
         setProductMaterialResume([]);
         setProductPackingkits([]);
         setProductPackingkitsResume([]);
+        setProductOthersExpenses([]);
+        setProductOthersExpensesResume([]);
     }
 
     const isStepOptional = (step) => {
@@ -99,6 +116,8 @@ const NewProductScreen = () => {
             return 1;
         }else if (step === 2){
             return 2;
+        }else if (step === 3){
+            return 3;
         }
     };
 
@@ -135,6 +154,13 @@ const NewProductScreen = () => {
             }));
         }
 
+        if (activeStep === 3) {
+            setProductPayload((payload) => ({
+                ...payload,
+                "others_expenses": productOthersExpenses,
+            }));
+        }
+
         if (activeStep === steps.length - 1) {
             await postProducts();
         }
@@ -151,6 +177,10 @@ const NewProductScreen = () => {
 
         if (activeStep === 2) {
             setProductPackingkits([]); setProductPackingkitsResume([]);
+        }
+
+        if (activeStep === 3) {
+            setProductOthersExpenses([]); setProductOthersExpensesResume([]);
         }
 
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -201,6 +231,10 @@ const NewProductScreen = () => {
         setPackingkits(await getPackingKitSimpleService(userToken));
     }
 
+    const getOthersExpenses = async () => {
+        setOthersExpenses(await getOtherExpensesAllService(userToken));
+    }
+
     const postProducts = async () => {
         const payload = await postProductService(productPayload, userToken);
         if (payload !== null) {
@@ -212,16 +246,18 @@ const NewProductScreen = () => {
     useEffect(() => {
         getMaterials();
         getPackingKits();
+        getOthersExpenses();
         isValidNextMaterial();
         return () => {
             setMaterials([]);
             setPackingkits([]);
+            setOthersExpenses([]);
         };
     }, [activeNextMaterial]);
 
     return (
         <Page title="Nuevo producto">
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0} mt={-1}>
                 <Typography variant="h4" gutterBottom>
                     Productos / Nuevo
                 </Typography>
@@ -298,6 +334,17 @@ const NewProductScreen = () => {
                                 /> : <></>
                             }
                             {activeStep === 3 ?
+                                <FormOtherExpenses
+                                    mode="new"
+                                    othersExpenses={othersExpenses}
+                                    productOthersExpenses={productOthersExpenses}
+                                    setProductOthersExpenses={setProductOthersExpenses}
+                                    productOthersExpensesResume={productOthersExpensesResume}
+                                    setProductOthersExpensesResume={setProductOthersExpensesResume}
+                                    setActiveNextOthersExpenses={setActiveNextOthersExpenses}
+                                /> : <></>
+                            }
+                            {activeStep === 4 ?
                                 <FormResume
                                     productPayload={productPayload}
                                     productMaterialResume={productMaterialResume}
@@ -310,10 +357,10 @@ const NewProductScreen = () => {
                                 color="inherit"
                                 variant="contained"
                                 disabled={activeStep === 0}
-                                onClick={() => activeStep === 3 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
+                                onClick={() => activeStep === 4 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
                                 sx={{ mr: 1 }}
                             >
-                            {activeStep === 3 ? "Cancelar" : "Atrás"}
+                            {activeStep === 4 ? "Cancelar" : "Atrás"}
                             </Button>
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(activeStep) && (
@@ -324,7 +371,7 @@ const NewProductScreen = () => {
                             <Button
                                 variant="contained"
                                 onClick={async () => handleNext()}
-                                disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isCodeRepit || isNameRepit || errorMaterialCurrentAmount.error || errorKitsCurrentAmount.error}>
+                                disabled={isValidProductPayload() || isValidNextMaterial() || isValidNextPackingKit() || isValidNextOtherExpenses() || isCodeRepit || isNameRepit || errorMaterialCurrentAmount.error || errorKitsCurrentAmount.error}>
                                 {activeStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
                             </Button>
                         </Box>

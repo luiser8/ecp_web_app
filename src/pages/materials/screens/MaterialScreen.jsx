@@ -154,7 +154,7 @@ const MaterialScreen = ({ mode }) => {
 
     return (
         <Page title={getMode().title}>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={1}>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={0} mt={-1}>
                 <Typography variant="h4" gutterBottom>{getMode().msj}</Typography>
             </Stack>
             <Box sx={{ width: '100%' }}>

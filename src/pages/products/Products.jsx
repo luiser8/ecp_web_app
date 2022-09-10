@@ -78,7 +78,7 @@ const Products = () => {
 
   return (
     <Page title="Productos">
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={2} mt={-1}>
         <Typography variant="h4" gutterBottom>Productos</Typography>
         <Button sx={{ bgcolor: 'primary.header' }} variant="contained" component={NavLink} to="/product/new" startIcon={<Add icon="eva:plus-fill" />}>
           Nuevo producto
