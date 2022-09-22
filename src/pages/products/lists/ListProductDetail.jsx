@@ -50,6 +50,16 @@ const ListProductDetail = ({ product }) => {
             variant="body2"
             color="text.primary"
           >
+            Unidad medida {` — ${product.unit.code} / ${product.unit.name}`}
+          </Typography>
+        </Fragment>
+        <Fragment>
+          <Typography
+            sx={{ display: 'block', fontWeight: "bold" }}
+            component="span"
+            variant="body2"
+            color="text.primary"
+          >
             Estado {` — ${product.status === "in process" ? "En proceso" : "Finalizado" }`}
           </Typography>
         </Fragment>
@@ -87,6 +97,16 @@ const ListProductDetail = ({ product }) => {
               color="text.primary"
             >
               Unidades por mezcla  {` — ${product.units_x_mix}`}
+            </Typography>
+          </Fragment>
+          <Fragment>
+            <Typography
+              sx={{ display: 'block', fontWeight: "bold" }}
+              component="span"
+              variant="body2"
+              color="text.primary"
+            >
+              Pedido demandado unidad  {` — ${product.boxes_x_mix * product.units_x_mix}`}
             </Typography>
           </Fragment>
           <Fragment>

@@ -13,6 +13,7 @@ import { getProductsExistsService, postProductService } from '../../../services/
 import { getMaterialsSimpleService } from '../../../services/materialsService';
 import { getPackingKitSimpleService } from '../../../services/packingkitService';
 import { getOtherExpensesAllService } from '../../../services/otherExpensesService';
+import { getUnitsSimpleService } from '../../../services/unitsService';
 import FormOtherExpenses from '../forms/FormOtherExpenses';
 
 const NewProductScreen = () => {
@@ -20,6 +21,7 @@ const NewProductScreen = () => {
     const [skipped, setSkipped] = useState(new Set());
     const [materials, setMaterials] = useState([]);
     const [packingKits, setPackingkits] = useState([]);
+    const [units, setUnits] = useState([]);
     const [othersExpenses, setOthersExpenses] = useState([]);
     const [productMaterial, setProductMaterial] = useState([]);
     const [productMaterialResume, setProductMaterialResume] = useState([]);
@@ -43,6 +45,7 @@ const NewProductScreen = () => {
     const [productPayload, setProductPayload] = useState(
         {
             "code": "",
+            "unit": "",
             "name": "",
             "description": "",
             "presentation": "",
@@ -83,6 +86,7 @@ const NewProductScreen = () => {
 
     const isValidProductPayload = () => {
         return productPayload.code === ""
+        || productPayload.unit === ""
         || productPayload.name === ""
         || productPayload.description === ""
         || productPayload.presentation === ""
@@ -92,6 +96,7 @@ const NewProductScreen = () => {
 
     const resetProductPayload = () => {
         productPayload.code = "";
+        productPayload.unit = "";
         productPayload.name = "";
         productPayload.description = "";
         productPayload.presentation = "";
@@ -223,6 +228,10 @@ const NewProductScreen = () => {
         }
     }
 
+    const getUnits = async () => {
+        setUnits(await getUnitsSimpleService(userToken));
+    }
+
     const getMaterials = async () => {
         setMaterials(await getMaterialsSimpleService(userToken));
     }
@@ -244,11 +253,13 @@ const NewProductScreen = () => {
     }
 
     useEffect(() => {
+        getUnits();
         getMaterials();
         getPackingKits();
         getOthersExpenses();
         isValidNextMaterial();
         return () => {
+            setUnits([]);
             setMaterials([]);
             setPackingkits([]);
             setOthersExpenses([]);
@@ -300,6 +311,7 @@ const NewProductScreen = () => {
                             {activeStep === 0 ?
                                 <FormProduct
                                     mode="new"
+                                    units={units}
                                     productPayload={productPayload}
                                     setProductPayload={setProductPayload}
                                     checkCodeOrNameExists={checkCodeOrNameExists}

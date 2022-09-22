@@ -17,6 +17,7 @@ import PackingScreen from '../pages/packing_kits/screens/PackingScreen';
 import DetailsPackingsScreen from '../pages/packing_kits/screens/DetailsPackingsScreen';
 import OtherExpenses from '../pages/other_expenses/OtherExpenses';
 import OtherExpensesScreen from '../pages/other_expenses/screens/OtherExpensesScreen';
+import Requirements from '../pages/requirements/Requirements';
 
 export default function RoutesCustom() {
     const { checkUser } = useContext(Context);
@@ -79,6 +80,10 @@ export default function RoutesCustom() {
         },
         {
             path: '/suppliers/:id', element: checkUser().userId !== null ? <DetailsSuppliersScreen /> : <Login />,
+        },
+        //Requirements
+        {
+            path: '/requirements', element: checkUser().userId !== null ? <Requirements /> : <Login />,
         },
         //Error
         {

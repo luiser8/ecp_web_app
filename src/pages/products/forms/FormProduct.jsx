@@ -1,11 +1,27 @@
-import { Box, Grid, TextField } from '@mui/material';
+import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeOrNameExists, isCodeRepit, isNameRepit }) => {
+const FormProduct = ({ mode, units, productPayload, setProductPayload, checkCodeOrNameExists, isCodeRepit, isNameRepit }) => {
     return (
         <Grid component="div">
             <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+                <FormControl fullWidth style={{ marginTop: "14px" }}>
+                    <InputLabel id="unit" style={{ marginTop: "-7px" }}>Unidad de medida</InputLabel>
+                    <Select
+                        size="small"
+                        labelId="unit"
+                        id="unit"
+                        value={productPayload.unit}
+                        label="Unidad de medida"
+                        required
+                        onChange={(ev) => setProductPayload({ ...productPayload, unit: ev.target.value })}
+                    >
+                        {units.map((_, item) => (
+                            <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <TextField
                     value={productPayload.code}
                     onChange={(ev) => setProductPayload({ ...productPayload, code: ev.target.value })}
@@ -20,7 +36,6 @@ const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeOrNameE
                     label={isCodeRepit ? "Error" : "Código"}
                     name="code"
                     size="small"
-                    autoFocus
                     sx={{ marginBottom: isCodeRepit ? -1 : 1 }}
                 />
                 <TextField
@@ -142,6 +157,7 @@ const FormProduct = ({ mode, productPayload, setProductPayload, checkCodeOrNameE
 
 FormProduct.propTypes = {
     mode: PropTypes.string,
+    units: PropTypes.array,
     productPayload: PropTypes.object,
     setProductPayload: PropTypes.func,
     checkCodeOrNameExists: PropTypes.func,
