@@ -19,7 +19,7 @@ const categories = [
     id: 'Producción',
     children: [
       { id: 'Productos', path: '/', icon: <LocalOfferOutlinedIcon />, active: true, },
-      { id: 'Resumen de requerimientos', path: '/a',  icon:  <BarChartOutlinedIcon /> },
+      { id: 'Resumen de requerimientos', path: '/requirements',  icon:  <BarChartOutlinedIcon /> },
     ],
   },
   {

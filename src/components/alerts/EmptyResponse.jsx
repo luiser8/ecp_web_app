@@ -15,7 +15,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
     padding: theme.spacing(12, 0)
 }));
 
-const EmptyResponse = ({ title }) => {
+const EmptyResponse = ({ title, subtitle = true }) => {
     const [spinnerLoading, setSpinnerLoading] = useState(true);
 
     useEffect(() => {
@@ -32,7 +32,9 @@ const EmptyResponse = ({ title }) => {
                 :
                 <ContentStyle sx={{ textAlign: 'center', alignItems: 'center' }}>
                     <Typography variant="h4" paragraph>Lo sentimos, no encontramos {title} para mostrar.</Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>Intenta crear nuevos elementos {title}.</Typography>
+                    {subtitle ?
+                     <Typography sx={{ color: 'text.secondary' }}>Intenta crear nuevos elementos {title}.</Typography> : <></>
+                    }
                 </ContentStyle>
             }
         </Container>
@@ -41,6 +43,7 @@ const EmptyResponse = ({ title }) => {
 
 EmptyResponse.propTypes = {
     title: PropTypes.string,
+    subtitle: PropTypes.bool
 };
 
 export default EmptyResponse;
