@@ -13,6 +13,7 @@ import ContentCutOutlinedIcon from '@mui/icons-material/ContentCutOutlined';
 import TrendingDownOutlinedIcon from '@mui/icons-material/TrendingDownOutlined';
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
+import CategoryOutlinedIcon from '@mui/icons-material/CategoryOutlined';
 
 const categories = [
   {
@@ -33,6 +34,7 @@ const categories = [
   {
     id: 'Ajustes',
     children: [
+      { id: 'Categorías', path: '/categories',  icon:  <CategoryOutlinedIcon /> },
       { id: 'Proveedores', path: '/suppliers',  icon:  <GroupOutlinedIcon /> },
     ],
   },

@@ -18,6 +18,8 @@ import DetailsPackingsScreen from '../pages/packing_kits/screens/DetailsPackings
 import OtherExpenses from '../pages/other_expenses/OtherExpenses';
 import OtherExpensesScreen from '../pages/other_expenses/screens/OtherExpensesScreen';
 import Requirements from '../pages/requirements/Requirements';
+import Category from '../pages/category/Category';
+import CategoryScreen from '../pages/category/screens/CategoryScreen';
 
 export default function RoutesCustom() {
     const { checkUser } = useContext(Context);
@@ -80,6 +82,16 @@ export default function RoutesCustom() {
         },
         {
             path: '/suppliers/:id', element: checkUser().userId !== null ? <DetailsSuppliersScreen /> : <Login />,
+        },
+        //Categories
+        {
+            path: '/categories', element: checkUser().userId !== null ? <Category /> : <Login />,
+        },
+        {
+            path: '/categories/new', element: checkUser().userId !== null ? <CategoryScreen mode="new" /> : <Login />,
+        },
+        {
+            path: '/categories/edit/:id', element: checkUser().userId !== null ? <CategoryScreen mode="edit" /> : <Login />,
         },
         //Requirements
         {

@@ -1,42 +1,41 @@
 import React from 'react';
-import { Box, Button, FormControl, Grid,  InputLabel,  MenuItem,  Select,  TextField } from '@mui/material';
+import { Box, Button, FormControl, FormControlLabel, FormLabel, Grid,  InputLabel,  MenuItem,  Radio,  RadioGroup,  Select,  TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
-const FormOtherExpenses =
+const FormCategory =
   ({
     mode,
-    otherExpensesPayload,
-    setOtherExpensesPayload,
+    dads,
+    categoryPayload,
+    setCategoryPayload,
     checkCodeOrNameExists,
-    isCodeRepit,
     isNameRepit,
-    isValidOtherExpensesPayload,
+    isValidCategoryPayload,
     submit,
   }) => {
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+          <FormControl fullWidth style={{ marginTop: "14px" }}>
+              <InputLabel id="dad" style={{ marginTop: "-7px" }}>Categoría padre</InputLabel>
+              <Select
+                size="small"
+                labelId="dad"
+                id="dad"
+                value={categoryPayload.dad}
+                label="Categoría padre"
+                required
+                onChange={(ev) => setCategoryPayload({ ...categoryPayload, dad: ev.target.value })}
+              >
+                {dads.map((_, item) => (
+                  <MenuItem key={dads[item].id} value={dads[item].name}>{dads[item].view}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
           <TextField
-              value={otherExpensesPayload.code}
-              onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, code: ev.target.value })}
-              onKeyUp={(ev) => checkCodeOrNameExists('code', ev.target.value)}
-              margin="normal"
-              required
-              error={isCodeRepit}
-              helperText={isCodeRepit ? "Código repetido" : ""}
-              type="text"
-              fullWidth
-              id="code"
-              label={isCodeRepit ? "Error" : "Código"}
-              name="code"
-              size="small"
-              autoFocus
-              sx={{ marginBottom: isCodeRepit ? -1 : 1 }}
-            />
-          <TextField
-            value={otherExpensesPayload.name}
-            onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, name: ev.target.value })}
+            value={categoryPayload.name}
+            onChange={(ev) => setCategoryPayload({ ...categoryPayload, name: ev.target.value })}
             onKeyUp={(ev) => checkCodeOrNameExists('name', ev.target.value)}
             margin="normal"
             required
@@ -51,8 +50,8 @@ const FormOtherExpenses =
             sx={{ marginBottom: isNameRepit ? -1 : 1 }}
           />
           <TextField
-            value={otherExpensesPayload.description}
-            onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, description: ev.target.value })}
+            value={categoryPayload.description}
+            onChange={(ev) => setCategoryPayload({ ...categoryPayload, description: ev.target.value })}
             margin="normal"
             required
             type="text"
@@ -69,10 +68,10 @@ const FormOtherExpenses =
                 size="small"
                 labelId="status"
                 id="status"
-                value={otherExpensesPayload.status}
+                value={categoryPayload.status}
                 label="Estado"
                 required
-                onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, status: ev.target.value })}
+                onChange={(ev) => setCategoryPayload({ ...categoryPayload, status: ev.target.value })}
               >
                 <MenuItem value={true}>Activo</MenuItem>
                 <MenuItem value={false}>Inactivo</MenuItem>
@@ -86,7 +85,7 @@ const FormOtherExpenses =
             variant="contained"
             type="button"
             sx={{ mr: 1 }}
-            LinkComponent={NavLink} to={`/otherexpenses`}
+            LinkComponent={NavLink} to={`/categories`}
           >
             Volver
           </Button>
@@ -94,7 +93,7 @@ const FormOtherExpenses =
             variant="contained"
             type="button"
             onClick={async () => submit()}
-            disabled={isValidOtherExpensesPayload() || isCodeRepit || isNameRepit}
+            disabled={isValidCategoryPayload() || isNameRepit}
           >
             Guardar
           </Button>
@@ -103,15 +102,15 @@ const FormOtherExpenses =
     )
   }
 
-FormOtherExpenses.propTypes = {
+  FormCategory.propTypes = {
   mode: PropTypes.string,
-  otherExpensesPayload: PropTypes.object,
-  setOtherExpensesPayload: PropTypes.func,
+  dads: PropTypes.array,
+  categoryPayload: PropTypes.object,
+  setCategoryPayload: PropTypes.func,
   checkCodeOrNameExists: PropTypes.func,
-  isCodeRepit: PropTypes.bool,
   isNameRepit: PropTypes.bool,
-  isValidOtherExpensesPayload: PropTypes.func,
+  isValidCategoryPayload: PropTypes.func,
   submit: PropTypes.func,
 };
 
-export default FormOtherExpenses;
+export default FormCategory;
