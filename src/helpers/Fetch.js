@@ -12,7 +12,9 @@ export const get = async (route, token) => {
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
             return response.json()
-        }else {
+        } if (response.status === 401) {
+            return response.text();
+        } else {
             response.json().then((json) => {
                 return json;
             });

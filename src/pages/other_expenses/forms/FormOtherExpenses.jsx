@@ -6,6 +6,7 @@ import { NavLink } from 'react-router-dom';
 const FormOtherExpenses =
   ({
     mode,
+    categories,
     otherExpensesPayload,
     setOtherExpensesPayload,
     checkCodeOrNameExists,
@@ -17,6 +18,22 @@ const FormOtherExpenses =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+        <FormControl fullWidth style={{ marginTop: "14px" }}>
+            <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
+            <Select
+              size="small"
+              labelId="category"
+              id="category"
+              value={otherExpensesPayload.category}
+              label="Categoría"
+              required
+              onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, category: ev.target.value })}
+            >
+              {categories.map((_, item) => (
+                <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <TextField
               value={otherExpensesPayload.code}
               onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, code: ev.target.value })}
@@ -105,6 +122,7 @@ const FormOtherExpenses =
 
 FormOtherExpenses.propTypes = {
   mode: PropTypes.string,
+  categories: PropTypes.array,
   otherExpensesPayload: PropTypes.object,
   setOtherExpensesPayload: PropTypes.func,
   checkCodeOrNameExists: PropTypes.func,

@@ -39,6 +39,7 @@ const TableOtherExpenses = (
                         {Object.keys(rows).map((row) => (
                             <TableRow key={rows[row]._id}>
                                 <TableCell align="left">{rows[row].code}</TableCell>
+                                <TableCell align="left">{rows[row].category.name}</TableCell>
                                 <TableCell align="left">{rows[row].name}</TableCell>
                                 <TableCell align="left">{rows[row].description}</TableCell>
                                 <TableCell align="left">{rows[row].in_use ? "En uso" : "Sin uso"}</TableCell>

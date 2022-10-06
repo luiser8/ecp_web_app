@@ -7,6 +7,7 @@ import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getOtherExpensesByIdService, getOtherExpensesExistsService, postOtherExpensesService, putOtherExpensesService } from '../../../services/otherExpensesService';
 import FormOtherExpenses from '../forms/FormOtherExpenses';
+import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const OtherExpensesScreen = ({ mode }) => {
     const { checkUser } = useContext(Context);
@@ -16,12 +17,14 @@ const OtherExpensesScreen = ({ mode }) => {
     const navigate = useNavigate();
     //Notificaciones
     const [openSnackBar, setOpenSnackBar] = useState(false);
+    const [categories, setCategories] = useState([]);
     //Payload formulario
     const [isCodeRepit, setIsCodeRepit] = useState(false);
     const [isNameRepit, setIsNameRepit] = useState(false);
     const [otherExpensesPayload, setOtherExpensesPayload] = useState(
         {
             "code": "",
+            "category": "",
             "name": "",
             "description": "",
             "in_use": false,
@@ -39,6 +42,7 @@ const OtherExpensesScreen = ({ mode }) => {
 
     const resetOtherExpensesPayload = () => {
         otherExpensesPayload.code = "";
+        otherExpensesPayload.category = "";
         otherExpensesPayload.name = "";
         otherExpensesPayload.description = "";
         otherExpensesPayload.in_use = null;
@@ -47,6 +51,7 @@ const OtherExpensesScreen = ({ mode }) => {
 
     const isValidOtherExpensesPayload = () => {
         return otherExpensesPayload.code === ""
+            || otherExpensesPayload.category === ""
             || otherExpensesPayload.name === ""
             || otherExpensesPayload.description === ""
             || otherExpensesPayload.in_use === null
@@ -95,8 +100,13 @@ const OtherExpensesScreen = ({ mode }) => {
     const getOtherExpenses = async () => {
         const otherExpensesItem = await getOtherExpensesByIdService(id, userToken);
         if (otherExpensesItem !== undefined || null) {
+            otherExpensesItem.category = otherExpensesItem.category._id;
             setOtherExpensesPayload({ ...otherExpensesPayload, ...otherExpensesItem });
         }
+    }
+
+    const getCategories = async () => {
+        setCategories(await getCategoriesByDadService("others", userToken));
     }
 
     const postOtherExpenses = async () => {
@@ -121,7 +131,11 @@ const OtherExpensesScreen = ({ mode }) => {
             getOtherExpenses();
         } else {
             null;
-        } return () => {};
+        }
+        getCategories();
+        return () => {
+            setCategories([]);
+        };
     }, []);
 
     return (
@@ -132,6 +146,7 @@ const OtherExpensesScreen = ({ mode }) => {
             <Box sx={{ width: '100%' }}>
                 <FormOtherExpenses
                     mode={mode}
+                    categories={categories}
                     otherExpensesPayload={otherExpensesPayload}
                     setOtherExpensesPayload={setOtherExpensesPayload}
                     checkCodeOrNameExists={checkCodeOrNameExists}
