@@ -16,6 +16,10 @@ export const getCategoriesById = async (id, token) => {
     return await get(`category/${id}`, token);
 }
 
+export const getCategoriesByDad = async (dad, token) => {
+    return await get(`category/dad/${dad}`, token);
+}
+
 export const postCategories = async (payload, token) => {
     return await post('category', payload, token);
 }

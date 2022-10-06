@@ -23,12 +23,13 @@ const OtherExpenses = () => {
 
   const columns = [
     { id: 1, name: 'Código', color: '#e3f2fd', align: 'left' },
-    { id: 2, name: 'Nombre', color: '#e3f2fd', align: 'left' },
-    { id: 3, name: 'Descripción', color: '#e3f2fd', align: 'left' },
-    { id: 4, name: 'En uso', color: '#e3f2fd', align: 'left' },
-    { id: 5, name: 'Estado', color: '#e3f2fd', align: 'left' },
-    { id: 6, name: 'Fecha', color: '#e3f2fd', align: 'left' },
-    { id: 7, name: 'Opciones', color: '#e3f2fd', align: 'right' },
+    { id: 2, name: 'Categoría', color: '#e3f2fd', align: 'left' },
+    { id: 3, name: 'Nombre', color: '#e3f2fd', align: 'left' },
+    { id: 4, name: 'Descripción', color: '#e3f2fd', align: 'left' },
+    { id: 5, name: 'En uso', color: '#e3f2fd', align: 'left' },
+    { id: 6, name: 'Estado', color: '#e3f2fd', align: 'left' },
+    { id: 7, name: 'Fecha', color: '#e3f2fd', align: 'left' },
+    { id: 8, name: 'Opciones', color: '#e3f2fd', align: 'right' },
   ];
 
   const showDeleteOtherExpenses = (obj) => {

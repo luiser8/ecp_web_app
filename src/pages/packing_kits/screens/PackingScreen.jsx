@@ -9,12 +9,14 @@ import { getSuppliersSimpleService } from '../../../services/suppliersService';
 import { useParams, useNavigate } from 'react-router-dom';
 import FormPackings from '../forms/FormPackings';
 import { getPackingKitByIdService, getPackingKitsExistsService, postPackingKitService, putPackingKitService } from '../../../services/packingkitService';
+import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const PackingScreen = ({ mode }) => {
     const { checkUser } = useContext(Context);
     const userToken = checkUser().accesstoken;
     const [units, setUnits] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
+    const [categories, setCategories] = useState([]);
     //Router, params / navigate
     let { id } = useParams();
     const navigate = useNavigate();
@@ -26,6 +28,7 @@ const PackingScreen = ({ mode }) => {
     const [packingsPayload, setPackingsPayload] = useState(
         {
             "unit": "",
+            "category": "",
             "supplier": "",
             "code": "",
             "name": "",
@@ -46,6 +49,7 @@ const PackingScreen = ({ mode }) => {
 
     const resetPackingsPayload = () => {
         packingsPayload.unit = "";
+        packingsPayload.category = "";
         packingsPayload.supplier = "";
         packingsPayload.code = "";
         packingsPayload.name = "";
@@ -56,6 +60,7 @@ const PackingScreen = ({ mode }) => {
 
     const isValidPackingsPayload = () => {
         return packingsPayload.unit === ""
+            || packingsPayload.category === ""
             || packingsPayload.supplier === ""
             || packingsPayload.code === ""
             || packingsPayload.name === ""
@@ -105,6 +110,10 @@ const PackingScreen = ({ mode }) => {
         setUnits(await getUnitsSimpleService(userToken));
     }
 
+    const getCategories = async () => {
+        setCategories(await getCategoriesByDadService("kits", userToken));
+    }
+
     const getSuppliers = async () => {
         setSuppliers(await getSuppliersSimpleService(userToken));
     }
@@ -114,6 +123,7 @@ const PackingScreen = ({ mode }) => {
         if (packingsItem !== undefined || null) {
             packingsItem.unit = packingsItem.unit._id;
             packingsItem.supplier = packingsItem.supplier._id;
+            packingsItem.category = packingsItem.category._id;
             setPackingsPayload({ ...packingsPayload, ...packingsItem });
         }
     }
@@ -143,9 +153,11 @@ const PackingScreen = ({ mode }) => {
         }
         getUnits();
         getSuppliers();
+        getCategories();
         return () => {
             setUnits([]);
             setSuppliers([]);
+            setCategories([]);
         };
     }, []);
 
@@ -158,6 +170,7 @@ const PackingScreen = ({ mode }) => {
                 <FormPackings
                     mode={mode}
                     units={units}
+                    categories={categories}
                     suppliers={suppliers}
                     packingsPayload={packingsPayload}
                     setPackingsPayload={setPackingsPayload}

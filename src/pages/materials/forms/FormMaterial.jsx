@@ -10,6 +10,7 @@ const FormMaterial =
   ({
     mode,
     units,
+    categories,
     suppliers,
     materialPayload,
     setMaterialPayload,
@@ -22,6 +23,22 @@ const FormMaterial =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+          <FormControl fullWidth style={{ marginTop: "14px" }}>
+            <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
+            <Select
+              size="small"
+              labelId="category"
+              id="category"
+              value={materialPayload.category}
+              label="Categoría"
+              required
+              onChange={(ev) => setMaterialPayload({ ...materialPayload, category: ev.target.value })}
+            >
+              {categories.map((_, item) => (
+                <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
             <InputLabel id="unit" style={{ marginTop: "-7px" }}>Unidad de medida</InputLabel>
             <Select
@@ -183,7 +200,7 @@ const FormMaterial =
             type="button"
             onClick={async () => submit()}
             disabled={isValidMaterialPayload() || isCodeRepit || isNameRepit}
-            >
+          >
             Guardar
           </Button>
         </Box>
@@ -194,6 +211,7 @@ const FormMaterial =
 FormMaterial.propTypes = {
   mode: PropTypes.string,
   units: PropTypes.array,
+  categories: PropTypes.array,
   suppliers: PropTypes.array,
   materialPayload: PropTypes.object,
   setMaterialPayload: PropTypes.func,

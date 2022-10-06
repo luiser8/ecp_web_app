@@ -15,6 +15,7 @@ import { getPackingKitSimpleService } from '../../../services/packingkitService'
 import { getOtherExpensesAllService } from '../../../services/otherExpensesService';
 import { getUnitsSimpleService } from '../../../services/unitsService';
 import FormOtherExpenses from '../forms/FormOtherExpenses';
+import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -22,6 +23,7 @@ const NewProductScreen = () => {
     const [materials, setMaterials] = useState([]);
     const [packingKits, setPackingkits] = useState([]);
     const [units, setUnits] = useState([]);
+    const [categories, setCategories] = useState([]);
     const [othersExpenses, setOthersExpenses] = useState([]);
     const [productMaterial, setProductMaterial] = useState([]);
     const [productMaterialResume, setProductMaterialResume] = useState([]);
@@ -45,6 +47,7 @@ const NewProductScreen = () => {
     const [productPayload, setProductPayload] = useState(
         {
             "code": "",
+            "category": "",
             "unit": "",
             "name": "",
             "description": "",
@@ -64,21 +67,21 @@ const NewProductScreen = () => {
     const steps = ['Información del producto', 'Materias primas', 'Herramientas de embalaje', 'Otros gastos', 'Resumen y guardar'];
 
     const isValidNextMaterial = () => {
-        if(activeStep === 1){
+        if (activeStep === 1) {
             return activeNextMaterial;
         }
         return false;
     }
 
     const isValidNextPackingKit = () => {
-        if(activeStep === 2){
+        if (activeStep === 2) {
             return activeNextPackingkits;
         }
         return false;
     }
 
     const isValidNextOtherExpenses = () => {
-        if(activeStep === 3){
+        if (activeStep === 3) {
             return activeNextOthersExpenses;
         }
         return false;
@@ -86,17 +89,19 @@ const NewProductScreen = () => {
 
     const isValidProductPayload = () => {
         return productPayload.code === ""
-        || productPayload.unit === ""
-        || productPayload.name === ""
-        || productPayload.description === ""
-        || productPayload.presentation === ""
-        || productPayload.boxes_x_mix === 0
-        || productPayload.units_x_mix === 0;
+            || productPayload.unit === ""
+            || productPayload.category === ""
+            || productPayload.name === ""
+            || productPayload.description === ""
+            || productPayload.presentation === ""
+            || productPayload.boxes_x_mix === 0
+            || productPayload.units_x_mix === 0;
     }
 
     const resetProductPayload = () => {
         productPayload.code = "";
         productPayload.unit = "";
+        productPayload.category = "";
         productPayload.name = "";
         productPayload.description = "";
         productPayload.presentation = "";
@@ -117,11 +122,11 @@ const NewProductScreen = () => {
     }
 
     const isStepOptional = (step) => {
-        if(step === 1){
+        if (step === 1) {
             return 1;
-        }else if (step === 2){
+        } else if (step === 2) {
             return 2;
-        }else if (step === 3){
+        } else if (step === 3) {
             return 3;
         }
     };
@@ -198,19 +203,19 @@ const NewProductScreen = () => {
 
     const showSnackBar = () => {
         return (
-          <SnackBarCustom
-            open={openSnackBar}
-            setOpen={setOpenSnackBar}
-            vertical="top"
-            horizontal="right"
-            severityOption={"success"}
-            msj={"Producto guardado!"}
-          />
+            <SnackBarCustom
+                open={openSnackBar}
+                setOpen={setOpenSnackBar}
+                vertical="top"
+                horizontal="right"
+                severityOption={"success"}
+                msj={"Producto guardado!"}
+            />
         )
     }
 
     const checkCodeOrNameExists = async (type, value) => {
-        if(value === ""){
+        if (value === "") {
             if (type === "code") {
                 setIsCodeRepit(false);
             } else {
@@ -222,7 +227,7 @@ const NewProductScreen = () => {
         if (product !== null) {
             if (type === "code") {
                 setIsCodeRepit(product !== undefined ? product : isCodeRepit);
-            }if (type === "name") {
+            } if (type === "name") {
                 setIsNameRepit(product !== undefined ? product : isNameRepit);
             }
         }
@@ -230,6 +235,10 @@ const NewProductScreen = () => {
 
     const getUnits = async () => {
         setUnits(await getUnitsSimpleService(userToken));
+    }
+
+    const getCategories = async () => {
+        setCategories(await getCategoriesByDadService("product", userToken));
     }
 
     const getMaterials = async () => {
@@ -254,12 +263,14 @@ const NewProductScreen = () => {
 
     useEffect(() => {
         getUnits();
+        getCategories();
         getMaterials();
         getPackingKits();
         getOthersExpenses();
         isValidNextMaterial();
         return () => {
             setUnits([]);
+            setCategories([]);
             setMaterials([]);
             setPackingkits([]);
             setOthersExpenses([]);
@@ -312,6 +323,7 @@ const NewProductScreen = () => {
                                 <FormProduct
                                     mode="new"
                                     units={units}
+                                    categories={categories}
                                     productPayload={productPayload}
                                     setProductPayload={setProductPayload}
                                     checkCodeOrNameExists={checkCodeOrNameExists}
@@ -365,15 +377,26 @@ const NewProductScreen = () => {
                             }
                         </Box>
                         <Box sx={{ display: 'flex', flexDirection: 'row', pt: 1 }}>
-                            <Button
-                                color="inherit"
-                                variant="contained"
-                                disabled={activeStep === 0}
-                                onClick={() => activeStep === 4 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
-                                sx={{ mr: 1 }}
-                            >
-                            {activeStep === 4 ? "Cancelar" : "Atrás"}
-                            </Button>
+                            {activeStep === 0 ? (
+                                <Button
+                                    variant="contained"
+                                    type="button"
+                                    sx={{ mr: 1 }}
+                                    LinkComponent={NavLink} to={`/`}
+                                >
+                                    Volver
+                                </Button>
+                            ) : (
+                                <Button
+                                    color="inherit"
+                                    variant="contained"
+                                    disabled={activeStep === 0}
+                                    onClick={() => activeStep === 4 ? stepResets(0) : setActiveStep((prevActiveStep) => prevActiveStep - 1)}
+                                    sx={{ mr: 1 }}
+                                >
+                                    {activeStep === 4 ? "Cancelar" : "Atrás"}
+                                </Button>
+                            )}
                             <Box sx={{ flex: '1 1 auto' }} />
                             {isStepOptional(activeStep) && (
                                 <Button variant="contained" color="inherit" onClick={async () => handleSkip()} sx={{ mr: 1 }}>

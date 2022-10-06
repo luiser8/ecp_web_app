@@ -23,11 +23,12 @@ const Products = () => {
 
   const columns = [
     { id: 1, name: 'Código', color: '#e3f2fd', align: 'left' },
-    { id: 2, name: 'Nombre', color: '#e3f2fd', align: 'left' },
-    { id: 3, name: 'Presentación', color: '#e3f2fd', align: 'left' },
-    { id: 4, name: 'Estado', color: '#e3f2fd', align: 'left' },
-    { id: 5, name: 'Fecha', color: '#e3f2fd', align: 'left' },
-    { id: 6, name: 'Opciones', color: '#e3f2fd', align: 'right' },
+    { id: 2, name: 'Categoría', color: '#e3f2fd', align: 'left' },
+    { id: 3, name: 'Nombre', color: '#e3f2fd', align: 'left' },
+    { id: 4, name: 'Presentación', color: '#e3f2fd', align: 'left' },
+    { id: 5, name: 'Estado', color: '#e3f2fd', align: 'left' },
+    { id: 6, name: 'Fecha', color: '#e3f2fd', align: 'left' },
+    { id: 7, name: 'Opciones', color: '#e3f2fd', align: 'right' },
   ];
 
   const showDeleteProduct = (obj) => {

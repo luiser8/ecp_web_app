@@ -2,10 +2,26 @@ import { Box, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from 
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FormProduct = ({ mode, units, productPayload, setProductPayload, checkCodeOrNameExists, isCodeRepit, isNameRepit }) => {
+const FormProduct = ({ mode, units, categories, productPayload, setProductPayload, checkCodeOrNameExists, isCodeRepit, isNameRepit }) => {
     return (
         <Grid component="div">
             <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+                <FormControl fullWidth style={{ marginTop: "14px" }}>
+                <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
+                    <Select
+                        size="small"
+                        labelId="category"
+                        id="category"
+                        value={productPayload.category}
+                        label="Categoría"
+                        required
+                        onChange={(ev) => setProductPayload({ ...productPayload, category: ev.target.value })}
+                    >
+                        {categories.map((_, item) => (
+                            <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
                 <FormControl fullWidth style={{ marginTop: "14px" }}>
                     <InputLabel id="unit" style={{ marginTop: "-7px" }}>Unidad de medida</InputLabel>
                     <Select
@@ -158,6 +174,7 @@ const FormProduct = ({ mode, units, productPayload, setProductPayload, checkCode
 FormProduct.propTypes = {
     mode: PropTypes.string,
     units: PropTypes.array,
+    categories: PropTypes.array,
     productPayload: PropTypes.object,
     setProductPayload: PropTypes.func,
     checkCodeOrNameExists: PropTypes.func,

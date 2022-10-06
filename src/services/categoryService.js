@@ -1,4 +1,4 @@
-import { deleteCategories, getCategoriesAll, getCategoriesById, getCategoriesExists, getCategoriesSimple, postCategories, putCategories } from '../client/categoryClient';
+import { deleteCategories, getCategoriesAll, getCategoriesByDad, getCategoriesById, getCategoriesExists, getCategoriesSimple, postCategories, putCategories } from '../client/categoryClient';
 
 export const getCategorySimpleService = async (userToken) => {
     let categories = [];
@@ -40,6 +40,20 @@ export const getCategoriesByIdService = async (id, userToken) => {
         new Error(error);
     }));
     return category;
+}
+
+export const getCategoriesByDadService = async (dad, userToken) => {
+    let categories = [];
+    (Promise.all([
+        await getCategoriesByDad(dad, userToken).then((values) => {
+            if (values !== null) {
+                categories = [...categories, ...values !== undefined ? values : []];
+            }
+        }),
+    ]).catch(error => {
+        new Error(error);
+    }));
+    return categories;
 }
 
 export const getCategoriesExistsService = async (type, value, userToken) => {

@@ -7,6 +7,7 @@ const FormPackings =
   ({
     mode,
     units,
+    categories,
     suppliers,
     packingsPayload,
     setPackingsPayload,
@@ -19,6 +20,22 @@ const FormPackings =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
+        <FormControl fullWidth style={{ marginTop: "14px" }}>
+            <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
+            <Select
+              size="small"
+              labelId="category"
+              id="category"
+              value={packingsPayload.category}
+              label="Categoría"
+              required
+              onChange={(ev) => setPackingsPayload({ ...packingsPayload, category: ev.target.value })}
+            >
+              {categories.map((_, item) => (
+                <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
             <InputLabel id="unit" style={{ marginTop: "-7px" }}>Unidad de medida</InputLabel>
             <Select
@@ -169,6 +186,7 @@ const FormPackings =
 FormPackings.propTypes = {
   mode: PropTypes.string,
   units: PropTypes.array,
+  categories: PropTypes.array,
   suppliers: PropTypes.array,
   packingsPayload: PropTypes.object,
   setPackingsPayload: PropTypes.func,

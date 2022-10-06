@@ -4,6 +4,9 @@ export const getProductsSimpleService = async (userToken) => {
     let products = [];
     (Promise.all([
         await getProductsSimple(userToken).then((values) => {
+            if (values === "Invalid Token") {
+                return;
+            }
             if (values !== null) {
                 products = [...products, ...values !== undefined ? values : []];
             }

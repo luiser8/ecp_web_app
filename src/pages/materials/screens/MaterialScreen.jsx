@@ -9,12 +9,14 @@ import { getMaterialByIdService, getMaterialsExistsService, postMaterialService,
 import { getUnitsSimpleService } from '../../../services/unitsService';
 import { getSuppliersSimpleService } from '../../../services/suppliersService';
 import { useParams, useNavigate } from 'react-router-dom';
+import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const MaterialScreen = ({ mode }) => {
     const { checkUser } = useContext(Context);
     const userToken = checkUser().accesstoken;
     const [units, setUnits] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
+    const [categories, setCategories] = useState([]);
     //Router, params / navigate
     let { id } = useParams();
     const navigate = useNavigate();
@@ -26,6 +28,7 @@ const MaterialScreen = ({ mode }) => {
     const [materialPayload, setMaterialPayload] = useState(
         {
             "unit": "",
+            "category": "",
             "supplier": "",
             "code": "",
             "name": "",
@@ -47,6 +50,7 @@ const MaterialScreen = ({ mode }) => {
 
     const resetMaterialPayload = () => {
         materialPayload.unit = "";
+        materialPayload.category = "";
         materialPayload.supplier = "";
         materialPayload.code = "";
         materialPayload.name = "";
@@ -58,6 +62,7 @@ const MaterialScreen = ({ mode }) => {
 
     const isValidMaterialPayload = () => {
         return materialPayload.unit === ""
+            || materialPayload.category === ""
             || materialPayload.supplier === ""
             || materialPayload.code === ""
             || materialPayload.name === ""
@@ -108,6 +113,10 @@ const MaterialScreen = ({ mode }) => {
         setUnits(await getUnitsSimpleService(userToken));
     }
 
+    const getCategories = async () => {
+        setCategories(await getCategoriesByDadService("material", userToken));
+    }
+
     const getSuppliers = async () => {
         setSuppliers(await getSuppliersSimpleService(userToken));
     }
@@ -116,6 +125,7 @@ const MaterialScreen = ({ mode }) => {
         const materialItem = await getMaterialByIdService(id, userToken);
         if (materialItem !== undefined || null) {
             materialItem.unit = materialItem.unit._id;
+            materialItem.category = materialItem.category._id;
             materialItem.supplier = materialItem.supplier._id;
             setMaterialPayload({ ...materialPayload, ...materialItem });
         }
@@ -146,9 +156,11 @@ const MaterialScreen = ({ mode }) => {
         }
         getUnits();
         getSuppliers();
+        getCategories();
         return () => {
             setUnits([]);
             setSuppliers([]);
+            setCategories([]);
         };
     }, []);
 
@@ -161,6 +173,7 @@ const MaterialScreen = ({ mode }) => {
                 <FormMaterial
                     mode={mode}
                     units={units}
+                    categories={categories}
                     suppliers={suppliers}
                     materialPayload={materialPayload}
                     setMaterialPayload={setMaterialPayload}
