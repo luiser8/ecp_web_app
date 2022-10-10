@@ -1,12 +1,12 @@
 export default config = {
     url: {
-        production: false,
+        production: true,
         dev: 'http://localhost:9010/api/v1/',
-        prod: 'http://localhost/api/v1/'
+        prod: 'https://ecp-web-api.herokuapp.com/api/v1/'
     },
     headers: {
-        production: false,
+        production: true,
         dev: new Headers({ 'Content-Type': 'application/json;charset=UTF-8'}),
-        prod: ''
+        prod: new Headers({ 'Content-Type': 'application/json;charset=UTF-8'})
     }
 };
