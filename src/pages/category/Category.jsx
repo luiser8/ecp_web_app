@@ -24,7 +24,7 @@ const Category = () => {
   const columns = [
     { id: 1, name: 'Nombre', color: '#e3f2fd', align: 'left' },
     { id: 2, name: 'Descripción', color: '#e3f2fd', align: 'left' },
-    { id: 3, name: 'Categoría padre', color: '#e3f2fd', align: 'left' },
+    { id: 3, name: 'Categoría principal', color: '#e3f2fd', align: 'left' },
     { id: 4, name: 'Estado', color: '#e3f2fd', align: 'left' },
     { id: 5, name: 'Fecha', color: '#e3f2fd', align: 'left' },
     { id: 6, name: 'Opciones', color: '#e3f2fd', align: 'right' },
