@@ -18,7 +18,7 @@ const FormCategory =
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
-              <InputLabel id="dad" style={{ marginTop: "-7px" }}>Categoría padre</InputLabel>
+              <InputLabel id="dad" style={{ marginTop: "-7px" }}>Categoría principal</InputLabel>
               <Select
                 size="small"
                 labelId="dad"
