@@ -28,7 +28,7 @@ const FormSupplier =
             onChange={(ev) => setSupplierPayload({ ...supplierPayload, type: ev.target.value })}
           >
             <FormControlLabel value="natural" control={<Radio />} label="Persona natural" />
-            <FormControlLabel value="juridica" control={<Radio />} label="Persona jurídica" />
+            <FormControlLabel value="juridico" control={<Radio />} label="Persona jurídica" />
           </RadioGroup>
         </FormControl>
           <TextField
