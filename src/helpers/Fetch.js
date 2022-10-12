@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-const apiurl = import.meta.env.VITE_API_URL;
+const apiurl = import.meta.env.VITE_NODE_ENV === "development" ? import.meta.env.VITE_API_URL_LOCAL : import.meta.env.VITE_API_URL;
 
 export const get = async (route, token) => {
     const url = `${apiurl}${route}`;

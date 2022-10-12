@@ -7,7 +7,7 @@ const FormProduct = ({ mode, units, categories, productPayload, setProductPayloa
         <Grid component="div">
             <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
                 <FormControl fullWidth style={{ marginTop: "14px" }}>
-                <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
+                    <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
                     <Select
                         size="small"
                         labelId="category"
@@ -17,9 +17,14 @@ const FormProduct = ({ mode, units, categories, productPayload, setProductPayloa
                         required
                         onChange={(ev) => setProductPayload({ ...productPayload, category: ev.target.value })}
                     >
-                        {categories.map((_, item) => (
-                            <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
-                        ))}
+                        {Object.keys(categories).length !== 0 ?
+                            (
+                                categories.map((_, item) => (
+                                    <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+                                ))
+                            ) : (
+                                <MenuItem value={0}>Cargando...</MenuItem>
+                            )}
                     </Select>
                 </FormControl>
                 <FormControl fullWidth style={{ marginTop: "14px" }}>
@@ -33,9 +38,14 @@ const FormProduct = ({ mode, units, categories, productPayload, setProductPayloa
                         required
                         onChange={(ev) => setProductPayload({ ...productPayload, unit: ev.target.value })}
                     >
-                        {units.map((_, item) => (
-                            <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
-                        ))}
+                        {Object.keys(units).length !== 0 ?
+                            (
+                                units.map((_, item) => (
+                                    <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
+                                ))
+                            ) : (
+                                <MenuItem value={0}>Cargando...</MenuItem>
+                            )}
                     </Select>
                 </FormControl>
                 <TextField
