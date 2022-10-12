@@ -20,7 +20,7 @@ const FormPackings =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
-        <FormControl fullWidth style={{ marginTop: "14px" }}>
+          <FormControl fullWidth style={{ marginTop: "14px" }}>
             <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
             <Select
               size="small"
@@ -31,9 +31,14 @@ const FormPackings =
               required
               onChange={(ev) => setPackingsPayload({ ...packingsPayload, category: ev.target.value })}
             >
-              {categories.map((_, item) => (
-                <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
-              ))}
+              {Object.keys(categories).length !== 0 ?
+                (
+                  categories.map((_, item) => (
+                    <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
@@ -47,9 +52,14 @@ const FormPackings =
               required
               onChange={(ev) => setPackingsPayload({ ...packingsPayload, unit: ev.target.value })}
             >
-              {units.map((_, item) => (
-                <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
-              ))}
+              {Object.keys(units).length !== 0 ?
+                (
+                  units.map((_, item) => (
+                    <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
@@ -63,9 +73,14 @@ const FormPackings =
               required
               onChange={(ev) => setPackingsPayload({ ...packingsPayload, supplier: ev.target.value })}
             >
-              {suppliers.map((_, item) => (
-                <MenuItem key={suppliers[item]._id} value={suppliers[item]._id}>{suppliers[item].name}</MenuItem>
-              ))}
+              {Object.keys(suppliers).length !== 0 ?
+                (
+                  suppliers.map((_, item) => (
+                    <MenuItem key={suppliers[item]._id} value={suppliers[item]._id}>{suppliers[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <TextField
@@ -175,7 +190,7 @@ const FormPackings =
             type="button"
             onClick={async () => submit()}
             disabled={isValidPackingsPayload() || isCodeRepit || isNameRepit}
-            >
+          >
             Guardar
           </Button>
         </Box>

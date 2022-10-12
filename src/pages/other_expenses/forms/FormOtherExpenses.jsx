@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, FormControl, Grid,  InputLabel,  MenuItem,  Select,  TextField } from '@mui/material';
+import { Box, Button, FormControl, Grid, InputLabel, MenuItem, Select, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
@@ -18,7 +18,7 @@ const FormOtherExpenses =
     return (
       <Grid component="div">
         <Box component="form" noValidate sx={{ width: '60%', pl: 2 }}>
-        <FormControl fullWidth style={{ marginTop: "14px" }}>
+          <FormControl fullWidth style={{ marginTop: "14px" }}>
             <InputLabel id="category" style={{ marginTop: "-7px" }}>Categoría</InputLabel>
             <Select
               size="small"
@@ -29,28 +29,33 @@ const FormOtherExpenses =
               required
               onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, category: ev.target.value })}
             >
-              {categories.map((_, item) => (
-                <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
-              ))}
+              {Object.keys(categories).length !== 0 ?
+                (
+                  categories.map((_, item) => (
+                    <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <TextField
-              value={otherExpensesPayload.code}
-              onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, code: ev.target.value })}
-              onKeyUp={(ev) => checkCodeOrNameExists('code', ev.target.value)}
-              margin="normal"
-              required
-              error={isCodeRepit}
-              helperText={isCodeRepit ? "Código repetido" : ""}
-              type="text"
-              fullWidth
-              id="code"
-              label={isCodeRepit ? "Error" : "Código"}
-              name="code"
-              size="small"
-              autoFocus
-              sx={{ marginBottom: isCodeRepit ? -1 : 1 }}
-            />
+            value={otherExpensesPayload.code}
+            onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, code: ev.target.value })}
+            onKeyUp={(ev) => checkCodeOrNameExists('code', ev.target.value)}
+            margin="normal"
+            required
+            error={isCodeRepit}
+            helperText={isCodeRepit ? "Código repetido" : ""}
+            type="text"
+            fullWidth
+            id="code"
+            label={isCodeRepit ? "Error" : "Código"}
+            name="code"
+            size="small"
+            autoFocus
+            sx={{ marginBottom: isCodeRepit ? -1 : 1 }}
+          />
           <TextField
             value={otherExpensesPayload.name}
             onChange={(ev) => setOtherExpensesPayload({ ...otherExpensesPayload, name: ev.target.value })}

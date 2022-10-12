@@ -34,9 +34,14 @@ const FormMaterial =
               required
               onChange={(ev) => setMaterialPayload({ ...materialPayload, category: ev.target.value })}
             >
-              {categories.map((_, item) => (
-                <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
-              ))}
+              {Object.keys(categories).length !== 0 ?
+                (
+                  categories.map((_, item) => (
+                    <MenuItem key={categories[item]._id} value={categories[item]._id}>{categories[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
@@ -50,9 +55,14 @@ const FormMaterial =
               required
               onChange={(ev) => setMaterialPayload({ ...materialPayload, unit: ev.target.value })}
             >
-              {units.map((_, item) => (
-                <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
-              ))}
+              {Object.keys(units).length !== 0 ?
+                (
+                  units.map((_, item) => (
+                    <MenuItem key={units[item]._id} value={units[item]._id}>{units[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <FormControl fullWidth style={{ marginTop: "14px" }}>
@@ -66,9 +76,14 @@ const FormMaterial =
               required
               onChange={(ev) => setMaterialPayload({ ...materialPayload, supplier: ev.target.value })}
             >
-              {suppliers.map((_, item) => (
-                <MenuItem key={suppliers[item]._id} value={suppliers[item]._id}>{suppliers[item].name}</MenuItem>
-              ))}
+              {Object.keys(suppliers).length !== 0 ?
+                (
+                  suppliers.map((_, item) => (
+                    <MenuItem key={suppliers[item]._id} value={suppliers[item]._id}>{suppliers[item].name}</MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={0}>Cargando...</MenuItem>
+                )}
             </Select>
           </FormControl>
           <TextField
