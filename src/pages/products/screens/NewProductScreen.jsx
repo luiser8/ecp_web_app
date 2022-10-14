@@ -16,6 +16,7 @@ import { getOtherExpensesAllService } from '../../../services/otherExpensesServi
 import { getUnitsSimpleService } from '../../../services/unitsService';
 import FormOtherExpenses from '../forms/FormOtherExpenses';
 import { getCategoriesByDadService } from '../../../services/categoryService';
+import DialogCustomSession from '../../../components/dialogs/DialogCustomSession';
 
 const NewProductScreen = () => {
     const [activeStep, setActiveStep] = useState(0);
@@ -31,7 +32,7 @@ const NewProductScreen = () => {
     const [productPackingkitsResume, setProductPackingkitsResume] = useState([]);
     const [productOthersExpenses, setProductOthersExpenses] = useState([]);
     const [productOthersExpensesResume, setProductOthersExpensesResume] = useState([]);
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Notificaciones
     const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -172,7 +173,7 @@ const NewProductScreen = () => {
         }
 
         if (activeStep === steps.length - 1) {
-            await postProducts();
+            await postProducts(userToken);
         }
     };
 
@@ -223,50 +224,76 @@ const NewProductScreen = () => {
             }
             return;
         }
-        const product = await getProductsExistsService(type, value, userToken);
-        if (product !== null) {
+        const { data, error } = await getProductsExistsService(type, value, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             if (type === "code") {
-                setIsCodeRepit(product !== undefined ? product : isCodeRepit);
+                setIsCodeRepit(data !== undefined ? data : isCodeRepit);
             } if (type === "name") {
-                setIsNameRepit(product !== undefined ? product : isNameRepit);
+                setIsNameRepit(data !== undefined ? data : isNameRepit);
             }
         }
     }
 
-    const getUnits = async () => {
-        setUnits(await getUnitsSimpleService(userToken));
+    const getUnits = async (userToken) => {
+        const { data, error } = await getUnitsSimpleService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setUnits(data);
     }
 
-    const getCategories = async () => {
-        setCategories(await getCategoriesByDadService("product", userToken));
+    const getCategories = async (userToken) => {
+        const { data, error } = await getCategoriesByDadService("product", userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setCategories(data);
     }
 
-    const getMaterials = async () => {
-        setMaterials(await getMaterialsSimpleService(userToken));
+    const getMaterials = async (userToken) => {
+        const { data, error } = await getMaterialsSimpleService(userToken)
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setMaterials(data);
     }
 
-    const getPackingKits = async () => {
-        setPackingkits(await getPackingKitSimpleService(userToken));
+    const getPackingKits = async (userToken) => {
+        const { data, error } = await getPackingKitSimpleService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setPackingkits(data);
     }
 
-    const getOthersExpenses = async () => {
-        setOthersExpenses(await getOtherExpensesAllService(userToken));
+    const getOthersExpenses = async (userToken) => {
+        const { data, error } = await getOtherExpensesAllService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setOthersExpenses(data);
     }
 
-    const postProducts = async () => {
-        const payload = await postProductService(productPayload, userToken);
-        if (payload !== null) {
-            setOpenSnackBar(true); resetProductPayload(); setProduct(payload);
+    const postProducts = async (userToken) => {
+        const { data, error } = await postProductService(productPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
+            setOpenSnackBar(true); resetProductPayload(); setProduct(data);
         }
         resetProductPayload();
     }
 
     useEffect(() => {
-        getUnits();
-        getCategories();
-        getMaterials();
-        getPackingKits();
-        getOthersExpenses();
+        getUnits(userToken);
+        getCategories(userToken);
+        getMaterials(userToken);
+        getPackingKits(userToken);
+        getOthersExpenses(userToken);
         isValidNextMaterial();
         return () => {
             setUnits([]);

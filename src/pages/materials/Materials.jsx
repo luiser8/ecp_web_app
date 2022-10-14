@@ -10,7 +10,7 @@ import SnackBarCustom from '../../components/alerts/SnackBarCustom';
 import { deleteMaterialService, getMaterialsSimpleService } from '../../services/materialsService';
 
 const Materials = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   const [materials, setMaterials] = useState([]);
   //Paginación
@@ -61,18 +61,25 @@ const Materials = () => {
   }
 
   const confirmDeleteMaterial = async (id) => {
-    const material = await deleteMaterialService(id, userToken);
-    if (material !== null) {
-      setOpenDelete(false); setOpenSnackBar(true); getMaterials();
+    const { data, error } = await deleteMaterialService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== null) {
+      setOpenDelete(false); setOpenSnackBar(true); getMaterials(userToken);
     }
   }
 
-  const getMaterials = async () => {
-    setMaterials(await getMaterialsSimpleService(userToken));
+  const getMaterials = async (userToken) => {
+    const { data, error } = await getMaterialsSimpleService(userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setMaterials(data);
   }
 
   useEffect(() => {
-    getMaterials();
+    getMaterials(userToken);
     return () => {
       setMaterials([]);
     };

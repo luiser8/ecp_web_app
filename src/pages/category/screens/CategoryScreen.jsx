@@ -9,7 +9,7 @@ import { getCategoriesByIdService, getCategoriesExistsService, postCategoriesSer
 import FormCategory from '../forms/FormCategory';
 
 const CategoryScreen = ({ mode }) => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Router, params / navigate
     let { id } = useParams();
@@ -83,30 +83,42 @@ const CategoryScreen = ({ mode }) => {
             }
             return;
         }
-        const categories = await getCategoriesExistsService(type, value, userToken);
+        const { data, error } = await getCategoriesExistsService(type, value, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
         if (type === "name") {
-            setIsNameRepit(categories !== undefined ? categories : isNameRepit);
+            setIsNameRepit(data !== undefined ? data : isNameRepit);
         }
     }
 
-    const getCategories = async () => {
-        const categoriesItem = await getCategoriesByIdService(id, userToken);
-        if (categoriesItem !== undefined || null) {
-            setCategoryPayload({ ...categoryPayload, ...categoriesItem });
+    const getCategories = async (userToken) => {
+        const { data, error } = await getCategoriesByIdService(id, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== undefined || null) {
+            setCategoryPayload({ ...categoryPayload, ...data });
         }
     }
 
     const postCategories = async () => {
-        const payload = await postCategoriesService(categoryPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await postCategoriesService(categoryPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetCategoryPayload();
         }
         resetCategoryPayload();
     }
 
     const putCategories = async () => {
-        const payload = await putCategoriesService(id, categoryPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await putCategoriesService(id, categoryPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetCategoryPayload();
         }
         resetCategoryPayload();
@@ -115,7 +127,7 @@ const CategoryScreen = ({ mode }) => {
 
     useEffect(() => {
         if (mode === "edit") {
-            getCategories();
+            getCategories(userToken);
         } else {
             null;
         } return () => {};

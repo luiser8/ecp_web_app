@@ -1,15 +1,19 @@
 import { getUnitsSimple } from '../client/unitsClient';
 
 export const getUnitsSimpleService = async (userToken) => {
-    let units = [];
+    let data = []; let error = "";
     (Promise.all([
         await getUnitsSimple(userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                units = [...units, ...values !== undefined ? values : []];
+                data = [...data, ...values !== undefined ? values : []];
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return units;
+    return { data, error };
 }

@@ -52,10 +52,14 @@ const TableMaterials = (
                                 <TableCell align="right">
                                     <Grid item xs={20} md={20} lg={20}>
                                         <NavLink style={{ marginRight: 10 }} to={`${routing}${rows[row]._id}`}>
-                                            <FilterCenterFocusOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Ver materia prima" placement="bottom">
+                                                <FilterCenterFocusOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         <NavLink style={{ marginRight: 8 }} to={`${routing}edit/${rows[row]._id}`}>
-                                            <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Editar materia prima" placement="bottom">
+                                                <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         {rows[row].in_use ?
                                             <NavLink style={{ marginRight: 8 }} to={`#`}>
@@ -74,7 +78,9 @@ const TableMaterials = (
                                                         material: { id: rows[row]._id, name: rows[row].name }
                                                     }
                                                 )}>
+                                            <TooltipCustom title="Eliminar materia prima" placement="bottom">
                                                 <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                             </NavLink>
                                         }
                                     </Grid>

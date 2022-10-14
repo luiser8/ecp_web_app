@@ -10,7 +10,7 @@ import { deleteSupplierService, getSuppliersAllService } from '../../services/su
 import TableSuppliers from './tables/TableSuppliers';
 
 const Suppliers = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired  } = useContext(Context);
   const userToken = checkUser().accesstoken;
   const [suppliers, setSuppliers] = useState([]);
   //Paginación
@@ -60,18 +60,25 @@ const Suppliers = () => {
   }
 
   const confirmDeleteSupplier = async (id) => {
-    const supplier = await deleteSupplierService(id, userToken);
-    if (supplier !== null) {
-      setOpenDelete(false); setOpenSnackBar(true); getSuppliers();
+    const { data, error } = await deleteSupplierService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== null) {
+      setOpenDelete(false); setOpenSnackBar(true); getSuppliers(userToken);
     }
   }
 
-  const getSuppliers = async () => {
-    setSuppliers(await getSuppliersAllService(userToken));
+  const getSuppliers = async (userToken) => {
+    const { data, error } = await getSuppliersAllService(userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setSuppliers(data);
   }
 
   useEffect(() => {
-    getSuppliers();
+    getSuppliers(userToken);
     return () => {
       setSuppliers([]);
     };

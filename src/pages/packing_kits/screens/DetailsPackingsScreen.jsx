@@ -9,7 +9,7 @@ import TableProductSimple from '../../products/tables/TableProductSimple';
 import ListPackingsDetail from '../lists/ListPackingsDetail';
 
 const DetailsPackingsScreen = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   let { id } = useParams();
   const [packing_kits, setPacking_kits] = useState({});
@@ -23,17 +23,25 @@ const DetailsPackingsScreen = () => {
     { id: 5, name: 'Fecha', color: '#e3f2fd' },
   ];
 
-  const getPacking_kits = async () => {
-    setPacking_kits(await getPackingKitByIdService(id, userToken));
+  const getPacking_kits = async (userToken) => {
+    const { data, error } = await getPackingKitByIdService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setPacking_kits(data);
   }
 
-  const getPacking_kitsWithProd = async () => {
-    setPacking_kitsWithProducts(await getPackingKitWithProducts(id, userToken));
+  const getPacking_kitsWithProd = async (userToken) => {
+    const { data, error } = await getPackingKitWithProducts(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setPacking_kitsWithProducts(data);
   }
 
   useEffect(() => {
-    getPacking_kits();
-    getPacking_kitsWithProd();
+    getPacking_kits(userToken);
+    getPacking_kitsWithProd(userToken);
     return () => {
       setPacking_kits({});
       setPacking_kitsWithProducts([]);

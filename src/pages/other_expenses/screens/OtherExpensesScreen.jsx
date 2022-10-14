@@ -10,7 +10,7 @@ import FormOtherExpenses from '../forms/FormOtherExpenses';
 import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const OtherExpensesScreen = ({ mode }) => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Router, params / navigate
     let { id } = useParams();
@@ -88,38 +88,54 @@ const OtherExpensesScreen = ({ mode }) => {
             }
             return;
         }
-        const otherExpenses = await getOtherExpensesExistsService(type, value, userToken);
+        const { data, error } = await getOtherExpensesExistsService(type, value, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
         if (type === "code") {
-            setIsCodeRepit(otherExpenses !== undefined ? otherExpenses : isCodeRepit);
+            setIsCodeRepit(data !== undefined ? data : isCodeRepit);
         }
         if (type === "name") {
-            setIsNameRepit(otherExpenses !== undefined ? otherExpenses : isNameRepit);
+            setIsNameRepit(data !== undefined ? data : isNameRepit);
         }
     }
 
-    const getOtherExpenses = async () => {
-        const otherExpensesItem = await getOtherExpensesByIdService(id, userToken);
-        if (otherExpensesItem !== undefined || null) {
-            otherExpensesItem.category = otherExpensesItem.category._id;
-            setOtherExpensesPayload({ ...otherExpensesPayload, ...otherExpensesItem });
+    const getOtherExpenses = async (userToken) => {
+        const { data, error } = await getOtherExpensesByIdService(id, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== undefined || null) {
+            data.category = data.category._id;
+            setOtherExpensesPayload({ ...otherExpensesPayload, ...data });
         }
     }
 
-    const getCategories = async () => {
-        setCategories(await getCategoriesByDadService("others", userToken));
+    const getCategories = async (userToken) => {
+        const { data, error } = await getCategoriesByDadService("others", userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setCategories(data);
     }
 
     const postOtherExpenses = async () => {
-        const payload = await postOtherExpensesService(otherExpensesPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await postOtherExpensesService(otherExpensesPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetOtherExpensesPayload();
         }
         resetOtherExpensesPayload();
     }
 
     const putOtherExpenses = async () => {
-        const payload = await putOtherExpensesService(id, otherExpensesPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await putOtherExpensesService(id, otherExpensesPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetOtherExpensesPayload();
         }
         resetOtherExpensesPayload();
@@ -128,11 +144,11 @@ const OtherExpensesScreen = ({ mode }) => {
 
     useEffect(() => {
         if (mode === "edit") {
-            getOtherExpenses();
+            getOtherExpenses(userToken);
         } else {
             null;
         }
-        getCategories();
+        getCategories(userToken);
         return () => {
             setCategories([]);
         };

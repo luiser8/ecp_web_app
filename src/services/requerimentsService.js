@@ -1,15 +1,19 @@
 import { getAllRequeriments } from '../client/requerimentsClient';
 
 export const getAllRequerimentsService = async (userToken) => {
-    let requirements = [];
+    let data = []; let error = "";
     (Promise.all([
         await getAllRequeriments(userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                requirements = [...requirements, ...values !== undefined ? values : []];
+                data = [...data, ...values !== undefined ? values : []];
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return requirements;
+    return { data, error };
 }

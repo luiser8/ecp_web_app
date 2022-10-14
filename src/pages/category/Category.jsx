@@ -10,7 +10,7 @@ import { deleteCategoriesService, getCategoryAllService } from '../../services/c
 import TableCategory from './tables/TableCategory';
 
 const Category = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   const [categories, setCategories] = useState([]);
   //Paginación
@@ -59,18 +59,25 @@ const Category = () => {
   }
 
   const confirmDeleteCategory = async (id) => {
-    const categoryDelete = await deleteCategoriesService(id, userToken);
-    if (categoryDelete !== null) {
-      setOpenDelete(false); setOpenSnackBar(true); getCategories();
+    const { data, error } = await deleteCategoriesService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== null) {
+      setOpenDelete(false); setOpenSnackBar(true); getCategories(userToken);
     }
   }
 
-  const getCategories = async () => {
-    setCategories(await getCategoryAllService(userToken));
+  const getCategories = async (userToken) => {
+    const { data, error } = await getCategoryAllService(userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setCategories(data);
   }
 
   useEffect(() => {
-    getCategories();
+    getCategories(userToken);
     return () => {
       setCategories([]);
     };

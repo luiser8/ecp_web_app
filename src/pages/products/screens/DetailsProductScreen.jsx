@@ -3,13 +3,14 @@ import React, { useEffect, useState, useContext, Fragment } from 'react';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../auth/Context';
 import EmptyResponse from '../../../components/alerts/EmptyResponse';
+import DialogCustomSession from '../../../components/dialogs/DialogCustomSession';
 import Page from '../../../components/layouts/Page';
 import { getProductByIdService } from '../../../services/productsService';
 import ListProductDetail from '../lists/ListProductDetail';
 import TableProductDetail from '../tables/TableProductDetail';
 
 const DetailsProductScreen = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   let { id } = useParams();
   const [product, setProduct] = useState([]);
@@ -27,12 +28,16 @@ const DetailsProductScreen = () => {
     { id: 6, name: 'Costo x U', color: '#e3f2fd' },
   ];
 
-  const getProduct = async () => {
-    setProduct(await getProductByIdService(id, userToken));
+  const getProduct = async (userToken) => {
+    const { data, error } = await getProductByIdService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setProduct(data);
   }
 
   useEffect(() => {
-    getProduct();
+    getProduct(userToken);
     return () => {
       setProduct([]);
     };

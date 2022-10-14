@@ -8,17 +8,23 @@ import { getSupplierByIdService } from '../../../services/supplierService';
 import ListSupplierDetail from '../lists/ListSupplierDetail';
 
 const DetailsSuppliersScreen = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   let { id } = useParams();
   const [supplier, setSupplier] = useState({});
 
-  const getSupplier = async () => {
-    setSupplier(await getSupplierByIdService(id, userToken));
+  const getSupplier = async (userToken) => {
+    const { data, error } = await getSupplierByIdService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== undefined || null) {
+      setSupplier(data );
+    }
   }
 
   useEffect(() => {
-    getSupplier();
+    getSupplier(userToken);
     return () => {
       setSupplier({});
     };

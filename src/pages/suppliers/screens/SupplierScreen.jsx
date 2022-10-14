@@ -9,7 +9,7 @@ import { getSupplierByIdService, getSuppliersExistsService, postSupplierService,
 import FormSupplier from '../forms/FormSupplier';
 
 const SupplierScreen = ({ mode }) => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     //Router, params / navigate
     let { id } = useParams();
@@ -97,36 +97,48 @@ const SupplierScreen = ({ mode }) => {
             }
             return;
         }
-        const supplier = await getSuppliersExistsService(type, value, userToken);
+        const { data, error } = await getSuppliersExistsService(type, value, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
         if (type === "identifier") {
-            setIsIdRepit(supplier !== undefined ? supplier : isIdRepit);
+            setIsIdRepit(data !== undefined ? data : isIdRepit);
         } if (type === "name") {
-            setIsNameRepit(supplier !== undefined ? supplier : isNameRepit);
+            setIsNameRepit(data !== undefined ? data : isNameRepit);
         }if (type === "email") {
-            setIsEmailRepit(supplier !== undefined ? supplier : isEmailRepit);
+            setIsEmailRepit(data !== undefined ? data : isEmailRepit);
         }if (type === "phone") {
-            setIsPhoneRepit(supplier !== undefined ? supplier : isPhoneRepit);
+            setIsPhoneRepit(data !== undefined ? data : isPhoneRepit);
         }
     }
 
-    const getSupplier = async () => {
-        const supplierItem = await getSupplierByIdService(id, userToken);
-        if (supplierItem !== undefined || null) {
-            setSupplierPayload({ ...supplierPayload, ...supplierItem });
+    const getSupplier = async (userToken) => {
+        const { data, error } = await getSupplierByIdService(id, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== undefined || null) {
+            setSupplierPayload({ ...supplierPayload, ...data });
         }
     }
 
     const postSupplier = async () => {
-        const payload = await postSupplierService(supplierPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await postSupplierService(supplierPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetSupplierPayload();
         }
         resetSupplierPayload();
     }
 
     const putSupplier = async () => {
-        const payload = await putSupplierService(id, supplierPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await putSupplierService(id, supplierPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetSupplierPayload();
         }
         resetSupplierPayload();
@@ -135,7 +147,7 @@ const SupplierScreen = ({ mode }) => {
 
     useEffect(() => {
         if (mode === "edit") {
-            getSupplier();
+            getSupplier(userToken);
         } else {
             null;
         } return () => {};

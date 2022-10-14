@@ -9,7 +9,7 @@ import TableProductSimple from '../../products/tables/TableProductSimple';
 import ListMaterialDetail from '../lists/ListMaterialDetail';
 
 const DetailsMaterialScreen = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   let { id } = useParams();
   const [material, setMaterial] = useState({});
@@ -23,17 +23,25 @@ const DetailsMaterialScreen = () => {
     { id: 5, name: 'Fecha', color: '#e3f2fd' },
   ];
 
-  const getMaterial = async () => {
-    setMaterial(await getMaterialByIdService(id, userToken));
+  const getMaterial = async (userToken) => {
+    const { data, error } = await getMaterialByIdService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setMaterial(data);
   }
 
-  const getMaterialWithProd = async () => {
-    setMaterialWithProducts(await getMaterialWithProducts(id, userToken));
+  const getMaterialWithProd = async (userToken) => {
+    const { data, error } = await getMaterialWithProducts(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setMaterialWithProducts(data);
   }
 
   useEffect(() => {
-    getMaterial();
-    getMaterialWithProd();
+    getMaterial(userToken);
+    getMaterialWithProd(userToken);
     return () => {
       setMaterial({});
       setMaterialWithProducts([]);

@@ -10,7 +10,7 @@ import { deletePackingKitService, getPackingKitSimpleService } from '../../servi
 import TablePackings from './tables/TablePackings';
 
 const Packings = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   const [packing_kits, setPacking_kits] = useState([]);
   //Paginación
@@ -61,18 +61,25 @@ const Packings = () => {
   }
 
   const confirmDeletePackings = async (id) => {
-    const packings = await deletePackingKitService(id, userToken);
-    if (packings !== null) {
-      setOpenDelete(false); setOpenSnackBar(true); getPackings();
+    const { data, error } = await deletePackingKitService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== null) {
+      setOpenDelete(false); setOpenSnackBar(true); getPackings(userToken);
     }
   }
 
-  const getPackings = async () => {
-    setPacking_kits(await getPackingKitSimpleService(userToken));
+  const getPackings = async (userToken) => {
+    const { data, error } = await getPackingKitSimpleService(userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setPacking_kits(data);
   }
 
   useEffect(() => {
-    getPackings();
+    getPackings(userToken);
     return () => {
       setPacking_kits([]);
     };

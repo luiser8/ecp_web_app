@@ -10,7 +10,7 @@ import { deleteOtherExpensesService, getOtherExpensesAllService } from '../../se
 import TableOtherExpenses from './tables/TableOtherExpenses';
 
 const OtherExpenses = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   const [otherExpenses, setOtherExpenses] = useState([]);
   //Paginación
@@ -61,18 +61,25 @@ const OtherExpenses = () => {
   }
 
   const confirmDeleteOtherExpenses = async (id) => {
-    const otherExpenses = await deleteOtherExpensesService(id, userToken);
-    if (otherExpenses !== null) {
-      setOpenDelete(false); setOpenSnackBar(true); getOtherExpenses();
+    const { data, error } = await deleteOtherExpensesService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== null) {
+      setOpenDelete(false); setOpenSnackBar(true); getOtherExpenses(userToken);
     }
   }
 
-  const getOtherExpenses = async () => {
-    setOtherExpenses(await getOtherExpensesAllService(userToken));
+  const getOtherExpenses = async (userToken) => {
+    const { data, error } = await getOtherExpensesAllService(userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setOtherExpenses(data);
   }
 
   useEffect(() => {
-    getOtherExpenses();
+    getOtherExpenses(userToken);
     return () => {
       setOtherExpenses([]);
     };

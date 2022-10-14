@@ -11,15 +11,19 @@ const Storage = () => {
         };
     }
 
-    const setLocalStorage = (data) => {
-        if (data !== null) {
-            window.localStorage.setItem('userId', data.userId);
-            window.localStorage.setItem('firstname', data.firstname);
-            window.localStorage.setItem('lastname', data.lastname);
-            window.localStorage.setItem('rolname', data.rolname);
+    const setLocalStorage = (type, data) => {
+        if (type === 1) {
+           if (data !== null) {
+                window.localStorage.setItem('userId', data.userId);
+                window.localStorage.setItem('firstname', data.firstname);
+                window.localStorage.setItem('lastname', data.lastname);
+                window.localStorage.setItem('rolname', data.rolname);
+                window.localStorage.setItem('accesstoken', data.accesstoken);
+                window.localStorage.setItem('refreshtoken', data.refreshtoken);
+            }
+        } else if (type === 2) {
             window.localStorage.setItem('accesstoken', data.accesstoken);
-            window.localStorage.setItem('refreshtoken', data.refreshtoken);
-        } else {
+        } else if (type === 3) {
             window.localStorage.removeItem('userId');
             window.localStorage.removeItem('firstname');
             window.localStorage.removeItem('lastname');
