@@ -19,7 +19,7 @@ const DialogCustomConfirm = ({ open, setOpen, title, content, handleConfirm }) =
       </DialogContent>
       <DialogActions>
         <Button variant="contained" onClick={() => handleConfirm(false)}>Cancelar</Button>
-        <Button variant="contained" onClick={() => handleConfirm(true)} autoFocus>Aceptar</Button>
+        <Button variant="contained" onClick={() => handleConfirm(true)}>Aceptar</Button>
       </DialogActions>
     </Dialog>
   );

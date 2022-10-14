@@ -5,14 +5,14 @@ import Page from '../../../components/layouts/Page';
 import { Context } from '../../../auth/Context';
 import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
 import { getUnitsSimpleService } from '../../../services/unitsService';
-import { getSuppliersSimpleService } from '../../../services/suppliersService';
+import { getSuppliersSimpleService } from '../../../services/supplierService';
 import { useParams, useNavigate } from 'react-router-dom';
 import FormPackings from '../forms/FormPackings';
 import { getPackingKitByIdService, getPackingKitsExistsService, postPackingKitService, putPackingKitService } from '../../../services/packingkitService';
 import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const PackingScreen = ({ mode }) => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     const [units, setUnits] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
@@ -98,47 +98,71 @@ const PackingScreen = ({ mode }) => {
             }
             return;
         }
-        const packing_kits = await getPackingKitsExistsService(type, value, userToken);
+        const { data, error } = await getPackingKitsExistsService(type, value, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+          }
         if (type === "code") {
-            setIsCodeRepit(packing_kits !== undefined ? packing_kits : isCodeRepit);
+            setIsCodeRepit(data !== undefined ? data : isCodeRepit);
         } if (type === "name") {
-            setIsNameRepit(packing_kits !== undefined ? packing_kits : isNameRepit);
+            setIsNameRepit(data !== undefined ? data : isNameRepit);
         }
     }
 
-    const getUnits = async () => {
-        setUnits(await getUnitsSimpleService(userToken));
+    const getUnits = async (userToken) => {
+        const { data, error } = await getUnitsSimpleService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setUnits(data);
     }
 
-    const getCategories = async () => {
-        setCategories(await getCategoriesByDadService("kits", userToken));
+    const getCategories = async (userToken) => {
+        const { data, error } = await getCategoriesByDadService("kits", userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setCategories(data);
     }
 
-    const getSuppliers = async () => {
-        setSuppliers(await getSuppliersSimpleService(userToken));
+    const getSuppliers = async (userToken) => {
+        const { data, error } = await getSuppliersSimpleService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setSuppliers(data);
     }
 
-    const getPacking_kits = async () => {
-        const packingsItem = await getPackingKitByIdService(id, userToken);
-        if (packingsItem !== undefined || null) {
-            packingsItem.unit = packingsItem.unit._id;
-            packingsItem.supplier = packingsItem.supplier._id;
-            packingsItem.category = packingsItem.category._id;
-            setPackingsPayload({ ...packingsPayload, ...packingsItem });
+    const getPacking_kits = async (userToken) => {
+        const { data, error } = await getPackingKitByIdService(id, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== undefined || null) {
+            data.unit = data.unit._id;
+            data.supplier = data.supplier._id;
+            data.category = data.category._id;
+            setPackingsPayload({ ...packingsPayload, ...data });
         }
     }
 
     const postPackingKits = async () => {
-        const payload = await postPackingKitService(packingsPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await postPackingKitService(packingsPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetPackingsPayload();
         }
         resetPackingsPayload();
     }
 
     const putPackingKits = async () => {
-        const payload = await putPackingKitService(id, packingsPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await putPackingKitService(id, packingsPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetPackingsPayload();
         }
         resetPackingsPayload();
@@ -147,13 +171,13 @@ const PackingScreen = ({ mode }) => {
 
     useEffect(() => {
         if (mode === "edit") {
-            getPacking_kits();
+            getPacking_kits(userToken);
         } else {
             null;
         }
-        getUnits();
-        getSuppliers();
-        getCategories();
+        getUnits(userToken);
+        getSuppliers(userToken);
+        getCategories(userToken);
         return () => {
             setUnits([]);
             setSuppliers([]);

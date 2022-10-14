@@ -52,10 +52,14 @@ const TablePackings = (
                                 <TableCell align="right">
                                     <Grid item xs={20} md={20} lg={20}>
                                         <NavLink style={{ marginRight: 10 }} to={`${routing}${rows[row]._id}`}>
-                                            <FilterCenterFocusOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Ver herramienta de embalaje" placement="bottom">
+                                                <FilterCenterFocusOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         <NavLink style={{ marginRight: 8 }} to={`${routing}edit/${rows[row]._id}`}>
-                                            <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Editar herramienta de embalaje" placement="bottom">
+                                                <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         {rows[row].in_use ?
                                             <NavLink style={{ marginRight: 8 }} to={`#`}>
@@ -74,7 +78,9 @@ const TablePackings = (
                                                         packing_kit: { id: rows[row]._id, name: rows[row].name }
                                                     }
                                                 )}>
+                                            <TooltipCustom title="Eliminar herramienta de embalaje" placement="bottom">
                                                 <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                             </NavLink>
                                         }
                                     </Grid>

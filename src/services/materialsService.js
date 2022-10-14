@@ -1,99 +1,127 @@
 import { deleteMaterial, getMaterialById, getMaterialExists, getMaterialsSimple, getMaterialWithProduct, postMaterial, putMaterial } from '../client/materialsClient';
 
 export const getMaterialsSimpleService = async (userToken) => {
-    let materials = [];
+    let data = []; let error = "";
     (Promise.all([
         await getMaterialsSimple(userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                materials = [...materials, ...values !== undefined ? values : []];
+                data = [...data, ...values !== undefined ? values : []];
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return materials;
+    return { data, error };
 }
 
 export const getMaterialByIdService = async (id, userToken) => {
-    let material = {};
+    let data = {}; let error = "";
     (Promise.all([
         await getMaterialById(id, userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                material = {...material, ...values !== undefined ? values : {}};
+                data = {...data, ...values !== undefined ? values : {}};
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return material;
+    return { data, error };
 }
 
 export const getMaterialWithProducts = async (id, userToken) => {
-    let material = [];
+    let data = []; let error = "";
     (Promise.all([
         await getMaterialWithProduct(id, userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                material = [...material, ...values !== undefined ? values : []];
+                data = [...data, ...values !== undefined ? values : []];
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return material;
+    return { data, error };
 }
 
 export const getMaterialsExistsService = async (type, value, userToken) => {
-    let material = false;
+    let data = false; let error = "";
     (Promise.all([
         await getMaterialExists(type, value, userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                material = values;
+                data = values;
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return material;
+    return { data, error };
 }
 
 export const postMaterialService = async (payload, userToken) => {
-    let material = "";
+    let data = ""; let error = "";
     (Promise.all([
         await postMaterial(payload, userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                material = values;
+                data = values;
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return material;
+    return { data, error };
 }
 
 export const putMaterialService = async (id, payload, userToken) => {
-    let material = "";
+    let data = ""; let error = "";
     (Promise.all([
         await putMaterial(id, payload, userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                material = values;
+                data = values;
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return material;
+    return { data, error };
 }
 
 export const deleteMaterialService = async (id, userToken) => {
-    let material = "";
+    let data = ""; let error = "";
     (Promise.all([
         await deleteMaterial(id, userToken).then((values) => {
+            if (values === "Invalid Token") {
+                error = values;
+                return;
+            }
             if (values !== null) {
-                material = values;
+                data = values;
             }
         }),
     ]).catch(error => {
         new Error(error);
     }));
-    return material;
+    return { data, error };
 }

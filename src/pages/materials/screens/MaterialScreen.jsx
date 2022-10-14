@@ -7,12 +7,12 @@ import SnackBarCustom from '../../../components/alerts/SnackBarCustom';
 import FormMaterial from '../forms/FormMaterial';
 import { getMaterialByIdService, getMaterialsExistsService, postMaterialService, putMaterialService } from '../../../services/materialsService';
 import { getUnitsSimpleService } from '../../../services/unitsService';
-import { getSuppliersSimpleService } from '../../../services/suppliersService';
+import { getSuppliersSimpleService } from '../../../services/supplierService';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getCategoriesByDadService } from '../../../services/categoryService';
 
 const MaterialScreen = ({ mode }) => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     const [units, setUnits] = useState([]);
     const [suppliers, setSuppliers] = useState([]);
@@ -101,47 +101,71 @@ const MaterialScreen = ({ mode }) => {
             }
             return;
         }
-        const material = await getMaterialsExistsService(type, value, userToken);
+        const { data, error } = await getMaterialsExistsService(type, value, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
         if (type === "code") {
-            setIsCodeRepit(material !== undefined ? material : isCodeRepit);
+            setIsCodeRepit(data !== undefined ? data : isCodeRepit);
         } if (type === "name") {
-            setIsNameRepit(material !== undefined ? material : isNameRepit);
+            setIsNameRepit(data !== undefined ? data : isNameRepit);
         }
     }
 
-    const getUnits = async () => {
-        setUnits(await getUnitsSimpleService(userToken));
+    const getUnits = async (userToken) => {
+        const { data, error } = await getUnitsSimpleService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setUnits(data);
     }
 
-    const getCategories = async () => {
-        setCategories(await getCategoriesByDadService("material", userToken));
+    const getCategories = async (userToken) => {
+        const { data, error } = await getCategoriesByDadService("material", userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setCategories(data);
     }
 
-    const getSuppliers = async () => {
-        setSuppliers(await getSuppliersSimpleService(userToken));
+    const getSuppliers = async (userToken) => {
+        const { data, error } = await getSuppliersSimpleService(userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        setSuppliers(data);
     }
 
-    const getMaterial = async () => {
-        const materialItem = await getMaterialByIdService(id, userToken);
-        if (materialItem !== undefined || null) {
-            materialItem.unit = materialItem.unit._id;
-            materialItem.category = materialItem.category._id;
-            materialItem.supplier = materialItem.supplier._id;
-            setMaterialPayload({ ...materialPayload, ...materialItem });
+    const getMaterial = async (userToken) => {
+        const { data, error } = await getMaterialByIdService(id, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== undefined || null) {
+            data.unit = data.unit._id;
+            data.category = data.category._id;
+            data.supplier = data.supplier._id;
+            setMaterialPayload({ ...materialPayload, ...data });
         }
     }
 
     const postMaterial = async () => {
-        const payload = await postMaterialService(materialPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await postMaterialService(materialPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetMaterialPayload();
         }
         resetMaterialPayload();
     }
 
     const putMaterial = async () => {
-        const payload = await putMaterialService(id, materialPayload, userToken);
-        if (payload !== null) {
+        const { data, error } = await putMaterialService(id, materialPayload, userToken);
+        if (error === "Invalid Token") {
+            setOpenSessionExpired(true);
+        }
+        if (data !== null) {
             setOpenSnackBar(true); resetMaterialPayload();
         }
         resetMaterialPayload();
@@ -150,13 +174,13 @@ const MaterialScreen = ({ mode }) => {
 
     useEffect(() => {
         if (mode === "edit") {
-            getMaterial();
+            getMaterial(userToken);
         } else {
             null;
         }
-        getUnits();
-        getSuppliers();
-        getCategories();
+        getUnits(userToken);
+        getSuppliers(userToken);
+        getCategories(userToken);
         return () => {
             setUnits([]);
             setSuppliers([]);

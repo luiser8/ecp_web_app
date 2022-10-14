@@ -11,14 +11,14 @@ export const get = async (route, token) => {
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
-            return response.json()
+            return response.json();
         } if (response.status === 401) {
             return response.text();
         } else {
             response.json().then((json) => {
                 return json;
             });
-            return null
+            return null;
         }
     }).catch(e => console.log(e));
 }
@@ -32,12 +32,14 @@ export const post = async (route, data, token) => {
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
-            return response.json()
+            return response.json();
+        } if (response.status === 401) {
+            return response.text();
         }else {
             response.json().then((json) => {
                 return json;
             });
-            return null
+            return null;
         }
     }).catch(e => console.log(e));
 }
@@ -51,12 +53,14 @@ export const put = async (route, id, data, token) => {
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
-            return response.json()
+            return response.json();
+        } if (response.status === 401) {
+            return response.text();
         }else {
             response.json().then((json) => {
                 return json;
             });
-            return null
+            return null;
         }
     }).catch(e => console.log(e));
 }
@@ -69,12 +73,14 @@ export const del = async (route, id, token) => {
         json: true
     }).then(response => {
         if (response.status >= 200 && response.status <= 299) {
-            return response.json()
+            return response.json();
+        } if (response.status === 401) {
+            return response.text();
         }else {
             response.json().then((json) => {
                 return json;
             });
-            return null
+            return null;
         }
     }).catch(e => console.log(e));
 }
@@ -86,7 +92,12 @@ export const blob = async (route, token) => {
         mode: 'cors',
         headers: new Headers({ 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'x-access-token': token}),
     }).then(response => {
-        return response;
+        if (response.status >= 200 && response.status <= 299) {
+            return response;
+        } if (response.status === 401) {
+            return response.text();
+        }
+            return null;
     }).catch(e => console.log(e));
 }
 

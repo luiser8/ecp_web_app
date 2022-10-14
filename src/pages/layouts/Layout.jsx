@@ -10,17 +10,26 @@ import Copyright from '../../components/layouts/Copyright';
 import Theme from '../../themes/theme';
 import RoutesCustom from '../../helpers/RoutesCustom';
 import Login from '../user/Login';
-
+import DialogCustomSession from '../../components/dialogs/DialogCustomSession';
 const drawerWidth = 265;
 
 const Layout = () => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, openSessionExpired, setOpenSessionExpired  } = useContext(Context);
     const [mobileOpen, setMobileOpen] = useState(false);
     const isSmUp = useMediaQuery(Theme().theme.breakpoints.up('sm'));
 
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
+  const showSessionExpired = () => {
+     return (
+       <DialogCustomSession
+         open={openSessionExpired}
+         setOpen={setOpenSessionExpired}
+       />
+     )
+   }
 
     return (
         <ThemeProvider theme={Theme().theme}>
@@ -53,6 +62,8 @@ const Layout = () => {
                             <Copyright />
                         </Box>
                     </Box>
+                    {/*Session expired*/}
+                    {openSessionExpired ? showSessionExpired() : null}
                 </Box>
                 :
                 <Login />

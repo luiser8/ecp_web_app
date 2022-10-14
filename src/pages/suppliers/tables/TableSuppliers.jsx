@@ -6,6 +6,7 @@ import FilterCenterFocusOutlinedIcon from '@mui/icons-material/FilterCenterFocus
 import { Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import moment from 'moment';
 import DialogCustomConfirm from '../../../components/dialogs/DialogCustomConfirm';
+import TooltipCustom from '../../../components/tooltips/TooltipCustom';
 
 const TableSuppliers = (
     {
@@ -50,10 +51,14 @@ const TableSuppliers = (
                                 <TableCell align="right">
                                     <Grid item xs={20} md={20} lg={20}>
                                         <NavLink style={{ marginRight: 10 }} to={`${routing}${rows[row]._id}`}>
+                                        <TooltipCustom title="Ver proveedor" placement="bottom">
                                             <FilterCenterFocusOutlinedIcon style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                        </TooltipCustom>
                                         </NavLink>
                                         <NavLink style={{ marginRight: 8 }} to={`${routing}edit/${rows[row]._id}`}>
-                                            <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Editar proveedor" placement="bottom">
+                                                <EditOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                         <NavLink style={{ marginRight: 8 }} to={`#`}
                                             onClick={() => showDeleteSupplier(
@@ -62,7 +67,9 @@ const TableSuppliers = (
                                                     supplier: { id: rows[row]._id, name: rows[row].name }
                                                 }
                                             )}>
-                                            <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            <TooltipCustom title="Eliminar proveedor" placement="bottom">
+                                                <DeleteOutlineOutlined style={{ fontSize: '36px' }} sx={{ color: '#000' }} />
+                                            </TooltipCustom>
                                         </NavLink>
                                     </Grid>
                                 </TableCell>

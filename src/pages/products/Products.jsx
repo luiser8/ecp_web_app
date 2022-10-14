@@ -10,7 +10,7 @@ import SnackBarCustom from '../../components/alerts/SnackBarCustom';
 import { deleteProductService, getProductsSimpleService } from '../../services/productsService';
 
 const Products = () => {
-  const { checkUser } = useContext(Context);
+  const { checkUser, setOpenSessionExpired } = useContext(Context);
   const userToken = checkUser().accesstoken;
   const [products, setProducts] = useState([]);
   //Paginación
@@ -60,18 +60,25 @@ const Products = () => {
   }
 
   const confirmDeleteProduct = async (id) => {
-    const product = await deleteProductService(id, userToken);
-    if (product !== null) {
-      getProducts(); setOpenDelete(false); setOpenSnackBar(true);
+    const { data, error } = await deleteProductService(id, userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    if (data !== null) {
+      getProducts(userToken); setOpenDelete(false); setOpenSnackBar(true);
     }
   }
 
-  const getProducts = async () => {
-    setProducts(await getProductsSimpleService(userToken));
+  const getProducts = async (userToken) => {
+    const { data, error } = await getProductsSimpleService(userToken);
+    if (error === "Invalid Token") {
+      setOpenSessionExpired(true);
+    }
+    setProducts(data);
   }
 
   useEffect(() => {
-    getProducts();
+    getProducts(userToken);
     return () => {
       setProducts([]);
     };

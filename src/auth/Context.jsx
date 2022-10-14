@@ -15,6 +15,7 @@ const userDataInitial = {
 
 export const ContextProvider = ({ children }) => {
     const navigate = useNavigate();
+    const [openSessionExpired, setOpenSessionExpired] = useState(false);
     const { getLocalStorage, setLocalStorage } = Storage();
     const [dataUser, setDataUser] = useState(userDataInitial);
 
@@ -22,15 +23,18 @@ export const ContextProvider = ({ children }) => {
         return getLocalStorage();
     }
     const login = (user) => {
-        setLocalStorage(user); setDataUser(user);
+        setLocalStorage(1, user); setDataUser(user);
+    }
+    const loginRefresh = (user) => {
+        setLocalStorage(2, user); setDataUser({ ...dataUser, accesstoken: user.accesstoken });
     }
     const logout = () => {
-        setLocalStorage(null); setDataUser(null); navigate('/');
+        setLocalStorage(3, null); setDataUser(null); navigate('/');
     }
 
     return (
         <Context.Provider value={{
-            dataUser, setDataUser, checkUser, login, logout
+            dataUser, setDataUser, checkUser, login, loginRefresh, logout, openSessionExpired, setOpenSessionExpired
         }}>
             {children}
         </Context.Provider>

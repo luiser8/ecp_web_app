@@ -8,7 +8,7 @@ import { getAllRequerimentsService } from '../../services/requerimentsService';
 import TableRequeriments from './tables/TableRequeriments';
 
 const Requirements = () => {
-    const { checkUser } = useContext(Context);
+    const { checkUser, setOpenSessionExpired } = useContext(Context);
     const userToken = checkUser().accesstoken;
     const [requirements, setRequirements] = useState([]);
       //Paginación
@@ -31,12 +31,16 @@ const Requirements = () => {
         { id: 13, name: 'Costo de Fabricación x Unidad ($)', color: '#e3f2fd', align: 'right' },
     ];
 
-    const getRequeriments = async () => {
-        setRequirements(await getAllRequerimentsService(userToken));
+    const getRequeriments = async (userToken) => {
+        const { data, error } = await getAllRequerimentsService(userToken);
+        if (error === "Invalid Token") {
+          setOpenSessionExpired(true);
+        }
+        setRequirements(data);
     }
 
     useEffect(() => {
-        getRequeriments();
+        getRequeriments(userToken);
         return () => {
             setRequirements([]);
         };
